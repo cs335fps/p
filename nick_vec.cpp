@@ -1,24 +1,32 @@
 #include "vec.h"
 
-
 float& Vec::operator[] (const int index)
 {
-    if (index == 0)
+    if (index == 0) {
         return x;
-    else if (index == 1)
+    
+    } else if (index == 1) {
         return y;
-    else
+    
+    } else if (index == 2) {
         return z;
+    
+    } else {
+        int i = index % 3;
+        return (*this)[i];
+    }
 }
 
 Vec::Vec()
 {
     x = y = z = 0.0f;
 }
+
 Vec::Vec(float a, float b)
 {
     Vec(a, b, 0.0f);
 }
+
 Vec::Vec(float a, float b, float c)
 {
     x = a;
@@ -86,7 +94,6 @@ Vec& Vec::operator=(const Vec &vSource)
     return *this;
 }
 
-
 Vec operator*(float f, Vec v)
 {
     Vec c;
@@ -127,13 +134,13 @@ Vec Vec::Norm(){
     return c;
 }
 
-void Vec::Normalize(){
+Vec Vec::Normalize(){
     float m = Magnitude();
     x = x/m;
     y = y/m;
     z = z/m;
+    return *this;
 }
-
 
 Vec Normal(Vec a, Vec b)
 {

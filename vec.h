@@ -62,7 +62,7 @@ class Vec
         Vec Norm();
 
         // normalizes the vector, makes the length 1 but keeps direction
-        void Normalize();
+        Vec Normalize();
 };
 
 // Returns the normal of the plane made by two vectors

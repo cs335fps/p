@@ -6,8 +6,7 @@
 class Game
 {
 private:
-    
-    
+
 public:
     Vec position;
     Vec direction;
@@ -16,11 +15,11 @@ public:
     int moveY;
     float velocityX;
     float velocityY;
+    int aiming;
     
     Game();
     void Move();
     
 };
-
 
 #endif

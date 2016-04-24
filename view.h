@@ -23,7 +23,8 @@ private:
     Game *game;
     
 public:
-    
+    float maxZoom;
+    float minZoom;
     int zoom;
     float depth;
     

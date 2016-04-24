@@ -8,6 +8,7 @@ using namespace std;
 
 int main()
 {
+
     Game game;
     View view(&game);
     Input input(&game, &view);
