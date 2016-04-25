@@ -8,7 +8,6 @@
 #include <GL/gl.h>
 #include <GL/glx.h>
 #include <GL/glu.h>
-#include <GL/glut.h>
 #include "solidSphere.h"
 
 using namespace std;
