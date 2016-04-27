@@ -254,7 +254,14 @@ class worldEngine
                vr[2] = va[0] * vb[1] - vb[0] * va[1];
           }
      public:
+          worldEngine()
+          {
+	  }
           worldEngine(const char filename[200])
+          {
+	      load(filename);
+	  }
+          void load(const char filename[200])
           {
                char line[200];
                GLfloat X,Y,Z;
