@@ -8,10 +8,12 @@
 #include <iostream>
 #include <cstdlib>
 #include "game.h"
+#include "WorldEngine.h"
+#include <string>
 
 #define PI 3.14159
-
 class View
+
 {
 private:
     int width;
@@ -21,6 +23,7 @@ private:
     Window win;
     GLXContext glc;
     Game *game;
+    worldEngine level1;
     
 public:
     float maxZoom;
@@ -42,6 +45,7 @@ public:
     void SwitchTo3D();
     void SwitchTo2D();
     void HUD();
+    ~View();
 };
 
 
