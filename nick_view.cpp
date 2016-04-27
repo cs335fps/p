@@ -1,4 +1,5 @@
 #include "view.h"
+#include "WorldEngine.h"
 
 View::View(Game *g)
 {
@@ -9,6 +10,7 @@ View::View(Game *g)
     zoom = 0;
     maxZoom = .55f;
     minZoom = .15f;
+    level1.load("Level1.obj");
 }
 
 int View::GetWidth()
@@ -211,6 +213,7 @@ void View::Render()
     glRotatef(rotx / PI * 180.0,0,1,0);
     glTranslatef(game->position.x, game->position.y, game->position.z);
     
+    /*
     for (int i = 0; i < 6; i++) {
         glColor3f(c[i].x,c[i].y,c[i].z);
         glBegin(GL_POLYGON);
@@ -234,10 +237,13 @@ void View::Render()
         glEnd();
         glEnable(GL_LIGHTING);
     }
-    
-    
+    */
+    level1.draw();
     glPopMatrix();
     HUD();
+    
+   // level1.loc(2,2,2);
+    
     glFlush ();
     
     glXSwapBuffers(dpy, win);
@@ -303,4 +309,7 @@ void View::SwitchTo2D()
     glDisable(GL_CULL_FACE);
     
     glClear(GL_DEPTH_BUFFER_BIT);
+}
+View::~View()
+{
 }
