@@ -448,7 +448,7 @@ class worldEngine
                     faces = search(npt1);
                    
                    //cout << faces.size() << endl;
-                    for (int i=0; i<faces.size(); i++){
+                    for (unsigned int i=0; i<faces.size(); i++){
                          dist1 = baricen(faces[i]->v1,faces[i]->v2,faces[i]->v3);
                          dist2 = baricen(faces[i]->v1,faces[i]->v2,npt1);
                          dist3 = baricen(faces[i]->v1,npt1,faces[i]->v3);
