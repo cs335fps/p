@@ -1,11 +1,11 @@
 /*
- * Roy Banuelos
- * Declaration for WorldEngine.h
- * constructor will parce obj files
- * and render objects in 3D space
- * program also used a double binary tree
- * to sort through all faces for 
- * collision detection
+ * Author: Roy Banuelos
+ * About: Declaration for WorldEngine.h
+ * constructor will parce obj files.
+ * this will also render objects in 
+ * 3D space program also used a double
+ * binary tree to sort through all faces
+ * for collision detection
  */
 #include <GL/gl.h>
 #include <GL/glu.h>
