@@ -1,28 +1,39 @@
 #ifndef _ai_h_
 #define _ai_h_
 
+#ifndef _VEC_H_
+    #include "vec.h"
+#endif
+#ifndef _VIEW_H_
+    #include "view.h"
+#endif
+#ifndef _INPUT_H_
+   #include "input.h"
+#endif
+
 class mob
 {
+private:
     float hp;
-
-    void __mob();
-    void spawn(vec location);
+public:
+    mob();
+    void spawn(Vec location);
     void die();
     void damage(int health);
     void move();
-}
+};
 
 class enemy: public mob
 {
 
-    void move;
-}
+    void move();
+};
 class munition: public mob
 {
 
-}
+};
 class npc: public mob
 {
 
-}
+};
 #endif
