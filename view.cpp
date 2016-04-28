@@ -69,7 +69,7 @@ void View::InitWindow()
 
 void View::InitOpenGL()
 {
-    
+    /*
     //OpenGL initialization
     glViewport(0, 0, width, height);
     //Initialize matrices
@@ -109,6 +109,55 @@ void View::InitOpenGL()
     glEnable( GL_DEPTH_TEST );
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
+    */
+    
+    
+    
+    
+    
+    
+    // setup the position, specular and shininess of the light
+	GLfloat mat_spec[] = {1.0, 1.0, 1.0, 1.0};
+	GLfloat mat_shini[]= { 50.0};
+	GLfloat ambiant[] =  {0.1484, 0.0, 0.5781};
+	ShowCursor(0);
+	//OpenGL initialization
+	// move the camera
+	glViewport(0, 0, width, height);
+	//Initialize matrices
+	glMatrixMode(GL_PROJECTION); glLoadIdentity();
+	glMatrixMode(GL_MODELVIEW); glLoadIdentity();
+	//This sets 2D mode (no perspective)
+	//glOrtho(0, xres, 0, yres, -1, 1);
+	//glClear(GL_COLOR_BUFFER_BIT);
+	//Do this to allow fonts
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//
+
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);		// This Will Clear The Background Color To Black
+	glClearDepth(1.0);				// Enables Clearing Of The Depth Buffer
+	glDepthFunc(GL_LESS);			        // The Type Of Depth Test To Do
+	glEnable(GL_DEPTH_TEST);		        // Enables Depth Testing
+	glShadeModel(GL_SMOOTH);			// Enables Smooth Color Shading
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();				// Reset The Projection Matrix
+
+	//gluPerspective(45.0f,(GLfloat)xres/(GLfloat)yres,0.1f,900.0f);	// Calculate The Aspect Ratio Of The Window
+	glFrustum(-0.1/height*width, 0.1/height*width, -0.1, 0.1, depth, 200.0);
+	
+	// apply the shinynes, specular and light position
+	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_spec);
+	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shini);
+	GLfloat light_Pos[]= {1, 1, 1, .0};
+	glLightfv(GL_LIGHT0, GL_POSITION, light_Pos);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambiant);
+
+	glMatrixMode(GL_MODELVIEW);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
 }
 
 void View::set_title(void)
@@ -222,7 +271,7 @@ void View::HUD()
 }
 
 void View::SwitchTo3D()
-{
+{/*
     // Making sure we can render 3d again
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
@@ -232,11 +281,13 @@ void View::SwitchTo3D()
     glEnable(GL_DEPTH_TEST);  
     glEnable(GL_LIGHTING);
     glFrustum(-0.1/height*width, 0.1/height*width, -0.1, 0.1, depth, 200.0);
-    
+    */
+    InitOpenGL();
 }
 
 void View::SwitchTo2D()
 {
+	/*
     glDepthMask(GL_FALSE);
     glDisable(GL_DEPTH_TEST);  
     glDisable(GL_LIGHTING);
@@ -251,6 +302,21 @@ void View::SwitchTo2D()
     glDisable(GL_CULL_FACE);
     
     glClear(GL_DEPTH_BUFFER_BIT);
+    */
+    
+    
+    
+    
+    
+    
+    glDisable(GL_DEPTH_TEST);
+	glViewport(0, 0, width, height);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(0,width,0,height,-1,1);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	
 }
 View::~View()
 {
