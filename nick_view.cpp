@@ -171,73 +171,15 @@ void View::Render()
     }else if (zoom == 0 && depth > minZoom) {
         depth -= (maxZoom - minZoom) / 15;
     }
-    
-    
-    float ra = 20.0;
-    //Rect r;
+
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    float top = 4.0;
-    float bot = -2.0;
     
-    Vec v[6];
-    Vec c[6];
-    
-    c[0] = Vec(0.5, 0.5, 1.0);
-    c[1] = Vec(1.0, 1.0, 1.0);
-    c[2] = Vec(1.0, 0.0, 0.0);
-    c[3] = Vec(0.0, 0.0, 1.0);
-    c[4] = Vec(0.0, 1.0, 0.0);
-    c[5] = Vec(1.0, 1.0, 0.0);
-    
-    v[0].x = v[3].x = v[7].x = v[4].x = ra;
-    v[1].x = v[2].x = v[5].x = v[6].x = -ra;
-    
-    v[0].y = v[1].y = v[2].y = v[3].y = bot;
-    v[4].y = v[5].y = v[6].y = v[7].y = top;
-    
-    v[0].z = v[1].z = v[5].z = v[4].z = -ra;
-    v[2].z = v[3].z = v[6].z = v[7].z = ra;
-    
-    int verts[][4] = {
-        {4,5,6,7},
-        {3,2,1,0},
-        {0,1,5,4},
-        {7,6,2,3},
-        {1,2,6,5},
-        {4,7,3,0}
-        
-    };
     glPushMatrix();
     
-    glRotatef(roty / PI * 180.0,1,0,0);
-    glRotatef(rotx / PI * 180.0,0,1,0);
-    glTranslatef(game->position.x, game->position.y, game->position.z);
+    glRotatef(-roty / PI * 180.0,1,0,0);
+    glRotatef(-rotx / PI * 180.0,0,1,0);
+    glTranslatef(-game->position.x, -game->position.y, -game->position.z);
     
-    /*
-    for (int i = 0; i < 6; i++) {
-        glColor3f(c[i].x,c[i].y,c[i].z);
-        glBegin(GL_POLYGON);
-        Vec N = -Normal(v[verts[i][0]],v[verts[i][1]],v[verts[i][2]]);
-        glNormal3f(N.x,N.y,N.z);
-        for (int j = 0; j < 4; j++){
-            glVertex3f(v[verts[i][j]].x,
-                       v[verts[i][j]].y,
-                       v[verts[i][j]].z);
-        }
-        glEnd();
-        glDisable(GL_LIGHTING);
-        glBegin(GL_LINE_STRIP);
-        glColor3f(1.0f,1.0f,1.0f);
-        glVertex3f((v[verts[i][0]].x+v[verts[i][2]].x)/2.0 + N.x,
-                   (v[verts[i][0]].y+v[verts[i][2]].y)/2.0 + N.y,
-                   (v[verts[i][0]].z+v[verts[i][2]].z)/2.0 + N.z);
-        glVertex3f((v[verts[i][0]].x+v[verts[i][2]].x)/2.0,
-                   (v[verts[i][0]].y+v[verts[i][2]].y)/2.0,
-                   (v[verts[i][0]].z+v[verts[i][2]].z)/2.0);
-        glEnd();
-        glEnable(GL_LIGHTING);
-    }
-    */
     level1.draw();
     glPopMatrix();
     HUD();

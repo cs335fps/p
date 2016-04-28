@@ -6,10 +6,8 @@ Game::Game()
   moveX = moveY = 0;
   aiming = 0;
   
-    for (int i = 0; i < 3; i++) {
-        position[i] = 0.0f;
-        direction[i] = 0.0f;
-    }
+    position = Vec(0,2,0);
+    direction = Vec(0,0,0);
 }
 
 void Game::Move()
@@ -27,9 +25,10 @@ void Game::Move()
     // slow down when aiming
     float speed = 0.2f - (float) aiming * 0.1f;
     
-    position.z += (velocityX * cos(direction.x)
+    position.z -= (velocityX * cos(direction.x)
     + velocityY * -sin(direction.x)) * speed;
     position.x -= (velocityY * cos(direction.x)
     + velocityX * sin(direction.x)) * speed;
 
+    
 }
