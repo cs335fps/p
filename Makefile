@@ -3,8 +3,8 @@
 
 all: project
 	
-project: project.cpp game.cpp input.cpp view.cpp vec.cpp charlesE.cpp nick.cpp oalTest.cpp RoyB.cpp
-	g++ -g project.cpp game.cpp view.cpp input.cpp vec.cpp charlesE.cpp nick.cpp oalTest.cpp RoyB.cpp -o project -Wall -lX11 -lGL -lGLU -lm
+project: project.cpp game.cpp input.cpp view.cpp vec.cpp charlesE.cpp nick.cpp RoyB.cpp
+	g++ -g project.cpp game.cpp view.cpp input.cpp vec.cpp charlesE.cpp nick.cpp RoyB.cpp -o project -Wall -lX11 -lGL -lGLU -lm
 
 clean:
 	rm -f rex project lab1
