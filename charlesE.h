@@ -1,3 +1,8 @@
+// Charles Enright
+// CS 335 Software Engineering
+// File includes header portion of AI and elements of game mechanics.
+
+
 #ifndef _ai_h_
 #define _ai_h_
 
