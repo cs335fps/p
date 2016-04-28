@@ -15,7 +15,9 @@
 #ifndef _INPUT_H_
    #include "input.h"
 #endif
-
+#ifndef _SOLIDSPHERE_H_
+    #include "solidSphere.h"
+#endif
 class mob
 {
 private:
