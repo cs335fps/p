@@ -1,6 +1,3 @@
-//Finally a simple OpenAL example program.
-//Gordon Griesel
-//2015
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
@@ -9,6 +6,9 @@
 #include <sys/stat.h>
 #include </usr/include/AL/alut.h>
 #include <iostream>
+#include <ncurses.h>
+//#include <conio.h>
+
 using namespace std;
 int main()
 {
@@ -45,21 +45,34 @@ int main()
 		printf("ERROR: setting source\n");
 		return 0;
 	}
-	/*for (int i=0; i<8; i++) {
-		alSourcePlay(alSource);
-		usleep(250000);
-	}*/
 	char a;
 	while(a != 'o'){
-	cout <<"enter a char\n";
-	cin >> a;
+	    cout <<"enter a char\n";
+	    cin >> a;
 
-	if(a == 'b'){
+	    if(a == 'b'){
 		alSourcePlay(alSource);
 		usleep(255000);
-	}	
-}
-	//Cleanup.
+	    }
+	    int c = getch();
+	    switch(c){
+		case KEY_ENTER:
+		    alSourcePlay(alSource);
+		    usleep(255000);
+		    break;
+		
+		case KEY_UP:
+		    cout << "key up was pressed" <<endl;
+		    break;
+
+		case KEY_MOUSE
+
+		case default:
+		    cout << "not valid key \n";
+		    exit(1);
+
+	    }
+	}
 	//First delete the source.
 	alDeleteSources(1, &alSource);
 	//Delete the buffer.
@@ -77,4 +90,3 @@ int main()
 	alcCloseDevice(Device);
 	return 0;
 }
-
