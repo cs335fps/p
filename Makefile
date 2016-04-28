@@ -4,7 +4,7 @@
 all: project
 	
 project: project.cpp game.cpp input.cpp view.cpp vec.cpp charlesE.cpp nick.cpp RoyB.cpp lizandro.cpp
-	g++ -g project.cpp game.cpp view.cpp input.cpp vec.cpp charlesE.cpp nick.cpp RoyB.cpp lizandro.cpp -o project -Wall -lX11 -lGL -lGLU -lm
+	g++ -g project.cpp game.cpp view.cpp input.cpp vec.cpp charlesE.cpp nick.cpp RoyB.cpp lizandro.cpp -o project -Wall -lX11 -lGL -lGLU -lm -lalut -lopenal 
 
 clean:
 	rm -f rex project lab1

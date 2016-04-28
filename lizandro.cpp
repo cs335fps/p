@@ -10,7 +10,8 @@
 #include </usr/include/AL/alut.h>
 #include <iostream>
 using namespace std;
-int main()
+
+int initopenal()
 {
 	//Get started right here.
 	alutInit(0, NULL);
@@ -45,20 +46,24 @@ int main()
 		printf("ERROR: setting source\n");
 		return 0;
 	}
-	/*for (int i=0; i<8; i++) {
-		alSourcePlay(alSource);
-		usleep(250000);
-	}*/
+	return alSource;
+}
+
+void openalmain(int alSource)
+{
 	char a;
 	while(a != 'o'){
-	cout <<"enter a char\n";
-	cin >> a;
+	    cout <<"enter a char\n";
+	    cin >> a;
 
-	if(a == 'b'){
+	    if(a == 'b'){
 		alSourcePlay(alSource);
 		usleep(255000);
-	}	
+	    }	
+	}
 }
+
+void cleanopenal(ALuint alSource, ALuint alBuffer){
 	//Cleanup.
 	//First delete the source.
 	alDeleteSources(1, &alSource);
@@ -75,6 +80,5 @@ int main()
 	alcDestroyContext(Context);
 	//Close device.
 	alcCloseDevice(Device);
-	return 0;
 }
 
