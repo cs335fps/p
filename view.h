@@ -21,6 +21,7 @@ class View
 private:
     int width;
     int height;
+    int is3D;
     Display *dpy;
     Window root;
     Window win;
@@ -35,7 +36,6 @@ public:
     float depth;
     
     View(Game *g);
-    void InitOpenGL();
     void InitWindow();
     void cleanupXWindows(void);
     void set_title(void);
@@ -47,6 +47,7 @@ public:
     void Render();
     void SwitchTo3D();
     void SwitchTo2D();
+    void Lighting();
     void HUD();
     ~View();
 };
