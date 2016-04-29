@@ -214,7 +214,7 @@ Display *View::GetDisplay()
 void View::Render()
 {
     float rotx = game->direction.x;
-    float roty = game->direction.y;
+    float roty = game->direction.y - PI / 2.0;
     if (zoom == 1 && depth < maxZoom) {
         depth += (maxZoom - minZoom) / 15;
     }else if (zoom == 0 && depth > minZoom) {
@@ -223,12 +223,17 @@ void View::Render()
 
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
+    
+    gluLookAt(
+    game->position.x,
+    game->position.y,
+    game->position.z,
+    game->position.x+sin(rotx) * sin(roty),
+    game->position.y+cos(roty),
+    game->position.z+cos(rotx) * sin(roty),
+    0,1,0
+    );
     glPushMatrix();
-    
-    glRotatef(-roty / PI * 180.0,1,0,0);
-    glRotatef(-rotx / PI * 180.0,0,1,0);
-    glTranslatef(-game->position.x, -game->position.y, -game->position.z);
-    
     level1.draw();
     glPopMatrix();
     HUD();

@@ -89,10 +89,10 @@ void Input::CheckMouse(XEvent *e)
     game->direction.x = fmod(game->direction.x,2.0*PI);
     if (game->direction.x < 0.0)
         game->direction.x += PI * 2.0;
-    if (game->direction.y > PI / 2.0)
-        game->direction.y = PI / 2.0;
-    if (game->direction.y < -PI / 2.0)
-        game->direction.y = -PI / 2.0;
+    if (game->direction.y > PI / 2.0 - 0.01)
+        game->direction.y = PI / 2.0 - 0.01;
+    if (game->direction.y < -PI / 2.0 + 0.01)
+        game->direction.y = -PI / 2.0 + 0.01;
     if (dx != 0 || dy != 0)
         view->CenterCursor();
 }
