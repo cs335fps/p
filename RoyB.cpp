@@ -501,16 +501,19 @@ GLuint loadBMP::getBMP(char *path)
 	int pixel;
 
 	FILE * file = fopen(path,"rb");
-	if(!file){
+	if (!file)
+	{
 		printf("UNABLE TO OPEN %s\n", path);
 		return 0;
 	}
 
-	if(fread(header,1,54,file) != 54){
+	if (fread(header,1,54,file) != 54)
+	{
 		printf("NOT A BMP FILE\n");
 		return 0;
 	}
-	if(header[0] != 'B' || header[1] != 'M'){
+	if (header[0] != 'B' || header[1] != 'M')
+	{
 		printf("NOT A BMP FILE\n");
 		return 0;
 	}
@@ -521,7 +524,8 @@ GLuint loadBMP::getBMP(char *path)
 	height = *(int*)&(header[0x16]);
 
 	// if the image header is corupted somehow
-	if(imageSize == 0){
+	if (imageSize == 0)
+	{
 		imageSize = width * height * 3;
 	}
 	if(dataPos == 0)
@@ -536,7 +540,8 @@ GLuint loadBMP::getBMP(char *path)
 	fclose(file);
 
 	// apply apha channel
-	for(int i=0; i< pixel; i++){
+	for (int i=0; i< pixel; i++)
+	{
 		data_A[i*4] = data[i*3];
 		data_A[i*4+1] = data[i*3+1];
 		data_A[i*4+2] = data[i*3+2];
@@ -574,16 +579,19 @@ GLuint loadBMP::getBMP(const char *path)
 	int pixel;
 
 	FILE * file = fopen(path,"rb");
-	if(!file){
+	if (!file)
+	{
 		printf("UNABLE TO OPEN %s\n", path);
 		return 0;
 	}
 
-	if(fread(header,1,54,file) != 54){
+	if (fread(header,1,54,file) != 54)
+	{
 		printf("NOT A BMP FILE\n");
 		return 0;
 	}
-	if(header[0] != 'B' || header[1] != 'M'){
+	if (header[0] != 'B' || header[1] != 'M')
+	{
 		printf("NOT A BMP FILE\n");
 		return 0;
 	}
@@ -594,10 +602,11 @@ GLuint loadBMP::getBMP(const char *path)
 	height = *(int*)&(header[0x16]);
 
 	// if the image header is corupted somehow
-	if(imageSize == 0){
+	if (imageSize == 0) 
+	{
 		imageSize = width * height * 3;
 	}
-	if(dataPos == 0)
+	if (dataPos == 0)
 		dataPos = 54;
 
 	// get image data
@@ -609,7 +618,8 @@ GLuint loadBMP::getBMP(const char *path)
 	fclose(file);
 
 	// apply apha channel
-	for(int i=0; i< pixel; i++){
+	for (int i=0; i< pixel; i++) 
+	{
 		data_A[i*4] = data[i*3];
 		data_A[i*4+1] = data[i*3+1];
 		data_A[i*4+2] = data[i*3+2];
