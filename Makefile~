@@ -1,0 +1,12 @@
+all: armc arm
+
+armc: arm.c
+	gcc arm.c -Wall -Wextra -lX11 -lGL -lGLU -lm ./libggfonts.so -o armc
+
+arm: arm.cpp log.cpp
+	g++ -l/home/gordon/Desktop/371Fall2014/arm/libggfonts.so arm.cpp log.cpp -Wall -Wextra -lX11 -lGL -lGLU -lm -o arm
+
+clean:
+	rm -f armc arm
+	rm -f *.o
+
