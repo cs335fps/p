@@ -136,7 +136,7 @@ void View::InitOpenGL()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	//
 
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);		// This Will Clear The Background Color To Black
+	glClearColor(0.549f, 0.549f, 0.90588f, 0.0f);		// This Will Clear The Background Color To Black
 	glClearDepth(1.0);				// Enables Clearing Of The Depth Buffer
 	glDepthFunc(GL_LESS);			        // The Type Of Depth Test To Do
 	glEnable(GL_DEPTH_TEST);		        // Enables Depth Testing
