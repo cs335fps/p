@@ -10,6 +10,9 @@
 #include "game.h"
 #include "WorldEngine.h"
 #include <string>
+#include "charlesE.h"
+#include <vector>
+
 
 #define PI 3.14159
 class View
@@ -24,7 +27,7 @@ private:
     GLXContext glc;
     Game *game;
     worldEngine level1;
-    
+    //vector<Mob*> mobs;    
 public:
     float maxZoom;
     float minZoom;

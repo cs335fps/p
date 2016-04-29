@@ -13,18 +13,18 @@
     #include "view.h"
 #endif
 #ifndef _INPUT_H_
-   #include "input.h"
+   //#include "input.h"
 #endif
 #ifndef _SOLIDSPHERE_H_
     #include "solidSphere.h"
 #endif
-class mob
+class Mob
 {
 private:
     float hp;
     vec loc;
 public:
-    mob();
+    Mob();
     void spawn(Vec location);
     void die();
     void damage(int health);
@@ -32,16 +32,16 @@ public:
     void render();
 };
 
-class enemy: public mob
+class Enemy: public Mob
 {
 
     void move();
 };
-class munition: public mob
+class Munition: public Mob
 {
 
 };
-class npc: public mob
+class Npc: public Mob
 {
 
 };
