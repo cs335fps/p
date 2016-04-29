@@ -195,20 +195,31 @@ void View::Lighting()
 {
 
 	
-	     // setup the position, specular and shininess of the light
+	// setup the position, specular and shininess of the light
 	GLfloat mat_spec[] = {1.0, 1.0, 1.0, 1.0};
 	GLfloat mat_shini[]= { 50.0};
 	GLfloat ambiant[] =  {0.1484, 0.0, 0.5781};
+	GLfloat diff[] =  {1.0, 1.0, 1.0, 0.5};
+	//GLfloat light_Pos[]= {0, 8, 0, 1.0};
+	
+	GLfloat light_Pos[]= {0, 10, 0, 0.9};
+	GLfloat light_Pos2[]= {
+	game->position.x, 
+	game->position.y, 
+	game->position.z, 
+	0.5};
 	// apply the shinynes, specular and light position
 	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_spec);
 	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shini);
-	GLfloat light_Pos[]= {1, 1, 1, .0};
 	glLightfv(GL_LIGHT0, GL_POSITION, light_Pos);
+	glLightfv(GL_LIGHT1, GL_POSITION, light_Pos2);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambiant);
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, diff);
 
 	glMatrixMode(GL_MODELVIEW);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHT1);
 }
 
 void View::SwitchTo3D()
