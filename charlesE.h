@@ -22,12 +22,14 @@ class mob
 {
 private:
     float hp;
+    vec loc;
 public:
     mob();
     void spawn(Vec location);
     void die();
     void damage(int health);
     void move();
+    void render();
 };
 
 class enemy: public mob
