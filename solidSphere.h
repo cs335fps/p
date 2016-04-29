@@ -97,13 +97,18 @@ class solidSphere
 			glPopMatrix();
 		}
 ///////////////////////////////////////////////////////////////////////////////
+		bool isTouching(float p1, float p2, float p3)
+		{
+			float pt[] = {p1,p2,p3};
+			return isTouching(pt);
+		}
 		bool isTouching(float point[])
 		{
 			// get the vector between the phear center 
 			// and the given point
 			float d1 = (point[0] - X) * (point[0] - X) +
 			           (point[1] - Y) * (point[1] - Y) +
-			           (point[2] - Z) * (point[2] - Z) +
+			           (point[2] - Z) * (point[2] - Z);
 			float d2 = rad * rad;
 
 			// check to see if the point is within or on the obj
