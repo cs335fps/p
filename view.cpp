@@ -9,6 +9,7 @@ View::View(Game *g)
     SwitchTo3D();
     game = g;
     level1.load("Level1.obj");
+    mobs.push_back(new Mob());
 }
 
 int View::GetWidth()
@@ -121,7 +122,9 @@ Display *View::GetDisplay()
 void View::Render()
 {
     SwitchTo3D();
-
+    for(int i = 0; i < mobs.size(); i++){
+	mobs[i]->render();
+    }
     float rotx = game->direction.x;
     float roty = game->direction.y - PI / 2.0;
 
@@ -130,14 +133,14 @@ void View::Render()
 
 
     gluLookAt(
-            game->position.x,
-            game->position.y,
-            game->position.z,
-            game->position.x+sin(rotx) * sin(roty),
-            game->position.y+cos(roty),
-            game->position.z+cos(rotx) * sin(roty),
-            0,1,0
-            );
+        game->position.x,
+        game->position.y,
+        game->position.z,
+        game->position.x+sin(rotx) * sin(roty),
+        game->position.y+cos(roty),
+        game->position.z+cos(rotx) * sin(roty),
+        0,1,0
+    );
 
     Lighting();
 

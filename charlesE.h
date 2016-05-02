@@ -22,10 +22,11 @@ class Mob
 {
 private:
     float hp;
-    vec loc;
+    Vec location;
+    solidSphere body;
 public:
     Mob();
-    void spawn(Vec location);
+    void spawn();
     void death();
     void damage(int health);
     void move();

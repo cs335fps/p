@@ -7,12 +7,14 @@
 
 
 Mob::Mob(){
-
-
+    body.redraw(3.0, 10, 10);
 }
 
-void Mob::spawn(Vec location){
-
+void Mob::spawn(){
+    location.z = 39;
+    location.x = 11;
+    location.y = 2;
+    body.draw(location.x, location.y, location.z);
 
 }
 
@@ -34,7 +36,7 @@ void Mob::move(){
 }
 
 void Mob::render(){
-
+	body.draw(location.x, location.y, location.z);
 
 }
 
