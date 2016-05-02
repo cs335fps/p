@@ -15,6 +15,8 @@
 
 
 #define PI 3.14159
+
+class Mob;
 class View
 
 {
@@ -28,7 +30,7 @@ private:
     GLXContext glc;
     Game *game;
     worldEngine level1;
-    //vector<Mob*> mobs;    
+    vector<Mob*> mobs;    
 public:
 
     
