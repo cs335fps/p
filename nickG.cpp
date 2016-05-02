@@ -1,17 +1,37 @@
 // Nicholas Gardner
 #include "vec.h"
+#include "nickG.h"
+
+
+Seconds::Seconds()
+{
+    Start();
+}
+
+void Seconds::Start()
+{
+    clock_gettime(CLOCK_REALTIME, &startTime);
+}
+
+// Variation on Gordons mytime from asteroids game.
+double Seconds::Get()
+{
+    clock_gettime(CLOCK_REALTIME, &curTime);
+    return (double)(curTime.tv_sec - startTime.tv_sec ) +
+        (double)(curTime.tv_nsec - startTime.tv_nsec) / 1e9;
+}
 
 float& Vec::operator[] (const int index)
 {
     if (index == 0) {
         return x;
-    
+
     } else if (index == 1) {
         return y;
-    
+
     } else if (index == 2) {
         return z;
-    
+
     } else {
         int i = index % 3;
         return (*this)[i];
@@ -168,3 +188,4 @@ Vec Cross(Vec a, Vec b)
     c.z = a.x * b.y - a.y * b.x;
     return c;
 }
+

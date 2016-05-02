@@ -30,10 +30,7 @@ private:
     worldEngine level1;
     //vector<Mob*> mobs;    
 public:
-    float maxZoom;
-    float minZoom;
-    int zoom;
-    float depth;
+
     
     View(Game *g);
     void InitWindow();

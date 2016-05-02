@@ -63,7 +63,7 @@ void Input::CheckMouse(XEvent *e)
     if (e->type == ButtonRelease) {
         if (e->xbutton.button==3) {
             //Right button was released
-            view->zoom = 0;
+            game->zoom = 0;
             game->aiming = 0;
             return;
         }
@@ -76,7 +76,7 @@ void Input::CheckMouse(XEvent *e)
         }
         if (e->xbutton.button==3) {
             //Right button was pressed
-            view->zoom = 1;
+            game->zoom = 1;
             game->aiming = 1;
             return;
         }
@@ -84,8 +84,8 @@ void Input::CheckMouse(XEvent *e)
     
     int dx = e->xbutton.x - (view->GetWidth() / 2);
     int dy = e->xbutton.y - (view->GetHeight() / 2);
-    game->direction.x -=(float) dx / 2000.0 / (view->depth / view->minZoom);
-    game->direction.y -=(float) dy / 2000.0 / (view->depth / view->minZoom);
+    game->direction.x -=(float) dx / 2000.0 / (game->depth / game->minZoom);
+    game->direction.y -=(float) dy / 2000.0 / (game->depth / game->minZoom);
     game->direction.x = fmod(game->direction.x,2.0*PI);
     if (game->direction.x < 0.0)
         game->direction.x += PI * 2.0;

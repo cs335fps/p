@@ -17,6 +17,11 @@ public:
     float velocityY;
     int aiming;
     
+    float maxZoom;
+    float minZoom;
+    int zoom;
+    float depth;
+    
     Game();
     void Move();
     
