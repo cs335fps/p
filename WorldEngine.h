@@ -35,14 +35,19 @@ struct vec{
           {
                bitree *left, *right;
                bitree *yroot;
-               GLfloat xory;
+               GLfloat xMIN, xMAX,
+		       zMIN, zMAX;
                vec *fce;
 
-               bitree(GLfloat x)
+               bitree(GLfloat x, GLfloat y,
+		      GLfloat w, GLfloat v)
                {
                     left = right = NULL;
                     yroot = NULL;
-                    xory = x;
+                    xMIN = x;
+                    xMAX = y;
+                    zMIN = w;
+                    zMAX = v;
                }
           };
 
@@ -61,7 +66,9 @@ class worldEngine
           bool solid;
           bitree *root;
 
-          bitree *newNode(GLfloat coord);
+	  float getMin(float a,float b,float c);
+	  float getMax(float a,float b,float c);
+          bitree *newNode(GLfloat min, GLfloat max, GLfloat minZ, GLfloat maxZ);
           void bitreeAdd(vec *fce);
           void bitreeAddY(bitree *Yroot, bitree *node, vec *fce);
           vector<vec*> search(GLfloat point[]);
