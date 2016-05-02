@@ -46,4 +46,10 @@ class Npc: public Mob
 {
 
 };
+
+
+void drawLightedArm();
+void drawFloor();
+void box(float, float, float);
+vec MakeVector(float, float, float);
 #endif

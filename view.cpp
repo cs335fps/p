@@ -150,7 +150,8 @@ void View::Render()
     level1.draw();
     glPopMatrix();
     HUD();
-
+    //drawFloor();
+    //drawLightedArm();
     // level1.loc(2,2,2);
 
     glFlush ();
