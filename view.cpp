@@ -72,7 +72,7 @@ void View::set_title(void)
 {
     //Set the window title bar.
     XMapWindow(dpy, win);
-    XStoreName(dpy, win, "Test");
+    XStoreName(dpy, win, "First Person Strudel: Toaster Genesis");
 }
 
 void View::cleanupXWindows(void)
@@ -97,8 +97,10 @@ void View::ShowCursor(const int onoff)
     Cursor cursor;
     //make a blank cursor
     blank = XCreateBitmapFromData (dpy, win, data, 1, 1);
-    if (blank == None)
+    if (blank == None){
         std::cout << "error: out of memory." << std::endl;
+	throw 0;
+    }
     cursor = XCreatePixmapCursor(dpy, blank, blank, &dummy, &dummy, 0, 0);
     XFreePixmap(dpy, blank);
     //this makes you the cursor. then set it using this function
@@ -122,7 +124,7 @@ Display *View::GetDisplay()
 void View::Render()
 {
     SwitchTo3D();
-    for(int i = 0; i < mobs.size(); i++){
+    for(unsigned int i = 0; i < mobs.size(); i++){
 	mobs[i]->render();
     }
     float rotx = game->direction.x;

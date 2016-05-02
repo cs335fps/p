@@ -11,9 +11,9 @@ Mob::Mob(){
 }
 
 void Mob::spawn(){
-    location.z = 39;
-    location.x = 11;
-    location.y = 2;
+    location.z = 2;
+    location.x = 5;
+    location.y = 5;
     body.draw(location.x, location.y, location.z);
 
 }
@@ -29,14 +29,15 @@ void Mob::damage(int health){
 }
 
 void Mob::move(){
-
+//Put AI logic here.
 
 
 
 }
 
 void Mob::render(){
-	body.draw(location.x, location.y, location.z);
+    this->move();
+    body.draw(location.x, location.y, location.z);
 
 }
 
