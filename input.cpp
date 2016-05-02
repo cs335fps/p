@@ -5,6 +5,7 @@ Input::Input(Game *g, View *v)
     view = v;
     game = g;
     dpy = view->GetDisplay();
+    view->CenterCursor();
 }
 
 int Input::CheckInput()
@@ -39,7 +40,7 @@ int Input::CheckKeys(XEvent *e)
         if (key == XK_d) {
             game->moveY = -1;
         }
-        
+
     }else if (e->type == KeyRelease) {
         int key = XLookupKeysym(&e->xkey, 0);
         if (key == XK_w) {
@@ -60,6 +61,7 @@ int Input::CheckKeys(XEvent *e)
 
 void Input::CheckMouse(XEvent *e)
 {
+
     if (e->type == ButtonRelease) {
         if (e->xbutton.button==3) {
             //Right button was released
@@ -81,7 +83,16 @@ void Input::CheckMouse(XEvent *e)
             return;
         }
     }
-    
+
+    // Ignore first 5 move inputs
+    // First few are garbage.
+    static int start = 0;
+    if (start < 5) {
+        start++;
+        return;
+    }
+
+
     int dx = e->xbutton.x - (view->GetWidth() / 2);
     int dy = e->xbutton.y - (view->GetHeight() / 2);
     game->direction.x -=(float) dx / 2000.0 / (game->depth / game->minZoom);

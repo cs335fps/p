@@ -14,6 +14,7 @@ void Seconds::Start()
 }
 
 // Variation on Gordons mytime from asteroids game.
+// Returns the number of seconds since the class was initialized
 double Seconds::Get()
 {
     clock_gettime(CLOCK_REALTIME, &curTime);
