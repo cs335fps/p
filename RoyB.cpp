@@ -1,11 +1,16 @@
 /*
  * Author: Roy Banuelos
+ * Written:  4/28/2016
+ * Modified: 5/ 1/2016
  * About: Declaration for WorldEngine.h
  * constructor will parce obj files.
  * this will also render objects in 
  * 3D space program also used a double
  * binary tree to sort through all faces
  * for collision detection
+ * declaration for loadBMP.h this will
+ * alow 24bit .bmp images to be used 
+ * as textures
  */
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -16,6 +21,7 @@
 #include <vector>
 #include <sstream>
 #include <stdio.h>
+#include <iostream>
 #include "WorldEngine.h"
 #include "loadBMP.h"
 	
@@ -23,125 +29,177 @@ using namespace std;
 
 // //////////////////////////////////////////////////////////////////////////||////////////////////
 // creates new nodes for the binary tree
-bitree *worldEngine::newNode(GLfloat coord)
+bitree *worldEngine::newNode(GLfloat min, GLfloat max, GLfloat minZ,GLfloat maxZ)
 {
-    return new bitree(coord);
+     return new bitree(min, max, minZ,maxZ);
 }
 // adds faces to binary tree based on the v1 vertex
 void worldEngine::bitreeAdd(vec *fce)
 {
-    bitree *node, *trav, *prev;
+     bitree *node, *trav, *prev;
 
-    trav = root;
-    prev = trav;
+     trav = root;
+     prev = trav;
 
-    // create new node and add it to the tree
-    node = newNode(fce->v1[0]);
-    node->fce = fce;
+     // create new node and add it to the tree
+     node = newNode(
+                  getMin(fce->v1[0],fce->v2[0],fce->v3[0]),
+                  getMax(fce->v1[0],fce->v2[0],fce->v3[0]),
+                  getMin(fce->v1[2],fce->v2[2],fce->v3[2]),
+                  getMax(fce->v1[2],fce->v2[2],fce->v3[2]));
+     node->fce = fce;
 
-    if (trav == NULL){
-	root = node;
-	return;
-    }
-    else{
-	// find the end of the binary tree
-	while (trav != NULL){
-	    prev = trav;
-	    if (fce->v1[0] > trav->xory)
-		trav = trav->right;
-	    else
-		trav = trav->left;
-	}
 
-	if (fce->v1[0] > prev->xory){
-
-	    prev->right = node;
-	}else{
-	    if (fce->v1[0] == prev->xory )
-		//bitreeAddY(prev->yroot, node, fce);
-		prev->yroot = node;
-	    else
-		prev->left = node;
-	}
-    }
+     if (root == NULL)
+          root = node;
+     else{
+          while (trav != NULL){
+               prev = trav;
+               if (node->xMAX > trav->xMAX)
+                    trav = trav->right;
+               else{
+                    if (node->xMIN < trav->xMIN)
+                         trav = trav->left;
+                    else
+                         break;
+               }
+          }
+           
+          // if the face is inbetween an existing face in the x coord
+          // add node to the current faces z tree
+          if (trav != NULL){
+          
+               bitreeAddY(trav, node, fce);
+          }else{
+               // add face to the right branch
+               if (node->xMAX > prev->xMAX){
+                    prev->right = node;
+               }else{
+                    // add face to the left branch
+                    if (node->xMIN < prev->xMIN){
+                         prev->left = node;
+                    }else{
+                         // add face down the z tree
+                         bitreeAddY(prev, node, fce);
+                    }
+               }
+          }
+     }
+}
+// //////////////////////////////////////////////////////////////////////////||////////////////////
+float worldEngine::getMax(float a, float b, float c)
+{
+	float max = a;
+	if (max < b)
+		max = b;
+	if (max < c)
+		max = c;
+	return max;
+}
+// //////////////////////////////////////////////////////////////////////////||////////////////////
+float worldEngine::getMin(float a, float b, float c)
+{
+	float min = a;
+	if (min > b)
+		min = b;
+	if (min > c)
+		min = c;
+	return min;
 }
 // //////////////////////////////////////////////////////////////////////////||////////////////////
 void worldEngine::bitreeAddY(bitree *Yroot, bitree *node, vec *fce)
 {
-    bitree *trav, *prev;
+     bitree *trav, *prev;
 
-    trav = Yroot;
-    prev = trav;
+     trav = Yroot->yroot;
+     prev = trav;
 
-    if (trav == NULL){
-	Yroot = node;
-	return;
-    }
-    else{
-	// find the end of the binary tree
-	while (trav != NULL){
-	    prev = trav;
-	    if (fce->v1[0] > trav->xory)
-		trav = trav->right;
-	    else
-		trav = trav->left;
-	}
-
-	if (fce->v1[0] > prev->xory){
-	    prev->right = node;
-	}else
-	    prev->left = node;
-    }
+     // create a new root node if needed
+     if (trav == NULL){
+          Yroot->yroot = node;
+          return;
+     }else{
+          // goto the end of the tree
+          while (trav != NULL){
+               prev = trav;
+               if (node->zMAX > trav->zMAX)
+                    trav = trav->right;
+               else{
+                    if (node->zMIN < trav->zMIN)
+                         trav = trav->left;
+                    else
+                         break;
+               }
+          }
+          
+          // from the last node add the new node
+          // use hydra method to store repeated or smaller faces
+          if (node->zMAX > prev->zMAX)
+               prev->right = node;
+          else
+               prev->left = node;
+     }
 }
 // //////////////////////////////////////////////////////////////////////////||////////////////////
 vector<vec*> worldEngine::search(GLfloat point[])
 {
-    bitree *trav, *prev, *yparent;
-    GLfloat ycord;
-    vector<vec*> ret;
+     bitree *trav, *prev;
+     vector<vec*> ret;
 
-    trav = root;
-    prev = trav;
+     trav = root;
+     prev = trav;
 
-    // find closest x coordinate
-    while (trav != NULL){
-	prev = trav;
-
-	if (point[0] > trav->xory){
-	    trav = trav->right;
-	}else
-	    trav = trav->left;
-    }
-    if (prev != NULL){
-	// find closest y coordinate
-	yparent = prev;                    
-	if (prev->yroot == NULL){
-	    ret.push_back(prev->fce);
-	    return ret;
-	}else{
-	    trav = prev->yroot;
-	    while (trav != NULL){
-		prev = trav;
-		if (point[2] > trav->xory)
-		    trav = trav->right;
-		else
-		    trav = trav->left;
-	    }
-
-	    // get list of faces that are closest to the 
-	    // found y coorodinate. continue to check untill
-	    // y coordinate is not the same
-	    ycord = prev->xory;
-	    ret.push_back(yparent->fce);
-
-	    while (prev != NULL){
-		if (prev->xory == ycord){
-		    ret.push_back(prev->fce);
-		    prev = prev->left;
-		}
-	    }
-	}
-    }
+     while (trav != NULL){
+          prev = trav;
+          if (point[0] > trav->xMAX)
+               trav = trav->right;
+          else{
+               if (point[0] < trav->xMIN)
+                    trav = trav->left;
+               else
+                    break;
+          }
+     }
+     
+     // check to see if the point is within a faces x min/max
+     if (trav != NULL){
+          ret.push_back(trav->fce);
+          trav = trav->yroot;
+          
+          while (trav != NULL){
+               prev = trav;
+               if (point[2] > trav->zMAX)
+                    trav = trav->right;
+               else
+                    if (point[2] < trav->zMIN)
+                         trav = trav->left;
+                    else
+                         break;
+          }
+     }else{
+          // if nowhere near any x face find the closest y face
+          ret.push_back(prev->fce);
+          trav = prev->yroot;
+          while (trav != NULL){
+               prev = trav;
+               if (point[2] > trav->zMAX)
+                    trav = trav->right;
+               else
+                    if (point[2] < trav->zMIN)
+                         trav = trav->left;
+                    else
+                         break;
+          }
+     }
+     trav = prev;
+     while (trav != NULL){
+          if (point[2] >= trav->zMIN)
+               ret.push_back(trav->fce);
+          else
+               break;
+          trav = trav->left;
+     }
+    
     return ret;
 }
 // //////////////////////////////////////////////////////////////////////////||////////////////////
@@ -414,13 +472,29 @@ bool worldEngine::isTouching(float center[], float r)
 
 	faces = search(npt1);
 
-	//cout << faces.size() << endl;
 	for (unsigned int i=0; i<faces.size(); i++){
 	    dist1 = baricen(faces[i]->v1,faces[i]->v2,faces[i]->v3);
 	    dist2 = baricen(faces[i]->v1,faces[i]->v2,npt1);
 	    dist3 = baricen(faces[i]->v1,npt1,faces[i]->v3);
-	    dist4 = baricen(npt1,          faces[i]->v2, faces[i]->v3);
+	    dist4 = baricen(npt1,faces[i]->v2, faces[i]->v3);
+  //glLoadIdentity();
+/*
+  glTranslatef(.0f,0.0f,0.0f);
+  glBegin(GL_POLYGON);				// start drawing a polygon
+  glColor3f(1.0f,0.0f,0.0f);			// Set The Color To Red
+  glVertex3f( faces[i]->v1[0], faces[i]->v1[1], faces[i]->v1[2]);		// Top
+  glColor3f(1.0f,0.0f,0.0f);			// Set The Color To Green
+  glVertex3f( faces[i]->v2[0], faces[i]->v2[1], faces[i]->v2[2]);		// Bottom Right
+  glColor3f(1.0f,0.0f,0.0f);			// Set The Color To Blue
+  glVertex3f( faces[i]->v3[0], faces[i]->v3[1], faces[i]->v3[2]);		// Bottom Left	
+  glEnd();					// we're done with the polygon (smooth color interpolation)	
 
+	printf("%7g\n\n", abs(dist1-dist2-dist3-dist4));
+	printf("    %7g %7g %7g = %g\n", npt1[0], npt1[1], npt1[2], abs(dist1-dist2-dist3-dist4));
+	printf("      %7g %7g %7g\n", faces[i]->v1[0], faces[i]->v1[1], faces[i]->v1[2]);
+	printf("      %7g %7g %7g\n", faces[i]->v2[0], faces[i]->v2[1], faces[i]->v2[2]);
+	printf("      %7g %7g %7g\n\n", faces[i]->v3[0], faces[i]->v3[1], faces[i]->v3[2]);
+*/
 	    if (abs(dist1-dist2-dist3-dist4) < 0.001+r)
 		return true;
 	}
@@ -646,4 +720,3 @@ GLuint loadBMP::getBMP(const char *path)
 	delete data_A;
 	return textureID;
 }
-
