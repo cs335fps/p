@@ -26,7 +26,7 @@ private:
 public:
     Mob();
     void spawn(Vec location);
-    void die();
+    void dead();
     void damage(int health);
     void move();
     void render();

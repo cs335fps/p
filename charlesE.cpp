@@ -16,7 +16,7 @@ void Mob::spawn(Vec location){
 
 }
 
-void Mob::die(){
+void Mob::death(){
 
 
 }
