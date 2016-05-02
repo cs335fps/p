@@ -31,7 +31,7 @@ int initopenal()
 	//
 	//Buffer holds the sound information.
 	ALuint alBuffer;
-	alBuffer = alutCreateBufferFromFile("./ninemm.wav");
+	alBuffer = alutCreateBufferFromFile("./sounds/ninemm.wav");
 	//
 	//Source refers to the sound.
 	ALuint alSource;
