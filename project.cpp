@@ -1,15 +1,11 @@
-#include <iostream>
 #include "game.h"
 #include "view.h"
 #include "input.h"
-#include "vec.h"
-#include "nickG.h"
-
-using namespace std;
+#include "nickG.h" // Seconds, Vec
 
 int main()
 {
-    Seconds sec;
+    Seconds sec; // Start timer
     Game game;
     View view(&game);
     Input input(&game, &view);
@@ -22,18 +18,15 @@ int main()
         done = input.CheckInput();
 
         while (sec.Get() > lastSeconds) {
-            game.Move();
-
-            // This will make sure that Move() fires as many
-            // times as necessary to catch up.
+            // Call Move() until we're caught up
             lastSeconds += secPerMove;
+            game.Move();
         }
 
         view.Render();
     }
+
     view.cleanupXWindows();
 
     return 0;
 }
-
-
