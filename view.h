@@ -30,11 +30,12 @@ private:
     GLXContext glc;
     Game *game;
     worldEngine level1;
-    vector<Mob*> mobs;    
+    vector<Mob*> mobs;
+    int wOverride, hOverride;    
 public:
 
     
-    View(Game *g);
+    View(Game *g, int w = 0, int h = 0);
     void InitWindow();
     void cleanupXWindows(void);
     void set_title(void);

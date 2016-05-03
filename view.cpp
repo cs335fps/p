@@ -1,9 +1,9 @@
 #include "view.h"
-#include "WorldEngine.h"
 
-View::View(Game *g)
+View::View(Game *g, int w, int h)
 {
-
+    wOverride = w;
+    hOverride = h;
     is3D = -1;
     InitWindow();
     SwitchTo3D();
@@ -38,8 +38,13 @@ void View::InitWindow()
     XGrabKeyboard(dpy, root,
             False, GrabModeAsync, GrabModeAsync, CurrentTime);
 
-    width = getWinAttr.width;
-    height = getWinAttr.height;
+    if (wOverride == 0 || hOverride == 0) {
+        width = getWinAttr.width;
+        height = getWinAttr.height;
+    } else {
+        width = wOverride;
+        height = hOverride;
+    }
 
     XVisualInfo *vi = glXChooseVisual(dpy, 0, att);
     if(vi == NULL) {
@@ -99,7 +104,7 @@ void View::ShowCursor(const int onoff)
     blank = XCreateBitmapFromData (dpy, win, data, 1, 1);
     if (blank == None){
         std::cout << "error: out of memory." << std::endl;
-	throw 0;
+        throw 0;
     }
     cursor = XCreatePixmapCursor(dpy, blank, blank, &dummy, &dummy, 0, 0);
     XFreePixmap(dpy, blank);
@@ -125,7 +130,7 @@ void View::Render()
 {
     SwitchTo3D();
     for(unsigned int i = 0; i < mobs.size(); i++){
-	mobs[i]->render();
+        mobs[i]->render();
     }
     float rotx = game->direction.x;
     float roty = game->direction.y - PI / 2.0;
@@ -135,14 +140,14 @@ void View::Render()
 
 
     gluLookAt(
-        game->position.x,
-        game->position.y,
-        game->position.z,
-        game->position.x+sin(rotx) * sin(roty),
-        game->position.y+cos(roty),
-        game->position.z+cos(rotx) * sin(roty),
-        0,1,0
-    );
+            game->position.x,
+            game->position.y,
+            game->position.z,
+            game->position.x+sin(rotx) * sin(roty),
+            game->position.y+cos(roty),
+            game->position.z+cos(rotx) * sin(roty),
+            0,1,0
+            );
 
     Lighting();
 

@@ -2,12 +2,29 @@
 #include "view.h"
 #include "input.h"
 #include "nickG.h" // Seconds, Vec
+#include <stdio.h>
+#include <string.h>
 
-int main()
+using namespace std;
+
+int main(int argc, char* argv[])
 {
+    int overrideWidth = 0;
+    int overrideHeight = 0;
+
+    for (int i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "-w") == 0) {
+            overrideWidth = atoi(argv[i+1]);
+        } else if (strcmp(argv[i], "-h") == 0) {
+            overrideHeight = atoi(argv[i+1]);
+        }
+    }
+
     Seconds sec; // Start timer
     Game game;
-    View view(&game);
+
+    View view(&game, overrideWidth, overrideHeight);
+
     Input input(&game, &view);
     int done=0;
 
