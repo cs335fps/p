@@ -1,13 +1,23 @@
 // Nicholas Gardner
-#include "vec.h"
+// April 2016 - May 2016
+//
+// ### Seconds class ###
+// Returns # of seconds from start call as double
+//
+// ### Vec class ###
+// 3D vector class with as many operators as I can think of
+//
+//
 #include "nickG.h"
 
-
+// ############################## Seconds class ################################
+// #############################################################################
 Seconds::Seconds()
 {
     Start();
 }
 
+// Set start reference time.
 void Seconds::Start()
 {
     clock_gettime(CLOCK_REALTIME, &startTime);
@@ -22,26 +32,16 @@ double Seconds::Get()
         (double)(curTime.tv_nsec - startTime.tv_nsec) / 1e9;
 }
 
-float& Vec::operator[] (const int index)
-{
-    if (index == 0) {
-        return x;
-
-    } else if (index == 1) {
-        return y;
-
-    } else if (index == 2) {
-        return z;
-
-    } else {
-        int i = index % 3;
-        return (*this)[i];
-    }
-}
-
+// ############################### Vec class ###################################
+// #############################################################################
 Vec::Vec()
 {
     x = y = z = 0.0f;
+}
+
+Vec::Vec(float a)
+{
+    Vec(a, 0.0f, 0.0f);
 }
 
 Vec::Vec(float a, float b)
@@ -61,6 +61,23 @@ Vec::Vec(const Vec &v)
     x = v.x;
     y = v.y;
     z = v.z;
+}
+
+float& Vec::operator[] (const int index)
+{
+    if (index == 0) {
+        return x;
+
+    } else if (index == 1) {
+        return y;
+
+    } else if (index == 2) {
+        return z;
+
+    } else {
+        int i = index % 3;
+        return (*this)[i];
+    }
 }
 
 Vec Vec::operator+(const Vec &v)
@@ -134,15 +151,18 @@ Vec operator/(float f, Vec v)
     return c;
 }
 
-float Vec::Magnitude(){
+float Vec::Magnitude()
+{
     return sqrt(pow(x,2)+pow(y,2)+pow(z,2));
 }
 
-float Vec::Dot(Vec b){
+float Vec::Dot(Vec b)
+{
     return x * b.x + y * b.y + z * b.z;
 }
 
-Vec Vec::Cross(Vec b){
+Vec Vec::Cross(Vec b)
+{
     Vec c;
     c.x = y * b.z - z * b.y;
     c.y = z * b.x - x * b.z;
@@ -150,13 +170,15 @@ Vec Vec::Cross(Vec b){
     return c;
 }
 
-Vec Vec::Norm(){
+Vec Vec::Norm()
+{
     float m = Magnitude();
     Vec c(x/m, y/m, z/m);
     return c;
 }
 
-Vec Vec::Normalize(){
+Vec Vec::Normalize()
+{
     float m = Magnitude();
     x = x/m;
     y = y/m;

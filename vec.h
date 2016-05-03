@@ -13,6 +13,9 @@ class Vec
         // Initialize vector to 0,0,0
         Vec();
 
+        // Initialize vector to a,0,0
+        Vec(float a);
+
         // Initialize vector to a,b,0
         Vec(float a, float b);
 

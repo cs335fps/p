@@ -2,13 +2,14 @@
 #define _NICKG_H_
 
 #include <ctime>
+#include "vec.h"
 
 class Seconds
 {
     struct timespec startTime;
     struct timespec curTime;
 
-public:
+    public:
     Seconds();
     void Start();
     double Get();
