@@ -137,10 +137,11 @@ void View::Render()
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
+    
     gluLookAt(
-            game->position.x,
-            game->position.y,
-            game->position.z,
+            ox,
+            oy,
+            oz,
             game->position.x+sin(rotx) * sin(roty),
             game->position.y+cos(roty),
             game->position.z+cos(rotx) * sin(roty),
@@ -148,6 +149,16 @@ void View::Render()
             );
 
     Lighting();
+//	if (level1.isTouching(game->position.x,
+//       game->position.y, game->position.z, 2.3)){
+//     	game->position.x = ox;
+//     	game->position.y = oy;
+//     	game->position.z = oz;
+//    }else{
+     	ox = game->position.x;
+     	oy = game->position.y;
+     	oz = game->position.z;
+//    }
 
     glPushMatrix();
     //level1.draw();
