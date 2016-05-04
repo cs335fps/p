@@ -10,8 +10,18 @@ Game::Game()
     maxZoom = .55f;
     minZoom = .15f;
 
-    position = Vec(0,2,0);
+    position = Vec(-15,2,0);
     direction = Vec(0.0,0.0,0.0);
+
+    walls.push_back(Wall(Vec(10,0,0),Vec(0,0,10),0.1, 4.0));
+    walls.push_back(Wall(Vec(0,0,10),Vec(-10,0,0),0.1, 4.0));
+    walls.push_back(Wall(Vec(0,0,-10),Vec(-10,0,0),0.1, 4.0));
+    walls.push_back(Wall(Vec(10,0,0),Vec(0,0,-10),0.1, 4.0));
+    walls.push_back(Wall(Vec(20,0,20),Vec(20,0,-20),0.1, 4.0));
+    walls.push_back(Wall(Vec(20,0,-20),Vec(-20,0,-20),0.1, 4.0));
+    walls.push_back(Wall(Vec(-20,0,-20),Vec(-20,0,20),0.1, 4.0));
+    walls.push_back(Wall(Vec(-20,0,20),Vec(20,0,20),0.1, 4.0));
+
 }
 
 void Game::Move()
@@ -41,6 +51,12 @@ void Game::Move()
     position.x -= (velocityY * cos(direction.x)
             + velocityX * sin(direction.x)) * speed;
 
+    for (unsigned int i = 0; i < walls.size(); i++) {
+        walls[i].Collide(&position);
+
+    }
+
 
 }
+
 

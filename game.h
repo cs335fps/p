@@ -2,6 +2,8 @@
 #define _GAME_H_
 
 #include "vec.h"
+#include "nickG.h"
+#include <vector>
 
 class Game
 {
@@ -21,6 +23,8 @@ public:
     float minZoom;
     int zoom;
     float depth;
+    
+    std::vector<Wall> walls;
     
     Game();
     void Move();

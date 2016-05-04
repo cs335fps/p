@@ -11,6 +11,7 @@
 #include "WorldEngine.h"
 #include <string>
 #include "charlesE.h"
+#include "nickG.h"
 #include <vector>
 
 

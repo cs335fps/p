@@ -152,7 +152,12 @@ void View::Render()
     Lighting();
 
     glPushMatrix();
-    level1.draw();
+    //level1.draw();
+
+    for (unsigned int i = 0; i < game->walls.size(); i++) {
+        game->walls[i].Draw();
+    }
+
     glPopMatrix();
     HUD();
     //drawFloor();
