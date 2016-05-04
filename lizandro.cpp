@@ -1,3 +1,6 @@
+//Finally a simple OpenAL example program.
+//Gordon Griesel
+//2015
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
@@ -5,10 +8,10 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include </usr/include/AL/alut.h>
-#include <iostream>
-#define numOfSounds 3
-using namespace std;
 
+#include "lizandro.h"
+	ALuint alBuffer;
+	ALuint alSource;
 int initopenal()
 {
 	//Get started right here.
@@ -28,53 +31,37 @@ int initopenal()
 	alListenerf(AL_GAIN, 1.0f);
 	//
 	//Buffer holds the sound information.
-	ALuint alBuffer[numOfSounds];
-	alBuffer[0] = alutCreateBufferFromFile("./sounds/ninemm.wav");
-	alBuffer[1] = alutCreateBufferFromFile("./sounds/shot.wav");
-	alBuffer[2] = alutCreateBufferFromFile("./sounds/ninemm.wav");
+	alBuffer = alutCreateBufferFromFile("./ninemm.wav");
 	//
 	//Source refers to the sound.
-	ALuint alSource[numOfSounds];
 	//Generate a source, and store it in a buffer.
-	for(int size = 0; size < numOfSounds; size++){ 
-		alGenSources(1, &alSource[size]);
-		alSourcei(alSource[size], AL_BUFFER, alBuffer[size]);
-	
-		//Set volume and pitch to normal, no looping of sound.
-		alSourcef(alSource[size], AL_GAIN, 1.0f);
-		alSourcef(alSource[size], AL_PITCH, 1.0f);
-		alSourcei(alSource[size], AL_LOOPING, AL_FALSE);
-		if (alGetError() != AL_NO_ERROR) {
-			printf("ERROR: setting source\n");
-			return 0;
-		}
+	alGenSources(1, &alSource);
+	alSourcei(alSource, AL_BUFFER, alBuffer);
+	//Set volume and pitch to normal, no looping of sound.
+	alSourcef(alSource, AL_GAIN, 1.0f);
+	alSourcef(alSource, AL_PITCH, 1.0f);
+	alSourcei(alSource, AL_LOOPING, AL_FALSE);
+	if (alGetError() != AL_NO_ERROR) {
+		printf("ERROR: setting source\n");
+		return 0;
 	}
-	return 0;
+return 0;
 }
-
-void openalmain(int alSource[])
+void openal_sound()
 {
-	char a;
-	while(a != 'o'){
-	    cout <<"enter a char\n";
-	    cin >> a;
-
-	    if(a == 'b'){
-		alSourcePlay(alSource[1]);
-		usleep(255000);
-	    }	
+	for (int i=0; i<4; i++) {
+		alSourcePlay(alSource);
+	//	usleep(250000);
 	}
 }
-
-void cleanopenal(ALuint alSource[], ALuint alBuffer[]){
-	//Cleanup.
 	
+void clean_al()
+{
+	//Cleanup.
 	//First delete the source.
-	for(int size = 0; size < numOfSounds; size++){
-		alDeleteSources(1, &alSource[size]);
-		//Delete the buffer.
-		alDeleteBuffers(1, &alBuffer[size]);
-	}
+	alDeleteSources(1, &alSource);
+	//Delete the buffer.
+	alDeleteBuffers(1, &alBuffer);
 	//Close out OpenAL itself.
 	//Get active context.
 	ALCcontext *Context = alcGetCurrentContext();
