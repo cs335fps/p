@@ -49,16 +49,15 @@ void worldEngine::bitreeAdd(vec *fce)
                   getMax(fce->v1[2],fce->v2[2],fce->v3[2]));
      node->fce = fce;
 
-
      if (root == NULL)
           root = node;
      else{
           while (trav != NULL){
                prev = trav;
-               if (node->xMAX > trav->xMAX)
+               if (node->xMIN > trav->xMAX)
                     trav = trav->right;
                else{
-                    if (node->xMIN < trav->xMIN)
+                    if (node->xMAX < trav->xMIN)
                          trav = trav->left;
                     else
                          break;
@@ -72,11 +71,11 @@ void worldEngine::bitreeAdd(vec *fce)
                bitreeAddY(trav, node, fce);
           }else{
                // add face to the right branch
-               if (node->xMAX > prev->xMAX){
+               if (node->xMIN > prev->xMAX){
                     prev->right = node;
                }else{
                     // add face to the left branch
-                    if (node->xMIN < prev->xMIN){
+                    if (node->xMAX < prev->xMIN){
                          prev->left = node;
                     }else{
                          // add face down the z tree
@@ -122,19 +121,16 @@ void worldEngine::bitreeAddY(bitree *Yroot, bitree *node, vec *fce)
           // goto the end of the tree
           while (trav != NULL){
                prev = trav;
-               if (node->zMAX > trav->zMAX)
+               if (node->zMIN > trav->zMAX)
                     trav = trav->right;
                else{
-                    if (node->zMIN < trav->zMIN)
-                         trav = trav->left;
-                    else
-                         break;
+                    trav = trav->left;
                }
           }
           
           // from the last node add the new node
-          // use hydra method to store repeated or smaller faces
-          if (node->zMAX > prev->zMAX)
+          // if not greater then go down the left 
+          if (node->zMIN > prev->zMAX)
                prev->right = node;
           else
                prev->left = node;
@@ -160,7 +156,6 @@ vector<vec*> worldEngine::search(GLfloat point[])
                     break;
           }
      }
-     
      // check to see if the point is within a faces x min/max
      if (trav != NULL){
           ret.push_back(trav->fce);
@@ -170,11 +165,12 @@ vector<vec*> worldEngine::search(GLfloat point[])
                prev = trav;
                if (point[2] > trav->zMAX)
                     trav = trav->right;
-               else
-                    if (point[2] < trav->zMIN)
-                         trav = trav->left;
-                    else
-                         break;
+               else{
+		    if (point[2] < trav->zMIN)
+                    	trav = trav->left;
+		    else
+			    break;
+	       }
           }
      }else{
           // if nowhere near any x face find the closest y face
@@ -184,19 +180,22 @@ vector<vec*> worldEngine::search(GLfloat point[])
                prev = trav;
                if (point[2] > trav->zMAX)
                     trav = trav->right;
-               else
-                    if (point[2] < trav->zMIN)
-                         trav = trav->left;
-                    else
-                         break;
+               else{
+		    if (point[2] < trav->zMIN)
+                    	trav = trav->left;
+		    else
+			    break;
+	       }
           }
      }
-     trav = prev;
+
+     if (trav == NULL)
+     	  trav = prev;
+     ret.push_back(trav->fce);
+
      while (trav != NULL){
-          if (point[2] >= trav->zMIN)
+          if (point[2] >= trav->zMIN && point[2] <= trav->zMAX)
                ret.push_back(trav->fce);
-          else
-               break;
           trav = trav->left;
      }
     
@@ -478,17 +477,17 @@ bool worldEngine::isTouching(float center[], float r)
 	    dist3 = baricen(faces[i]->v1,npt1,faces[i]->v3);
 	    dist4 = baricen(npt1,faces[i]->v2, faces[i]->v3);
   //glLoadIdentity();
-/*
-  glTranslatef(.0f,0.0f,0.0f);
+
+ // glTranslatef(.0f,0.0f,0.0f);
   glBegin(GL_POLYGON);				// start drawing a polygon
   glColor3f(1.0f,0.0f,0.0f);			// Set The Color To Red
   glVertex3f( faces[i]->v1[0], faces[i]->v1[1], faces[i]->v1[2]);		// Top
-  glColor3f(1.0f,0.0f,0.0f);			// Set The Color To Green
+  glColor3f(0.0f,1.0f,0.0f);			// Set The Color To Green
   glVertex3f( faces[i]->v2[0], faces[i]->v2[1], faces[i]->v2[2]);		// Bottom Right
-  glColor3f(1.0f,0.0f,0.0f);			// Set The Color To Blue
+  glColor3f(0.0f,0.0f,1.0f);			// Set The Color To Blue
   glVertex3f( faces[i]->v3[0], faces[i]->v3[1], faces[i]->v3[2]);		// Bottom Left	
   glEnd();					// we're done with the polygon (smooth color interpolation)	
-
+/*
 	printf("%7g\n\n", abs(dist1-dist2-dist3-dist4));
 	printf("    %7g %7g %7g = %g\n", npt1[0], npt1[1], npt1[2], abs(dist1-dist2-dist3-dist4));
 	printf("      %7g %7g %7g\n", faces[i]->v1[0], faces[i]->v1[1], faces[i]->v1[2]);
