@@ -129,9 +129,7 @@ Display *View::GetDisplay()
 void View::Render()
 {
     SwitchTo3D();
-    for(unsigned int i = 0; i < mobs.size(); i++){
-        mobs[i]->render();
-    }
+
     float rotx = game->direction.x;
     float roty = game->direction.y - PI / 2.0;
 
@@ -156,6 +154,10 @@ void View::Render()
 
     for (unsigned int i = 0; i < game->walls.size(); i++) {
         game->walls[i].Draw();
+    }
+
+    for(unsigned int i = 0; i < mobs.size(); i++){
+        mobs[i]->render();
     }
 
     glPopMatrix();
@@ -204,8 +206,8 @@ void View::Lighting()
 
 
     // setup the position, specular and shininess of the light
-    GLfloat mat_spec[] = {1.0, 1.0, 1.0, 1.0};
-    GLfloat mat_shini[]= { 50.0};
+    GLfloat mat_spec[] = {1.0, 1.0, 1.0, 0.2};
+    GLfloat mat_shini[]= { 5.0};
     GLfloat ambiant[] =  {0.1484, 0.0, 0.5781};
     GLfloat diff[] =  {1.0, 1.0, 1.0, 0.5};
     //GLfloat light_Pos[]= {0, 8, 0, 1.0};
@@ -295,4 +297,5 @@ void View::SwitchTo2D()
 View::~View()
 {
 }
+
 

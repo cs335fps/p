@@ -64,7 +64,7 @@ void Wall::Draw()
         {1,5,6,2}
     };
 
-    glColor3f(.1,.1,.1);
+    glColor3f(.1,.1,.2);
     for (int i = 0; i < 6; i++) {
         glBegin(GL_POLYGON);
         glNormal3fv(&Normal(c[s[i][2]],c[s[i][1]],c[s[i][0]])[0]);
