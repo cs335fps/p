@@ -32,6 +32,7 @@ private:
     Game *game;
     worldEngine level1;
     vector<Mob*> mobs;
+    float ox,oy,oz;
     int wOverride, hOverride;    
 public:
 
