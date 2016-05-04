@@ -244,7 +244,7 @@ bool worldEngine::rayplane(float nv[3], float sv[3], float dv[3], vec fce)
     z = baricen(fce.v1, pt, fce.v3);
     t = baricen(fce.v2, fce.v3, pt);
 
-    if(abs(x -y -z -t) < 0.00001)
+    if (abs(x -y -z -t) < 0.00001)
      return true;
     else
      return false;
@@ -368,7 +368,7 @@ void worldEngine::load(const char filename[200])
                     tvec[1][0], tvec[1][1], tvec[1][2],
                     tvec[2][0], tvec[2][1], tvec[2][2]));
 
-              if(normals.size() >= 0) {
+              if (normals.size() >= 0) {
                float coord1[3] = { 
                    Faces_Triangles[triangle_index], 
                    Faces_Triangles[triangle_index+1],
@@ -585,7 +585,7 @@ GLuint loadBMP::getBMP(char *path)
      {
           imageSize = width * height * 3;
      }
-     if(dataPos == 0)
+     if (dataPos == 0)
           dataPos = 54;
 
      // get image data
@@ -602,7 +602,7 @@ GLuint loadBMP::getBMP(char *path)
           data_A[i*4] = data[i*3];
           data_A[i*4+1] = data[i*3+1];
           data_A[i*4+2] = data[i*3+2];
-          if(data[i*3]== 0 and data[i*3+1]==0 and data[i*3+2]==0){
+          if (data[i*3]== 0 and data[i*3+1]==0 and data[i*3+2]==0){
                data_A[i*4+3] = 0;
           }else
                data_A[i*4+3] = 250;
@@ -682,7 +682,7 @@ GLuint loadBMP::getBMP(const char *path)
           data_A[i*4] = data[i*3];
           data_A[i*4+1] = data[i*3+1];
           data_A[i*4+2] = data[i*3+2];
-          if(data[i*3]== 0 and data[i*3+1]==0 and data[i*3+2]==0){
+          if (data[i*3]== 0 and data[i*3+1]==0 and data[i*3+2]==0){
                data_A[i*4+3] = 0;
           }else
                data_A[i*4+3] = 250;
