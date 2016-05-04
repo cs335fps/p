@@ -140,9 +140,9 @@ void View::Render()
 
     
     gluLookAt(
-            ox,
-            oy,
-            oz,
+            game->position.x,
+            game->position.y,
+            game->position.z,
             game->position.x+sin(rotx) * sin(roty),
             game->position.y+cos(roty),
             game->position.z+cos(rotx) * sin(roty),
