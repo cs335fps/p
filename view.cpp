@@ -10,6 +10,7 @@ View::View(Game *g, int w, int h)
     game = g;
     level1.load("Level1.obj");
     mobs.push_back(new Mob());
+    ox = oy = oz =0;
 }
 
 int View::GetWidth()
