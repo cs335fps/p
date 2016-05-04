@@ -1,5 +1,5 @@
 #include "input.h"
-
+#include "lizandro.h"
 Input::Input(Game *g, View *v)
 {
     view = v;
@@ -25,7 +25,10 @@ int Input::CheckKeys(XEvent *e)
 {
     if (e->type == KeyPress) {
         int key = XLookupKeysym(&e->xkey, 0);
+	
+	initopenal();
         if (key == XK_Escape) {
+		clean_al();
             return 1;
         }
         if (key == XK_w) {
@@ -40,6 +43,9 @@ int Input::CheckKeys(XEvent *e)
         if (key == XK_d) {
             game->moveY = -1;
         }
+        if (key == XK_n) {
+        	openal_sound();
+	}
 
     }else if (e->type == KeyRelease) {
         int key = XLookupKeysym(&e->xkey, 0);
