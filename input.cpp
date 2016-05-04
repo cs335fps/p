@@ -80,6 +80,7 @@ void Input::CheckMouse(XEvent *e)
     if (e->type == ButtonPress) {
         if (e->xbutton.button==1) {
             //Left button was pressed
+            openal_sound();
             return;
         }
         if (e->xbutton.button==3) {

@@ -44,13 +44,6 @@ void Wall::Set(Vec a, Vec b, float w, float h)
     float zScale = dif.z / length;
 
     for (int i = 0; i < 4; i++) {
-    /*
-        c[i] = Vec(
-                v[i/2].x + w * (o[i][0] * xScale + o[i][1] * zScale),
-                0,
-                v[i/2].z + w * (o[i][2] * zScale + o[i][3] * xScale)
-                );
-*/
         c[i] = Vec(
                 v[i/2].x - w * (o[i][0] * xScale + o[i][1] * zScale),
                 0,
