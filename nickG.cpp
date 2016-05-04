@@ -44,10 +44,17 @@ void Wall::Set(Vec a, Vec b, float w, float h)
     float zScale = dif.z / length;
 
     for (int i = 0; i < 4; i++) {
+    /*
         c[i] = Vec(
                 v[i/2].x + w * (o[i][0] * xScale + o[i][1] * zScale),
                 0,
                 v[i/2].z + w * (o[i][2] * zScale + o[i][3] * xScale)
+                );
+*/
+        c[i] = Vec(
+                v[i/2].x - w * (o[i][0] * xScale + o[i][1] * zScale),
+                0,
+                v[i/2].z - w * (o[i][2] * zScale + o[i][3] * xScale)
                 );
         c[i+4] = c[i] + Vec(0,height,0);
     }
@@ -67,7 +74,7 @@ void Wall::Draw()
     glColor3f(.1,.1,.1);
     for (int i = 0; i < 6; i++) {
         glBegin(GL_POLYGON);
-        glNormal3fv(&Normal(c[s[i][0]],c[s[i][1]],c[s[i][2]])[0]);
+        glNormal3fv(&Normal(c[s[i][2]],c[s[i][1]],c[s[i][0]])[0]);
         for (int j = 0; j < 4; j++) {
             glVertex3fv(&c[s[i][j]][0]);
         }
