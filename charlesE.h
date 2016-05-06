@@ -23,7 +23,10 @@ class Mob
 private:
     float hp;
     Vec location;
+    Vec velocity;
+    vec maxSpeed;
     solidSphere body;
+   
 public:
     Mob();
     void spawn();
