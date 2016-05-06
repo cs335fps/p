@@ -1,0 +1,50 @@
+resolution: 1280 960 256
+file-name: scene1.ppm
+output: out.txt
+camera-origin: 2 -5 0
+camera-focus: -.2 1 0
+camera-zoom: 1
+recursion: 6
+supersample: 2
+sample-method: uniform
+//uniform,random
+ambient: .1 .1 .1
+soft-shadows: 1
+occlusion: 0
+
+object: sphere
+origin: 0 0 0
+radius: 1
+//texture: image
+color: .7 .7 1
+//image: textures/ball.ppm
+//intensity: 1
+
+object: sphere
+origin: 1 10 0
+radius: 1
+//texture: image
+color: 1 .7 .7
+//image: textures/ball.ppm
+reflection: .25
+
+object: light
+radius: 1
+origin: 0 -40 0
+intensity: .9
+color: 1 1 1
+
+object: light
+radius: 1
+origin: 0 -25 25
+intensity: .5
+color: 1 1 1
+
+object: plane
+origin: 0 0 -1
+normal: 0 0 1
+color: .2 .8 .4
+color2: .15 .6 .3
+texture: checker
+texture-scale: .5
+reflection: .25

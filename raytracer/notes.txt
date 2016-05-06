@@ -1,0 +1,26 @@
+Make a checker function
+Default texture stuff, remove default textures from Parse function.
+camera focus/aperture blur
+
+Rotate sphere texture
+Specular highlighting
+show lights
+change sky
+command line parameters
+ambient occlusion
+shape smoothing
+
+alternate windows? w/ and w/o preserved perspective? TV vs portal.
+FindClosest can just find first closer for lighting
+
+https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
+
+https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
+
+http://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-plane-and-ray-disk-intersection
+
+http://netpbm.sourceforge.net/doc/ppm.html
+
+http://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
+
+https://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering
