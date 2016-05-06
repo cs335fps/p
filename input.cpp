@@ -1,5 +1,5 @@
 #include "input.h"
-#include "lizandro.h"
+#include "lizandroP.h"
 Input::Input(Game *g, View *v)
 {
     view = v;
