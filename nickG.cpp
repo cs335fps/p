@@ -51,7 +51,6 @@ void Wall::Set(Vec a, Vec b, float w, float h)
                 );
         c[i+4] = c[i] + Vec(0,height,0);
     }
-
 }
 void Wall::Draw()
 {
@@ -73,8 +72,6 @@ void Wall::Draw()
         }
         glEnd();
     }
-
-
 }
 
 int Wall::Collide(Vec *pos)
@@ -89,7 +86,6 @@ int Wall::Collide(Vec *pos)
         return 0;
 
     Vec closestPoint = v[0] + AB * t;  
-
 
     if ((p - closestPoint).Magnitude() < 1.0 + width / 2.0) {
         // Figure out which side of the wall we are on.

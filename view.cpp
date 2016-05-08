@@ -48,7 +48,7 @@ void View::InitWindow()
     }
 
     XVisualInfo *vi = glXChooseVisual(dpy, 0, att);
-    if(vi == NULL) {
+    if (vi == NULL) {
         std::cout << "\n\tno appropriate visual found\n" << std::endl;
         exit(EXIT_FAILURE);
     } 
@@ -71,8 +71,6 @@ void View::InitWindow()
     glXMakeCurrent(dpy, win, glc);
     CenterCursor();
 }
-
-
 
 void View::set_title(void)
 {
@@ -134,11 +132,8 @@ void View::Render()
     float rotx = game->direction.x;
     float roty = game->direction.y - PI / 2.0;
 
-
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-    
     gluLookAt(
             game->position.x,
             game->position.y,
@@ -150,16 +145,16 @@ void View::Render()
             );
 
     Lighting();
-//	if (level1.isTouching(game->position.x,
-//       game->position.y, game->position.z, 2.3)){
-//     	game->position.x = ox;
-//     	game->position.y = oy;
-//     	game->position.z = oz;
-//    }else{
-     	ox = game->position.x;
-     	oy = game->position.y;
-     	oz = game->position.z;
-//    }
+    //	if (level1.isTouching(game->position.x,
+    //       game->position.y, game->position.z, 2.3)){
+    //     	game->position.x = ox;
+    //     	game->position.y = oy;
+    //     	game->position.z = oz;
+    //    }else{
+    ox = game->position.x;
+    oy = game->position.y;
+    oz = game->position.z;
+    //    }
 
     glPushMatrix();
     //level1.draw();
@@ -209,14 +204,10 @@ void View::HUD()
     glVertex2d(w / 2+1, h / 2 - l / 20);
     glVertex2d(w / 2+1, h / 2 + l / 20);
     glEnd();
-
-
 }
 
 void View::Lighting()
 {
-
-
     // setup the position, specular and shininess of the light
     GLfloat mat_spec[] = {1.0, 1.0, 1.0, 0.2};
     GLfloat mat_shini[]= { 5.0};
@@ -249,7 +240,6 @@ void View::SwitchTo3D()
     if (is3D == 1)
         return;
 
-
     ShowCursor(0);
     //OpenGL initialization
     // move the camera
@@ -281,8 +271,6 @@ void View::SwitchTo3D()
     glFrustum(-0.1/height*width, 0.1/height*width,
             -0.1, 0.1, game->depth, 200.0);
 
-
-
     is3D = 1;
 }
 
@@ -290,7 +278,6 @@ void View::SwitchTo2D()
 {
     if (is3D == 0)
         return;
-
 
     glDisable(GL_DEPTH_TEST);
     glDepthMask(GL_FALSE);
@@ -309,5 +296,3 @@ void View::SwitchTo2D()
 View::~View()
 {
 }
-
-

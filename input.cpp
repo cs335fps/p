@@ -25,10 +25,10 @@ int Input::CheckKeys(XEvent *e)
 {
     if (e->type == KeyPress) {
         int key = XLookupKeysym(&e->xkey, 0);
-	
-	initopenal();
+
+        initopenal();
         if (key == XK_Escape) {
-		clean_al();
+            clean_al();
             return 1;
         }
         if (key == XK_w) {
@@ -44,8 +44,8 @@ int Input::CheckKeys(XEvent *e)
             game->moveY = -1;
         }
         if (key == XK_n) {
-        	openal_sound();
-	}
+            openal_sound();
+        }
 
     }else if (e->type == KeyRelease) {
         int key = XLookupKeysym(&e->xkey, 0);
@@ -99,7 +99,6 @@ void Input::CheckMouse(XEvent *e)
         return;
     }
 
-
     int dx = e->xbutton.x - (view->GetWidth() / 2);
     int dy = e->xbutton.y - (view->GetHeight() / 2);
     game->direction.x -=(float) dx / 2000.0 / (game->depth / game->minZoom);
@@ -114,3 +113,4 @@ void Input::CheckMouse(XEvent *e)
     if (dx != 0 || dy != 0)
         view->CenterCursor();
 }
+
