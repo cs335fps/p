@@ -34,6 +34,7 @@ public:
     void damage(int health);
     void move();
     void render();
+    void move(Game);
 };
 
 class Enemy: public Mob

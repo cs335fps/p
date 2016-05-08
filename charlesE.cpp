@@ -32,7 +32,11 @@ void Mob::damage(int health){
 	this->death();
 }
 
-void Mob::move(game g){
+void Mob::move(){
+
+}
+
+void Mob::move(Game g){
 //Put AI logic here.
 //
 //1) Collision detection: gather local objects
