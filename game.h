@@ -3,12 +3,13 @@
 
 #include "vec.h"
 #include "nickG.h"
+#include "WorldEngine.h"
 #include <vector>
 
 class Game
 {
 private:
-
+    float tmpPos[3];
 public:
     Vec position;
     Vec direction;
