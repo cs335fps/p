@@ -8,7 +8,6 @@ View::View(Game *g, int w, int h)
     InitWindow();
     SwitchTo3D();
     game = g;
-    level1.load("Level1.obj");
     mobs.push_back(new Mob());
     ox = oy = oz =0;
 }

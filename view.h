@@ -8,7 +8,6 @@
 #include <iostream>
 #include <cstdlib>
 #include "game.h"
-#include "WorldEngine.h"
 #include <string>
 #include "charlesE.h"
 #include "nickG.h"
@@ -30,7 +29,6 @@ private:
     Window win;
     GLXContext glc;
     Game *game;
-    worldEngine level1;
     vector<Mob*> mobs;
     float ox,oy,oz;
     int wOverride, hOverride;    
