@@ -21,7 +21,8 @@ Game::Game()
     walls.push_back(Wall(Vec(20,0,-20),Vec(-20,0,-20),0.1, 4.0));
     walls.push_back(Wall(Vec(-20,0,-20),Vec(-20,0,20),0.1, 4.0));
     walls.push_back(Wall(Vec(-20,0,20),Vec(20,0,20),0.1, 4.0));
-
+    
+    //level1.load("Level1.obj");
 }
 
 void Game::Move()
@@ -55,7 +56,15 @@ void Game::Move()
         walls[i].Collide(&position);
 
     }
-
+    /*
+    if (level1.isTouching(position.x, position.y, position.z,1, tmpPos)){
+        position.x = tmpPos[0];
+        position.z = tmpPos[2];
+    } else{
+        tmpPos[0] = position.x;
+        tmpPos[2] = position.z;
+    }
+    */
 
 }
 
