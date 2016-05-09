@@ -22,6 +22,7 @@
 #include <sstream>
 #include <stdio.h>
 #include <iostream>
+#include <cmath>
 #include "WorldEngine.h"
 #include "loadBMP.h"
      
@@ -272,13 +273,35 @@ void worldEngine::crossProd(float* coord1,float* coord2,float* coord3 )
     vr[1] = vb[0] * va[2] - va[0] * vb[2];
     vr[2] = va[0] * vb[1] - vb[0] * va[1];
 }
+// /////////////////////////////////////////////////////////////////////////////
+void worldEngine::crossProd(float* va,float* vb)
+{
+     // set cross product vector
+    vr[0] = va[1] * vb[2] - vb[1] * va[2];
+    vr[1] = vb[0] * va[2] - va[0] * vb[2];
+    vr[2] = va[0] * vb[1] - vb[0] * va[1];
+}
+// /////////////////////////////////////////////////////////////////////////////
+float worldEngine::dot(float v1[3], float v2[3]){
+    return((v1[0] * v2[0]) + (v1[1]*v2[1]) + (v1[2] * v2[2]));
+}
+// /////////////////////////////////////////////////////////////////////////////
+void worldEngine::getUnitVec3d(float in[3], float out[3]){
+     double mag = sqrt(pow(in[0],2.0) + pow(in[1], 2.0) + pow(in[2], 2.0));
+     out[0] = in[0] / mag;
+     out[1] = in[1] / mag;
+     out[2] = in[2] / mag;
+}
+// /////////////////////////////////////////////////////////////////////////////
 worldEngine::worldEngine()
 {
 }
+// /////////////////////////////////////////////////////////////////////////////
 worldEngine::worldEngine(const char filename[200])
 {
     load(filename);
 }
+// /////////////////////////////////////////////////////////////////////////////
 void worldEngine::load(const char filename[200])
 {
     char line[200];
@@ -363,7 +386,8 @@ void worldEngine::load(const char filename[200])
                Faces_Triangles.push_back(v);
                Faces_Triangles.push_back(s);
               }
-              bitreeAdd(new vec(
+              
+              collideFaces.push_back(new vec(
                     tvec[0][0], tvec[0][1], tvec[0][2],
                     tvec[1][0], tvec[1][1], tvec[1][2],
                     tvec[2][0], tvec[2][1], tvec[2][2]));
@@ -382,6 +406,7 @@ void worldEngine::load(const char filename[200])
                    Faces_Triangles[triangle_index+7],
                    Faces_Triangles[triangle_index+8]};
                calculateNormal(coord1, coord2, coord3);
+               
 
                for (int i = 0; i < 3; i++){
                    normals.push_back( norm[0]);
@@ -418,9 +443,9 @@ void worldEngine::calculateNormal(float* coord1,float* coord2,float* coord3 )
     // normalization factor
     val = sqrt( vr[0]*vr[0] + vr[1]*vr[1] + vr[2]*vr[2] );
 
-    norm[0] = vr[0]/val;
-    norm[1] = vr[1]/val;
-    norm[2] = vr[2]/val;
+    norm[0] = -vr[0]/val;
+    norm[1] = -vr[1]/val;
+    norm[2] = -vr[2]/val;
     //////////////////////////////////////////////////////////////////////////
     return;
 }
@@ -450,15 +475,15 @@ void worldEngine::draw()
     glPopMatrix();
 }
 // //////////////////////////////////////////////////////////////////////////||
-bool worldEngine::isTouching(float x, float y, float z, float r)
+bool worldEngine::isTouching(float x, float y, float z, float r, float *pos)
 {
     GLfloat cen[] = {x,y,z};
-    return isTouching(cen, r);
+    return isTouching(cen, r, pos);
 }
 // //////////////////////////////////////////////////////////////////////////||
-bool worldEngine::isTouching(float center[], float r)
+bool worldEngine::isTouching(float center[], float r, float *pos)
 {
-    vector<vec*> faces;
+    //vector<vec*> faces;
     //float ptNorm[3], ptdir[3];
     float dist1=0, dist2=0, dist3=0,dist4=0;
     float npt1[3];
@@ -470,16 +495,64 @@ bool worldEngine::isTouching(float center[], float r)
      npt1[1] = center[1] - y;
      npt1[2] = center[2] - z;
 
-     faces = search(npt1);
+     //faces = search(npt1);
 
-     for (unsigned int i=0; i<faces.size(); i++){
-         dist1 = baricen(faces[i]->v1,faces[i]->v2,faces[i]->v3);
-         dist2 = baricen(faces[i]->v1,faces[i]->v2,npt1);
-         dist3 = baricen(faces[i]->v1,npt1,faces[i]->v3);
-         dist4 = baricen(npt1,faces[i]->v2, faces[i]->v3);
+     for (unsigned int i=0; i<collideFaces.size(); i++){
+         dist1 = baricen(
+                   collideFaces[i]->v1,
+                   collideFaces[i]->v2,
+                   collideFaces[i]->v3);
+         dist2 = baricen(
+                   collideFaces[i]->v1,
+                   collideFaces[i]->v2,
+                   npt1);
+         dist3 = baricen(
+                   collideFaces[i]->v1,
+                   npt1,
+                   collideFaces[i]->v3);
+         dist4 = baricen(
+                   npt1,
+                   collideFaces[i]->v2, 
+                   collideFaces[i]->v3);
 
-         if (abs(dist1-dist2-dist3-dist4) < 0.001+r)
-          return true;
+         if (abs(dist1-dist2-dist3-dist4) < 0.001+r){
+         /*
+             npt1[1]=0;
+             float AP[3] ={npt1[0]-collideFaces[i]->v1[0],
+                           npt1[1]-collideFaces[i]->v1[1],
+                           npt1[2]-collideFaces[i]->v1[2]},
+                   AB[3] ={collideFaces[i]->v2[0]-collideFaces[i]->v1[0],
+                           collideFaces[i]->v2[1]-collideFaces[i]->v1[1],
+                           collideFaces[i]->v2[2]-collideFaces[i]->v1[2]},
+                   closestPoint[3];
+             crossProd(AP,AB);
+             float t, width, xmax, xmin,
+                   side = -vr[1];
+             
+             xmin = getMin(collideFaces[i]->v1[0],
+                            collideFaces[i]->v2[0],
+                            collideFaces[i]->v3[0]);
+             xmax = getMax(collideFaces[i]->v1[0],
+                            collideFaces[i]->v2[0],
+                            collideFaces[i]->v3[0]);
+             t = dot(AB, AP) / dot(AB, AB);
+             closestPoint[0] = (collideFaces[i]->v1[0] + AB[0]) * t;
+             closestPoint[2] = (collideFaces[i]->v1[2] + AB[2]) * t;
+             
+             if (side < 0.0)
+                 side = -1.0;
+             else
+                 side = 1.0;
+             float p[3], perp[3] ={AB[2],0,-AB[0]};
+             getUnitVec3d(perp,perp);
+             width = xmax - xmin;
+             p[0] = (closestPoint[0] + perp[0]) * (1.0 + width / 2.0) * side;
+             p[2] = (closestPoint[2] + perp[2]) * (1.0 + width / 2.0) * side;
+             pos[0] = p[0];
+             pos[2] = p[2];
+             */
+             return true;
+         }
      }
     }
     return false;
