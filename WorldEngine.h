@@ -61,6 +61,7 @@ class worldEngine
           vector<GLfloat> Faces_Triangles;
           vector<GLfloat> vertexBuffer;
           vector<GLfloat> UVs;
+          vector<vec*> collideFaces;
           long TotalConnectedPoints;
           long TotalConnectedTriangles;
           bool solid;
@@ -76,14 +77,17 @@ class worldEngine
           bool rayplane(float nv[3], float sv[3], float dv[3], vec fce);
           double baricen(float tp1[3], float tp2[3], float tp3[3]);
           void crossProd(float* coord1,float* coord2,float* coord3 );
+          void getUnitVec3d(float in[3], float out[3]);
+          float dot(float v1[3], float v2[3]);
+          void crossProd(float* va,float* vb);
      public:
           worldEngine();
           worldEngine(const char filename[200]);
           void load(const char filename[200]);
           void calculateNormal(float* coord1,float* coord2,float* coord3 );
           void draw();
-          bool isTouching(float x, float y, float z, float r);
-          bool isTouching(float center[], float r);
+          bool isTouching(float x, float y, float z, float r, float *pos);
+          bool isTouching(float center[], float r, float *pos);
           bool isTouchingRvec(float center[], float r, float *ret);
           void loc(float inX, float inY, float inZ);
           void rot(float inX, float inY, float inZ);
