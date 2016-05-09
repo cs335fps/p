@@ -45,11 +45,6 @@ void Mob::move(Game g){
     location.z += velocity.z;
     location.y += velocity.y;
     location.x += velocity.x;
-   
-     
-
-
-
 }
 
 void Mob::render(){

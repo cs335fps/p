@@ -46,7 +46,22 @@ int Input::CheckKeys(XEvent *e)
         if (key == XK_n) {
             openal_sound();
         }
+	if(key == XK_c) {
+            //Fire chad's key
+	
+	}
+	if(key == XK_r) {
+	    //Fire Roy's key
+	
+	}
+	if(key == XK_n) {
+	    //Fire Nick's key
 
+	}
+	if(key == XK_l) {
+		//Fire Lizandro's key.
+
+	}
     }else if (e->type == KeyRelease) {
         int key = XLookupKeysym(&e->xkey, 0);
         if (key == XK_w) {
