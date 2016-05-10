@@ -9,6 +9,8 @@
 #include <cstdlib>
 #include "game.h"
 #include <string>
+#include <string.h>
+#include <unistd.h>
 #include "charlesE.h"
 #include "nickG.h"
 #include <vector>
