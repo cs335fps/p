@@ -3,11 +3,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include </usr/include/AL/alut.h>
 #include "lizandroP.h"
+
 
 ALuint alBuffer;
 ALuint alSource;
