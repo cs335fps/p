@@ -42,6 +42,23 @@ class Enemy: public Mob
 
     void move();
 };
+class cWall: public Mob{
+    private:
+	Vec start;
+	Vec end;
+	float height;
+	float width
+	Vec corners[8];
+	Vec endpoints[2];
+	Vec color;
+
+    public:
+	cWall();
+	cWall(Vec, Vec, float, float);
+	void Set(Vec, Vec, float, float);
+	void Draw();
+	int Collide(Vec*, float);
+};
 class Munition: public Enemy
 {
 
