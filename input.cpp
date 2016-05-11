@@ -46,9 +46,9 @@ int Input::CheckKeys(XEvent *e)
         if (key == XK_n) {
             openal_sound();
         }
-	if(key == XK_c) {
-            //Fire chad's key
-	
+	if(key == XK_r) {
+	    //Fire Roy's key
+         game->togPortal ^=1;
 	}
 	if(key == XK_r) {
 	    //Fire Roy's key

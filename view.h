@@ -34,6 +34,7 @@ private:
     vector<Mob*> mobs;
     float ox,oy,oz;
     int wOverride, hOverride;    
+    unsigned int mobTex;
 public:
 
     

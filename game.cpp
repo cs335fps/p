@@ -9,6 +9,7 @@ Game::Game()
     zoom = 0;
     maxZoom = .55f;
     minZoom = .15f;
+    togPortal =0;
 
     position = Vec(-15,2,0);
     direction = Vec(0.0,0.0,0.0);
@@ -23,6 +24,7 @@ Game::Game()
     walls.push_back(Wall(Vec(-20,0,20),Vec(20,0,20),0.1, 4.0));
     
     //level1.load("Level1.obj");
+    floor.load("floor.obj");
 }
 
 void Game::Move()
@@ -55,6 +57,15 @@ void Game::Move()
     for (unsigned int i = 0; i < walls.size(); i++) {
         walls[i].Collide(&position);
 
+    }
+    if (togPortal == 1){
+            defaultPortl.reLocateOBJ(position.x,
+                                     position.y,
+                                     position.z,
+
+                                     position.x,
+                                     position.y,
+                                     position.z);
     }
     /*
     if (level1.isTouching(position.x, position.y, position.z,1, tmpPos)){
