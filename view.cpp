@@ -6,6 +6,7 @@ extern "C" {
 
 View::View(Game *g, int w, int h)
 {
+	loadBMP lbmp;
     wOverride = w;
     hOverride = h;
     is3D = -1;
@@ -14,6 +15,9 @@ View::View(Game *g, int w, int h)
     game = g;
     mobs.push_back(new Mob());
     ox = oy = oz =0;
+    mobTex = lbmp.getBMP("enemy.bmp");
+    game->defaultPortl.assignTexA(lbmp.getBMP("portalA_tex.bmp"));
+    game->defaultPortl.assignTexB(lbmp.getBMP("portalB_tex.bmp"));
 }
 
 int View::GetWidth()
@@ -160,14 +164,19 @@ void View::Render()
     //    }
 
     glPushMatrix();
-    //level1.draw();
+    if (game->togPortal == 1){
+            game->defaultPortl.draw();
+    }
+    //game->floor.draw();
 
     for (unsigned int i = 0; i < game->walls.size(); i++) {
         game->walls[i].Draw();
     }
 
     for(unsigned int i = 0; i < mobs.size(); i++){
+        glBindTexture(GL_TEXTURE_2D, mobTex);
         mobs[i]->render();
+        //glBindTexture(GL_TEXTURE_2D, 0);
     }
 
     glPopMatrix();

@@ -25,6 +25,7 @@
 #include <cmath>
 #include "WorldEngine.h"
 #include "loadBMP.h"
+#include "portal.h"
      
 using namespace std;
 
@@ -282,11 +283,13 @@ void worldEngine::crossProd(float* va,float* vb)
     vr[2] = va[0] * vb[1] - vb[0] * va[1];
 }
 // /////////////////////////////////////////////////////////////////////////////
-float worldEngine::dot(float v1[3], float v2[3]){
+float worldEngine::dot(float v1[3], float v2[3])
+{
     return((v1[0] * v2[0]) + (v1[1]*v2[1]) + (v1[2] * v2[2]));
 }
 // /////////////////////////////////////////////////////////////////////////////
-void worldEngine::getUnitVec3d(float in[3], float out[3]){
+void worldEngine::getUnitVec3d(float in[3], float out[3])
+{
      double mag = sqrt(pow(in[0],2.0) + pow(in[1], 2.0) + pow(in[2], 2.0));
      out[0] = in[0] / mag;
      out[1] = in[1] / mag;
@@ -778,4 +781,156 @@ GLuint loadBMP::getBMP(const char *path)
      delete data;
      delete data_A;
      return textureID;
+}
+// ////////////////////////////////////////////////////////////////////////////
+// /////       /////       /////       /////       /////       /////       ///
+// //////////////////////////////////////////////////////////////////////////
+portal::portal()
+{
+        portA.redraw(2,32,32);
+        portB.redraw(2,32,32);
+        innerA.redraw(1.9,32,32);
+        innerB.redraw(1.9,32,32);
+
+        portLocA[0] = 3;
+        portLocA[1] = 2;
+        portLocA[2] = 3;
+
+        portLocB[0] = 0;
+        portLocB[1] = 2;
+        portLocB[2] = -17;
+        
+        entered = 0;
+        ptexa = ptexb = 0;
+}
+// ////////////////////////////////////////////////////////////////////////////
+portal::portal(float *a, float *b, float rad)
+{
+        portA.redraw(32,32,rad);
+        portB.redraw(32,32,rad);
+        innerA.redraw(32,32,rad * 0.9);
+        innerB.redraw(32,32,rad * 0.9);
+
+        portLocA[0] = a[0];
+        portLocA[1] = a[1];
+        portLocA[2] = a[2];
+
+        portLocB[0] = b[0];
+        portLocB[1] = b[1];
+        portLocB[2] = b[2];
+
+        entered = 0;
+        ptexa = ptexb = 0;
+}
+// ////////////////////////////////////////////////////////////////////////////
+portal::portal(float a, float b, float c,
+                    float x, float y, float z,
+                    float rad)
+{
+        portA.redraw(32,32,rad);
+        portB.redraw(32,32,rad);
+        innerA.redraw(32,32,rad * 0.9);
+        innerB.redraw(32,32,rad * 0.9);
+
+        portLocA[0] = a;
+        portLocA[1] = b;
+        portLocA[2] = c;
+
+        portLocB[0] = x;
+        portLocB[1] = y;
+        portLocB[2] = z;
+        
+        entered = 0;
+        ptexa = ptexb = 0;
+}
+// ////////////////////////////////////////////////////////////////////////////
+void portal::draw()
+{
+        glBindTexture(GL_TEXTURE_2D, ptexa);
+        portA.draw(portLocA[0], portLocA[1], portLocA[2]);
+        glBindTexture(GL_TEXTURE_2D, 0);
+
+
+        glBindTexture(GL_TEXTURE_2D, ptexb);
+        portB.draw(portLocB[0], portLocB[1], portLocB[2]);
+        glBindTexture(GL_TEXTURE_2D, 0);
+}
+// ////////////////////////////////////////////////////////////////////////////
+void portal::reLocateOBJ(float *point, float *newLoc)
+{
+        float tmp[3],playerDir[3];
+        float angle;
+        if ((portA.isTouching(point) == true || 
+            portB.isTouching(point) == true)){
+                enterPoint[0] = point[0];
+                enterPoint[1] = point[1];
+                enterPoint[2] = point[2];
+                entered ^= 1;
+        }
+        // if the point is touching or within the first sphere
+        // then relocate the point to the other sphere 
+        if (portA.isTouching(point) == true && entered == 1){
+                // calculate entrence angle
+                tmp[0] = point[0] -  portB.getx();
+                tmp[0] = point[1];
+                tmp[0] = point[2] -  portB.getz();
+
+
+                playerDir[0] = point[0] - enterPoint[0];
+                playerDir[1] = point[1] - enterPoint[1];
+                playerDir[2] = point[2] - enterPoint[2];
+
+                angle = tmp[0] * playerDir[0] +
+                        tmp[1] * playerDir[1] +
+                        tmp[2] * playerDir[2];
+
+                // calculate offset so new location wont triger portal
+                newLoc[0] = (sin(angle + M_PI)*(portB.getRad() + .3)) + portB.getx();
+                newLoc[1] = portB.gety();
+                newLoc[2] = (cos(angle + M_PI)*(portB.getRad() + .3)) + portB.getz();
+                entered ^= 1;
+        }
+
+        // same as above but for oposite sphere
+        if (portB.isTouching(point) == true && entered == 1){
+                // calculate entrence angle
+                tmp[0] = point[0] -  portB.getx();
+                tmp[0] = point[1];
+                tmp[0] = point[2] -  portB.getz();
+
+                playerDir[0] = point[0] - enterPoint[0];
+                playerDir[1] = point[1] - enterPoint[1];
+                playerDir[2] = point[2] - enterPoint[2];
+
+                angle = tmp[0] * playerDir[0] +
+                        tmp[1] * playerDir[1] +
+                        tmp[2] * playerDir[2];
+
+                // calculate offset so new location wont triger portal
+                newLoc[0] = (sin(angle)*(portA.getRad() + .3)) + portA.getx();
+                newLoc[1] = portA.gety();
+                newLoc[2] = (cos(angle)*(portA.getRad() + .3)) + portA.getz();
+                entered ^= 1;
+        }
+}
+// ////////////////////////////////////////////////////////////////////////////
+void portal::reLocateOBJ(float x, float y, float z,
+                         float &nx, float &ny, float &nz)
+{
+        float point[3] ={x,y,z}, 
+              recalcPoint[3] ={nx, ny, nz};
+
+        reLocateOBJ(point, recalcPoint);
+
+        nx = recalcPoint[0];
+        ny = recalcPoint[1];
+        nz = recalcPoint[2];
+}
+void portal::assignTexA(unsigned int txt)
+{
+        ptexa = txt;
+}
+void portal::assignTexB(unsigned int txt)
+{
+        ptexb = txt;
 }

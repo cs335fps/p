@@ -4,6 +4,7 @@
 #include "vec.h"
 #include "nickG.h"
 #include "WorldEngine.h"
+#include "portal.h"
 #include <vector>
 
 class Game
@@ -22,10 +23,12 @@ public:
     
     float maxZoom;
     float minZoom;
-    int zoom;
+    int zoom, togPortal;
     float depth;
     
     std::vector<Wall> walls;
+    portal defaultPortl;
+    worldEngine floor;
     
     Game();
     void Move();
