@@ -47,7 +47,7 @@ class cWall: public Mob{
 	Vec start;
 	Vec end;
 	float height;
-	float width
+	float width;
 	Vec corners[8];
 	Vec endpoints[2];
 	Vec color;

@@ -112,10 +112,9 @@ void cWall::Draw()
     for(int i = 0; i < 6; i++){
 	glBegin(GL_POLYGON);
 	glNormal3fv(&Normal(
-	    corners[sides[i][2]], 
-	    corners[sides[i][1]], 
-	    corners[sides[i][1]], 
-	    corners[sides[i][0]]
+	    this->corners[ sides[i][2] ], 
+	    this->corners[ sides[i][1] ], 
+	    this->corners[ sides[i][1] ])[0] 
 	);
 	for(int j = 0; j < 4; j++){
 	    glVertex3fv(&corners[sides[i][j]][0]);
@@ -130,8 +129,13 @@ int cWall::Collide(Vec * pos, float diameter = 0)
     Vec AP = position - this->endpoints[0];
     Vec AB = this->endpoints[1] - this->endpoints[0];
     float t = Dot(AB, AP) / Dot(AB, AB);
+    
+    if(t < 0 || t > 1)
+	return 0;
 
-    if ( ( position - closestPoint.).Magnitude() < 1.0 + this->width / 2.0){
+    Vec closestPoint = this->endpoints[0] + AB * t;
+
+    if ( ( position - closestPoint).Magnitude() < 1.0 + this->width / 2.0){
 	float side = -Cross(AP, AB).y;
 	if (side < 0.0) 
 	    side = -1.0;
@@ -139,7 +143,7 @@ int cWall::Collide(Vec * pos, float diameter = 0)
 	    side = 1;
 	Vec perp(AB.z, 0, -AB.x);
 	perp.Normalize();
-	p = closestPoint + perp * (1 + width / 2.0) * side;
+	position = closestPoint + perp * (1 + width / 2.0) * side;
 	pos->x = position.x;
 	pos->z = position.z;
     	return 1;
