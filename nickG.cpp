@@ -12,6 +12,7 @@
 //
 //
 #include "nickG.h"
+#include <iostream>
 
 // ######################## Wall class #############################
 // #################################################################
@@ -37,7 +38,7 @@ void Wall::Set(Vec a, Vec b, float w, float h)
     v[1] = b;
     height = h;
     width = w;
-    float length = (a - b).Magnitude();
+    length = (a - b).Magnitude();
     w = w / 2.0;
     Vec dif = (b - a);
     float xScale = dif.x / length;
@@ -80,9 +81,15 @@ int Wall::Collide(Vec *pos)
     p.y = 0.0;
     Vec AP = p - v[0];
     Vec AB = v[1] - v[0];
-    float t = Dot(AB, AP) / Dot(AB, AB);
+    float dist = Dot(AB, AB);
+    float t = Dot(AB, AP) / dist;
+    
+    // Extra is the little bit further the
+    // visible wall goes from the endpiont
+    // relative to the wall length
+    float extra = width / length;
 
-    if (t < 0.0 || t > 1.0)
+    if (t < 0.0 - extra || t > 1.0 + extra)
         return 0;
 
     Vec closestPoint = v[0] + AB * t;  

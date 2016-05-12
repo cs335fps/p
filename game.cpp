@@ -20,7 +20,7 @@ Game::Game()
     walls.push_back(Wall(Vec(10,0,0),Vec(0,0,-10),0.1, 4.0));
     walls.push_back(Wall(Vec(20,0,-20),Vec(20,0,20),0.1, 4.0));
     walls.push_back(Wall(Vec(20,0,-20),Vec(-20,0,-20),0.1, 4.0));
-    walls.push_back(Wall(Vec(-20,0,-20),Vec(-20,0,20),0.1, 4.0));
+    //walls.push_back(Wall(Vec(-20,0,-20),Vec(-20,0,20),0.1, 4.0));
     walls.push_back(Wall(Vec(-20,0,20),Vec(20,0,20),0.1, 4.0));
     
     //level1.load("Level1.obj");

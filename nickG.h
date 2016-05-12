@@ -24,6 +24,7 @@ class Wall
         Vec end;
         float height;
         float width;
+        float length;
         Vec c[8]; // corners
         Vec v[2]; // endpoints
 
