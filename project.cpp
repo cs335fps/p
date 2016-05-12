@@ -33,11 +33,19 @@ int main(int argc, char* argv[])
 
     while (!done) {
         done = input.CheckInput();
-
-        while (sec.Get() > lastSeconds) {
+        
+        double dif = sec.Get() - lastSeconds;
+        while (dif > 0.0) {
             // Call Move() until we're caught up
             lastSeconds += secPerMove;
             game.Move();
+            
+            if (dif > 0.25) {
+                // We're really behind, need to catch up
+                lastSeconds = sec.Get();
+                break;
+            }
+            dif = sec.Get() - lastSeconds;
         }
 
         view.Render();
