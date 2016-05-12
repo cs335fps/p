@@ -176,7 +176,7 @@ void View::Render()
     for(unsigned int i = 0; i < mobs.size(); i++){
         glBindTexture(GL_TEXTURE_2D, mobTex);
         mobs[i]->render();
-        //glBindTexture(GL_TEXTURE_2D, 0);
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
 
     glPopMatrix();
