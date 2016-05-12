@@ -792,9 +792,9 @@ portal::portal()
         innerA.redraw(1.9,32,32);
         innerB.redraw(1.9,32,32);
 
-        portLocA[0] = 3;
+        portLocA[0] = -3;
         portLocA[1] = 2;
-        portLocA[2] = 3;
+        portLocA[2] = -3;
 
         portLocB[0] = 0;
         portLocB[1] = 2;
@@ -858,58 +858,57 @@ void portal::draw()
 // ////////////////////////////////////////////////////////////////////////////
 void portal::reLocateOBJ(float *point, float *newLoc)
 {
-        float tmp[3],playerDir[3];
-        float angle;
-        if ((portA.isTouching(point) == true || 
-            portB.isTouching(point) == true)){
-                enterPoint[0] = point[0];
-                enterPoint[1] = point[1];
-                enterPoint[2] = point[2];
-                entered ^= 1;
-        }
+        float playerDir[3];
+        float angle, dot, mag;
+        
         // if the point is touching or within the first sphere
         // then relocate the point to the other sphere 
-        if (portA.isTouching(point) == true && entered == 1){
-                // calculate entrence angle
-                tmp[0] = point[0] -  portB.getx();
-                tmp[0] = point[1];
-                tmp[0] = point[2] -  portB.getz();
+        if (portA.isTouching(point) == true){
+                // calculate entrence angle using refrence vector <1,0,0>
+                playerDir[0] = point[0] - portB.getx();
+                playerDir[1] = point[1] - portB.gety();
+                playerDir[2] = point[2] - portB.getz();
 
-
-                playerDir[0] = point[0] - enterPoint[0];
-                playerDir[1] = point[1] - enterPoint[1];
-                playerDir[2] = point[2] - enterPoint[2];
-
-                angle = tmp[0] * playerDir[0] +
-                        tmp[1] * playerDir[1] +
-                        tmp[2] * playerDir[2];
+                mag = sqrt( playerDir[0] * playerDir[0] +
+                            playerDir[1] * playerDir[1] +
+                            playerDir[2] * playerDir[2] );
+                dot = 1 * playerDir[0];
+                
+                // calculate angel and flip to oposite size
+                angle = acos(dot/mag);
+                angle *= -1;
 
                 // calculate offset so new location wont triger portal
-                newLoc[0] = (sin(angle + M_PI)*(portB.getRad() + .3)) + portB.getx();
+                newLoc[0] = (sin(angle)*(portB.getRad() + .3)) + 
+                             portB.getx();
                 newLoc[1] = portB.gety();
-                newLoc[2] = (cos(angle + M_PI)*(portB.getRad() + .3)) + portB.getz();
+                newLoc[2] = (cos(angle)*(portB.getRad() + .3)) + 
+                             portB.getz();
                 entered ^= 1;
         }
 
         // same as above but for oposite sphere
-        if (portB.isTouching(point) == true && entered == 1){
+        if (portB.isTouching(point) == true){
                 // calculate entrence angle
-                tmp[0] = point[0] -  portB.getx();
-                tmp[0] = point[1];
-                tmp[0] = point[2] -  portB.getz();
+                playerDir[0] = point[0] - portB.getx();
+                playerDir[1] = point[1] - portB.gety();
+                playerDir[2] = point[2] - portB.getz();
 
-                playerDir[0] = point[0] - enterPoint[0];
-                playerDir[1] = point[1] - enterPoint[1];
-                playerDir[2] = point[2] - enterPoint[2];
+                mag = sqrt( playerDir[0] * playerDir[0] +
+                            playerDir[1] * playerDir[1] +
+                            playerDir[2] * playerDir[2] );
+                dot = 1 * playerDir[0];
 
-                angle = tmp[0] * playerDir[0] +
-                        tmp[1] * playerDir[1] +
-                        tmp[2] * playerDir[2];
+                // calculate angel and flip to oposite size
+                angle = acos(dot/mag);
+                angle *= -1;
 
                 // calculate offset so new location wont triger portal
-                newLoc[0] = (sin(angle)*(portA.getRad() + .3)) + portA.getx();
+                newLoc[0] = (sin(angle + M_PI)*(portA.getRad() + .3)) + 
+                             portA.getx();
                 newLoc[1] = portA.gety();
-                newLoc[2] = (cos(angle)*(portA.getRad() + .3)) + portA.getz();
+                newLoc[2] = (cos(angle + M_PI)*(portA.getRad() + .3)) + 
+                             portA.getz();
                 entered ^= 1;
         }
 }
