@@ -36,8 +36,9 @@ public:
     void damage(int health);
     void move();
     virtual void render();
-    void move(Game);
+    void move(Game*);
     virtual int Collide(Vec*);
+    Vec* getLoc() { return &location; } 
 };
 
 class Enemy: public Mob
@@ -73,8 +74,6 @@ class Wall : public Mob
         float length;
         Vec c[8]; // corners
         Vec v[2]; // endpoints
-
-
         Vec color;
     public:
         Wall();

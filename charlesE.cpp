@@ -33,18 +33,35 @@ void Mob::damage(int health){
 }
 
 void Mob::move(){
-
+    this->move(NULL);
 }
 
-void Mob::move(Game g){
+void Mob::move(Game* g){
 //Put AI logic here.
 //
 //1) Collision detection: gather local objects
 //2) Collision detection: for each local object, is touching object?
 //3) collision detection: if touching object, bounce
+    Vec* tmp = new Vec;
+    *tmp = location+velocity;
+    //if(this->Collide(tmp))
+//	velocity = velocity * -1;
     location.z += velocity.z;
     location.y += velocity.y;
     location.x += velocity.x;
+    
+    if(velocity.z > 0.05)
+    	velocity.z -= 0.05;
+    else
+	velocity.z = 0;
+    if(velocity.y > 0.05)
+    	velocity.y -= 0.05;
+    else
+	velocity.y = 0;
+    if(velocity.x > 0.05)
+    	velocity.x -= 0.05;
+    else
+	velocity.x = 0;
 }
 
 void Mob::render(){
@@ -53,8 +70,13 @@ void Mob::render(){
 
 }
 
-int Mob::Collide(Vec*)
+int Mob::Collide(Vec* p)
 {
+    if(body.isTouching(p->x, p->y, p->z)){
+        this->velocity = (this->location - *p);
+	cout << "Object touching" << " x " << this->velocity.x << " y " << this->velocity.y 
+	    << " z " << this->velocity.z<<endl;
+    }	
     return 0;
 }
 
