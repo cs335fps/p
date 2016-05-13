@@ -2,6 +2,7 @@
 
 Game::Game()
 {
+    srand(time(NULL));
     velocityX = velocityY = 0.0f;
     moveX = moveY = 0;
     aiming = 0;
@@ -14,15 +15,92 @@ Game::Game()
     position = Vec(-15,2,0);
     direction = Vec(0.0,0.0,0.0);
 
-    walls.push_back(Wall(Vec(10,0,0),Vec(0,0,10),0.1, 4.0));
-    walls.push_back(Wall(Vec(0,0,10),Vec(-10,0,0),0.1, 4.0));
-//    walls.push_back(Wall(Vec(0,0,-10),Vec(-10,0,0),0.1, 4.0));
-    walls.push_back(Wall(Vec(10,0,0),Vec(0,0,-10),0.1, 4.0));
-    walls.push_back(Wall(Vec(20,0,-20),Vec(20,0,20),0.1, 4.0));
-    walls.push_back(Wall(Vec(20,0,-20),Vec(-20,0,-20),0.1, 4.0));
-    //walls.push_back(Wall(Vec(-20,0,-20),Vec(-20,0,20),0.1, 4.0));
-    walls.push_back(Wall(Vec(-20,0,20),Vec(20,0,20),0.1, 4.0));
-    
+    walls.push_back(Wall(Vec(-5,0,-10),Vec(-5,0,0),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-5,0,5),Vec(10,0,5),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(10,0,-5),Vec(10,0,5),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-5,0,-10),Vec(55,0,-10),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(45,0,-40),Vec(45,0,-20),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(65,0,-50),Vec(45,0,-50),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(65,0,-20),Vec(65,0,-50),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(45,0,-20),Vec(55,0,-20),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(55,0,-10),Vec(55,0,-20),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(10,0,-5),Vec(25,0,-5),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(30,0,-5),Vec(60,0,-5),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(60,0,-20),Vec(60,0,-5),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(65,0,-20),Vec(60,0,-20),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(45,0,-50),Vec(45,0,-45),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-25,0,-75),Vec(10,0,-75),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(10,0,-55),Vec(10,0,-75),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(10,0,-50),Vec(10,0,-35),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(10,0,-35),Vec(-10,0,-35),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-15,0,-35),Vec(-30,0,-35),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-25,0,-75),Vec(-25,0,-40),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(25,0,-5),Vec(25,0,15),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(30,0,-5),Vec(30,0,5),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(45,0,-45),Vec(30,0,-45),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(10,0,-55),Vec(30,0,-55),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(25,0,-40),Vec(45,0,-40),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(10,0,-50),Vec(25,0,-50),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(25,0,-40),Vec(25,0,-50),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(30,0,-45),Vec(30,0,-55),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-10,0,-35),Vec(-10,0,0),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-5,0,0),Vec(-10,0,0),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-15,0,-35),Vec(-15,0,0),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-105,0,-55),Vec(-25,0,-55),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-105,0,-15),Vec(-70,0,-15),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-45,0,-45),Vec(-45,0,-15),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-45,0,-15),Vec(-60,0,-15),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-105,0,-55),Vec(-105,0,-15),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-30,0,-35),Vec(-30,0,-50),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-45,0,-55),Vec(-45,0,-50),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-45,0,-45),Vec(-40,0,-45),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-40,0,-50),Vec(-30,0,-50),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-40,0,-45),Vec(-40,0,-50),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-15,0,0),Vec(-45,0,0),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-45,0,-15),Vec(-45,0,0),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-70,0,-15),Vec(-70,0,0),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-55,0,0),Vec(-70,0,0),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-50,0,-10),Vec(-50,0,20),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-60,0,-15),Vec(-60,0,-5),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-75,0,40),Vec(-45,0,40),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-75,0,40),Vec(-75,0,70),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-75,0,70),Vec(-25,0,70),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-20,0,70),Vec(50,0,70),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-40,0,40),Vec(0,0,40),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(0,0,45),Vec(0,0,70),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-10,0,5),Vec(-10,0,40),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(0,0,45),Vec(5,0,45),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-5,0,35),Vec(5,0,35),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-5,0,5),Vec(-5,0,35),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-50,0,20),Vec(-40,0,20),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-40,0,40),Vec(-40,0,20),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-45,0,40),Vec(-45,0,30),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-55,0,30),Vec(-45,0,30),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-55,0,0),Vec(-55,0,30),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(5,0,15),Vec(50,0,15),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(5,0,60),Vec(5,0,15),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(50,0,60),Vec(5,0,60),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-25,0,75),Vec(55,0,75),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-25,0,70),Vec(-25,0,75),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(50,0,60),Vec(50,0,70),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(55,0,75),Vec(55,0,5),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(30,0,5),Vec(55,0,5),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-50,0,5),Vec(-10,0,5),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(25,0,25),Vec(15,0,35),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(45,0,25),Vec(15,0,55),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(15,0,25),Vec(15,0,35),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(25,0,25),Vec(15,0,25),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-60,0,-50),Vec(-60,0,-20),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-60,0,-20),Vec(-90,0,-20),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-95,0,-50),Vec(-95,0,-20),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-95,0,-50),Vec(-65,0,-50),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-65,0,-50),Vec(-65,0,-25),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-70,0,-45),Vec(-70,0,-20),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-90,0,-20),Vec(-90,0,-45),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-85,0,-50),Vec(-85,0,-25),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-55,0,45),Vec(-30,0,45),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-10,0,40),Vec(-10,0,55),0.1, 4.0,RCOLOR));
+
     //level1.load("Level1.obj");
     floor.load("floor.obj");
 }
@@ -59,24 +137,25 @@ void Game::Move()
 
     }
     if (togPortal == 1){
-            defaultPortl.reLocateOBJ(position.x,
-                                     position.y,
-                                     position.z,
+        defaultPortl.reLocateOBJ(position.x,
+                position.y,
+                position.z,
 
-                                     position.x,
-                                     position.y,
-                                     position.z);
+                position.x,
+                position.y,
+                position.z);
     }
     /*
-    if (level1.isTouching(position.x, position.y, position.z,1, tmpPos)){
-        position.x = tmpPos[0];
-        position.z = tmpPos[2];
-    } else{
-        tmpPos[0] = position.x;
-        tmpPos[2] = position.z;
-    }
-    */
+       if (level1.isTouching(position.x, position.y, position.z,1, tmpPos)){
+       position.x = tmpPos[0];
+       position.z = tmpPos[2];
+       } else{
+       tmpPos[0] = position.x;
+       tmpPos[2] = position.z;
+       }
+     */
 
 }
+
 
 

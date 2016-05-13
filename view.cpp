@@ -178,6 +178,15 @@ void View::Render()
         mobs[i]->render();
         glBindTexture(GL_TEXTURE_2D, 0);
     }
+    
+    float fl = 200.0;
+    glColor3f(0,0,0);
+    glBegin(GL_POLYGON);
+    glVertex3f(fl,0,fl);
+    glVertex3f(-fl,0,fl);
+    glVertex3f(-fl,0,-fl);
+    glVertex3f(fl,0,-fl);
+    glEnd();
 
     glPopMatrix();
     HUD();

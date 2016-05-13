@@ -6,6 +6,9 @@
 #include "WorldEngine.h"
 #include "portal.h"
 #include <vector>
+#include <stdlib.h>
+#define RAND ((float)rand()/RAND_MAX)
+#define RCOLOR Vec(RAND,RAND,RAND)
 
 class Game
 {

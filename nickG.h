@@ -4,6 +4,9 @@
 #include <ctime>
 #include <GL/glx.h>
 #include "vec.h"
+#include <stdlib.h>
+
+#define RAND ((float)rand()/RAND_MAX)
 
 class Seconds
 {
@@ -32,8 +35,8 @@ class Wall
         Vec color;
     public:
         Wall();
-        Wall(Vec, Vec, float, float);
-        void Set(Vec, Vec, float, float);
+        Wall(Vec, Vec, float, float, Vec col = Vec(1,1,1));
+        void Set(Vec, Vec, float, float, Vec);
         void Draw();
         int Collide(Vec *);
 
