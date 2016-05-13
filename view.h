@@ -2,6 +2,7 @@
 #define _VIEW_H_
 
 #include <cmath>
+#include <vector>
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <GL/glx.h>
@@ -13,11 +14,12 @@
 #include <unistd.h>
 #include "charlesE.h"
 #include "nickG.h"
-#include <vector>
-
 
 #define PI 3.14159
 
+using namespace std;
+
+class Game;
 class Mob;
 class View
 
@@ -31,7 +33,6 @@ private:
     Window win;
     GLXContext glc;
     Game *game;
-    vector<Mob*> mobs;
     float ox,oy,oz;
     int wOverride, hOverride;    
     unsigned int mobTex;
@@ -54,6 +55,5 @@ public:
     void HUD();
     ~View();
 };
-
 
 #endif

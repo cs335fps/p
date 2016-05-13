@@ -5,6 +5,7 @@
 #include <GL/glx.h>
 #include "vec.h"
 #include <stdlib.h>
+#include "charlesE.h"
 
 #define RAND ((float)rand()/RAND_MAX)
 
@@ -20,26 +21,5 @@ class Seconds
 
 };
 
-class Wall
-{
-    private:
-        Vec start;
-        Vec end;
-        float height;
-        float width;
-        float length;
-        Vec c[8]; // corners
-        Vec v[2]; // endpoints
-
-
-        Vec color;
-    public:
-        Wall();
-        Wall(Vec, Vec, float, float, Vec col = Vec(1,1,1));
-        void Set(Vec, Vec, float, float, Vec);
-        void Draw();
-        int Collide(Vec *);
-
-};
 
 #endif

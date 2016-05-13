@@ -9,7 +9,8 @@
 #include <stdlib.h>
 #define RAND ((float)rand()/RAND_MAX)
 #define RCOLOR Vec(RAND,RAND,RAND)
-
+class Mob;
+class Wall;
 class Game
 {
 private:
@@ -29,7 +30,9 @@ public:
     int zoom, togPortal;
     float depth;
     
-    std::vector<Wall> walls;
+    vector<Mob*> mobs;
+    
+    std::vector<Wall*> walls;
     portal defaultPortl;
     worldEngine floor;
     

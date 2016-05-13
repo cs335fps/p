@@ -53,6 +53,11 @@ void Mob::render(){
 
 }
 
+int Mob::Collide(Vec*)
+{
+    return 0;
+}
+
 void Enemy::move(){
 
 

@@ -18,13 +18,15 @@
 #ifndef _SOLIDSPHERE_H_
     #include "solidSphere.h"
 #endif
+
+class Game;
 class Mob
 {
 private:
     float hp;
     Vec location;
     Vec velocity;
-    vec maxSpeed;
+    Vec maxSpeed;
     solidSphere body;
    
 public:
@@ -33,8 +35,9 @@ public:
     void death();
     void damage(int health);
     void move();
-    void render();
+    virtual void render();
     void move(Game);
+    virtual int Collide(Vec*);
 };
 
 class Enemy: public Mob
@@ -59,6 +62,29 @@ class cWall: public Mob{
 	void Draw();
 	int Collide(Vec*, float);
 };
+
+class Wall : public Mob
+{
+    private:
+        Vec start;
+        Vec end;
+        float height;
+        float width;
+        float length;
+        Vec c[8]; // corners
+        Vec v[2]; // endpoints
+
+
+        Vec color;
+    public:
+        Wall();
+        Wall(Vec, Vec, float, float, Vec col = Vec(1,1,1));
+        void Set(Vec, Vec, float, float, Vec);
+        void render();
+        int Collide(Vec *);
+        void death();
+};
+
 class Munition: public Enemy
 {
 
@@ -72,5 +98,5 @@ class Npc: public Mob
 void drawLightedArm();
 void drawFloor();
 void box(float, float, float);
-vec MakeVector(float, float, float);
+Vec MakeVector(float, float, float);
 #endif

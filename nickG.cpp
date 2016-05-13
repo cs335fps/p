@@ -17,7 +17,7 @@
 // #################################################################
 Wall::Wall()
 {
-
+    
 }
 
 Wall::Wall(Vec a, Vec b, float w, float h, Vec col)
@@ -47,14 +47,14 @@ void Wall::Set(Vec a, Vec b, float w, float h, Vec col)
 
     for (int i = 0; i < 4; i++) {
         c[i] = Vec(
-                v[i/2].x - w * (o[i][0] * xScale + o[i][1] * zScale * 1.001),
+                v[i/2].x - w * (o[i][0] * xScale + o[i][1] * zScale * 1.01),
                 0,
-                v[i/2].z - w * (o[i][2] * zScale + o[i][3] * xScale * 1.001)
+                v[i/2].z - w * (o[i][2] * zScale + o[i][3] * xScale * 1.01)
                 );
         c[i+4] = c[i] + Vec(0,height,0);
     }
 }
-void Wall::Draw()
+void Wall::render()
 {
 
     static int s[][4] = { // sides

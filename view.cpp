@@ -13,7 +13,6 @@ View::View(Game *g, int w, int h)
     InitWindow();
     SwitchTo3D();
     game = g;
-    mobs.push_back(new Mob());
     ox = oy = oz =0;
     mobTex = lbmp.getBMP("enemy.bmp");
     game->defaultPortl.assignTexA(lbmp.getBMP("portalA_tex.bmp"));
@@ -168,15 +167,17 @@ void View::Render()
             game->defaultPortl.draw();
     }
     //game->floor.draw();
-
+/*
     for (unsigned int i = 0; i < game->walls.size(); i++) {
         game->walls[i].Draw();
     }
-
-    for(unsigned int i = 0; i < mobs.size(); i++){
-        glBindTexture(GL_TEXTURE_2D, mobTex);
-        mobs[i]->render();
-        glBindTexture(GL_TEXTURE_2D, 0);
+*/
+    for(unsigned int i = 0; i < game->mobs.size(); i++){
+        // These textures should be set in the mob draw
+        // function where it knows what itself is.
+        //glBindTexture(GL_TEXTURE_2D, mobTex);
+        game->mobs[i]->render();
+        //glBindTexture(GL_TEXTURE_2D, 0);
     }
     
     float fl = 200.0;
