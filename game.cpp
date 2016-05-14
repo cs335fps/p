@@ -17,93 +17,93 @@ Game::Game()
     position = Vec(0,2,0);
     direction = Vec(0.0,0.0,0.0);
     mobs.push_back(new Mob());
-    
+
     // Yeah, I'll find a different way of doing this.
-    mobs.push_back(new Wall(Vec(-5,0,-10),Vec(-5,0,0),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-5,0,5),Vec(10,0,5),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(10,0,-5),Vec(10,0,5),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-5,0,-10),Vec(55,0,-10),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(45,0,-40),Vec(45,0,-20),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(65,0,-50),Vec(45,0,-50),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(65,0,-20),Vec(65,0,-50),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(45,0,-20),Vec(55,0,-20),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(55,0,-10),Vec(55,0,-20),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(10,0,-5),Vec(25,0,-5),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(30,0,-5),Vec(60,0,-5),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(60,0,-20),Vec(60,0,-5),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(65,0,-20),Vec(60,0,-20),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(45,0,-50),Vec(45,0,-45),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-25,0,-75),Vec(10,0,-75),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(10,0,-55),Vec(10,0,-75),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(10,0,-50),Vec(10,0,-35),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(10,0,-35),Vec(-10,0,-35),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-15,0,-35),Vec(-30,0,-35),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-25,0,-75),Vec(-25,0,-40),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(25,0,-5),Vec(25,0,15),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(30,0,-5),Vec(30,0,5),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(45,0,-45),Vec(30,0,-45),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(10,0,-55),Vec(30,0,-55),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(25,0,-40),Vec(45,0,-40),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(10,0,-50),Vec(25,0,-50),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(25,0,-40),Vec(25,0,-50),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(30,0,-45),Vec(30,0,-55),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-10,0,-35),Vec(-10,0,0),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-5,0,0),Vec(-10,0,0),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-15,0,-35),Vec(-15,0,0),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-105,0,-55),Vec(-25,0,-55),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-105,0,-15),Vec(-70,0,-15),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-45,0,-45),Vec(-45,0,-15),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-45,0,-15),Vec(-60,0,-15),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-105,0,-55),Vec(-105,0,-15),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-30,0,-35),Vec(-30,0,-50),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-45,0,-55),Vec(-45,0,-50),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-45,0,-45),Vec(-40,0,-45),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-40,0,-50),Vec(-30,0,-50),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-40,0,-45),Vec(-40,0,-50),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-15,0,0),Vec(-45,0,0),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-45,0,-15),Vec(-45,0,0),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-70,0,-15),Vec(-70,0,0),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-55,0,0),Vec(-70,0,0),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-50,0,-10),Vec(-50,0,20),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-60,0,-15),Vec(-60,0,-5),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-75,0,40),Vec(-45,0,40),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-75,0,40),Vec(-75,0,70),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-75,0,70),Vec(-25,0,70),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-20,0,70),Vec(50,0,70),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-40,0,40),Vec(0,0,40),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(0,0,45),Vec(0,0,70),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-10,0,5),Vec(-10,0,40),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(0,0,45),Vec(5,0,45),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-5,0,35),Vec(5,0,35),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-5,0,5),Vec(-5,0,35),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-50,0,20),Vec(-40,0,20),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-40,0,40),Vec(-40,0,20),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-45,0,40),Vec(-45,0,30),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-55,0,30),Vec(-45,0,30),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-55,0,0),Vec(-55,0,30),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(5,0,15),Vec(50,0,15),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(5,0,60),Vec(5,0,15),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(50,0,60),Vec(5,0,60),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-25,0,75),Vec(55,0,75),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-25,0,70),Vec(-25,0,75),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(50,0,60),Vec(50,0,70),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(55,0,75),Vec(55,0,5),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(30,0,5),Vec(55,0,5),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-50,0,5),Vec(-10,0,5),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(25,0,25),Vec(15,0,35),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(45,0,25),Vec(15,0,55),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(15,0,25),Vec(15,0,35),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(25,0,25),Vec(15,0,25),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-60,0,-50),Vec(-60,0,-20),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-60,0,-20),Vec(-90,0,-20),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-95,0,-50),Vec(-95,0,-20),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-95,0,-50),Vec(-65,0,-50),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-65,0,-50),Vec(-65,0,-25),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-70,0,-45),Vec(-70,0,-20),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-90,0,-20),Vec(-90,0,-45),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-85,0,-50),Vec(-85,0,-25),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-55,0,45),Vec(-30,0,45),0.1, 4.0,RCOLOR));
-    mobs.push_back(new Wall(Vec(-10,0,40),Vec(-10,0,55),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-5,0,-10),Vec(-5,0,0),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-5,0,5),Vec(10,0,5),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(10,0,-5),Vec(10,0,5),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-5,0,-10),Vec(55,0,-10),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(45,0,-40),Vec(45,0,-20),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(65,0,-50),Vec(45,0,-50),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(65,0,-20),Vec(65,0,-50),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(45,0,-20),Vec(55,0,-20),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(55,0,-10),Vec(55,0,-20),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(10,0,-5),Vec(25,0,-5),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(30,0,-5),Vec(60,0,-5),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(60,0,-20),Vec(60,0,-5),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(65,0,-20),Vec(60,0,-20),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(45,0,-50),Vec(45,0,-45),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-25,0,-75),Vec(10,0,-75),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(10,0,-55),Vec(10,0,-75),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(10,0,-50),Vec(10,0,-35),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(10,0,-35),Vec(-10,0,-35),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-15,0,-35),Vec(-30,0,-35),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-25,0,-75),Vec(-25,0,-40),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(25,0,-5),Vec(25,0,15),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(30,0,-5),Vec(30,0,5),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(45,0,-45),Vec(30,0,-45),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(10,0,-55),Vec(30,0,-55),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(25,0,-40),Vec(45,0,-40),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(10,0,-50),Vec(25,0,-50),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(25,0,-40),Vec(25,0,-50),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(30,0,-45),Vec(30,0,-55),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-10,0,-35),Vec(-10,0,0),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-5,0,0),Vec(-10,0,0),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-15,0,-35),Vec(-15,0,0),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-105,0,-55),Vec(-25,0,-55),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-105,0,-15),Vec(-70,0,-15),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-45,0,-45),Vec(-45,0,-15),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-45,0,-15),Vec(-60,0,-15),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-105,0,-55),Vec(-105,0,-15),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-30,0,-35),Vec(-30,0,-50),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-45,0,-55),Vec(-45,0,-50),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-45,0,-45),Vec(-40,0,-45),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-40,0,-50),Vec(-30,0,-50),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-40,0,-45),Vec(-40,0,-50),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-15,0,0),Vec(-45,0,0),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-45,0,-15),Vec(-45,0,0),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-70,0,-15),Vec(-70,0,0),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-55,0,0),Vec(-70,0,0),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-50,0,-10),Vec(-50,0,20),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-60,0,-15),Vec(-60,0,-5),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-75,0,40),Vec(-45,0,40),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-75,0,40),Vec(-75,0,70),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-75,0,70),Vec(-25,0,70),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-20,0,70),Vec(50,0,70),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-40,0,40),Vec(0,0,40),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(0,0,45),Vec(0,0,70),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-10,0,5),Vec(-10,0,40),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(0,0,45),Vec(5,0,45),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-5,0,35),Vec(5,0,35),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-5,0,5),Vec(-5,0,35),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-50,0,20),Vec(-40,0,20),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-40,0,40),Vec(-40,0,20),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-45,0,40),Vec(-45,0,30),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-55,0,30),Vec(-45,0,30),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-55,0,0),Vec(-55,0,30),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(5,0,15),Vec(50,0,15),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(5,0,60),Vec(5,0,15),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(50,0,60),Vec(5,0,60),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-25,0,75),Vec(55,0,75),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-25,0,70),Vec(-25,0,75),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(50,0,60),Vec(50,0,70),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(55,0,75),Vec(55,0,5),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(30,0,5),Vec(55,0,5),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-50,0,5),Vec(-10,0,5),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(25,0,25),Vec(15,0,35),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(45,0,25),Vec(15,0,55),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(15,0,25),Vec(15,0,35),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(25,0,25),Vec(15,0,25),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-60,0,-50),Vec(-60,0,-20),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-60,0,-20),Vec(-90,0,-20),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-95,0,-50),Vec(-95,0,-20),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-95,0,-50),Vec(-65,0,-50),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-65,0,-50),Vec(-65,0,-25),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-70,0,-45),Vec(-70,0,-20),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-90,0,-20),Vec(-90,0,-45),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-85,0,-50),Vec(-85,0,-25),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-55,0,45),Vec(-30,0,45),0.1, 4.0,RCOLOR));
+    walls.push_back(Wall(Vec(-10,0,40),Vec(-10,0,55),0.1, 4.0,RCOLOR));
 
     //level1.load("Level1.obj");
     floor.load("floor.obj");
@@ -138,12 +138,24 @@ void Game::Move()
 
     for (unsigned int i = 0; i < mobs.size(); i++) {
         mobs[i]->Collide(&position);
-	for(unsigned int j = 0; j < mobs.size(); j++){
-	    mobs[j]->Collide(mobs[i]->getLoc());
-	}
+        for(unsigned int j = 0; j < mobs.size(); j++){
+            mobs[j]->Collide(mobs[i]->getLoc());
+        }
         mobs[i]->move(this);
     }
+
+    for (unsigned int i = 0; i < walls.size(); i++) {
+        walls[i].Collide(&position);
+    }
     
+    for (unsigned int i = 0; i < bullets.size(); i++) {
+        if (bullets[i].age-- < 1) {
+            bullets[i] = bullets.back();
+            bullets.pop_back();
+            i--;
+        }
+    }
+
     if (togPortal == 1){
         defaultPortl.reLocateOBJ(position.x,
                 position.y,
@@ -164,6 +176,24 @@ void Game::Move()
      */
 
 }
+
+void Game::Shoot()
+{
+    float rotx = direction.x;
+    float roty = direction.y - PI / 2.0;
+    Vec end(position.x+sin(rotx) * sin(roty)*10.0,
+            position.y+cos(roty)*10.0,
+            position.z+cos(rotx) * sin(roty)*10.0);
+
+    Bullet b;
+    b.start = position - Vec(0,.25,0);
+    b.end = end;
+    b.age = 10;
+    bullets.push_back(b);
+}
+
+
+
 
 
 

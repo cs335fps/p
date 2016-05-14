@@ -1,16 +1,18 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
-#include "vec.h"
 #include "nickG.h"
+#include "vec.h"
 #include "WorldEngine.h"
 #include "portal.h"
 #include <vector>
 #include <stdlib.h>
+
 #define RAND ((float)rand()/RAND_MAX)
 #define RCOLOR Vec(RAND,RAND,RAND)
 class Mob;
 class Wall;
+class Bullet;
 class Game
 {
 private:
@@ -18,6 +20,8 @@ private:
 public:
     Vec position;
     Vec direction;
+    
+    vector<Bullet> bullets;
     
     int moveX;
     int moveY;
@@ -33,13 +37,15 @@ public:
     float depth;
     
     vector<Mob*> mobs;
-    
-    std::vector<Wall*> walls;
+    vector<Wall> walls;
+
     portal defaultPortl;
     worldEngine floor;
     
     Game();
     void Move();
+    
+    void Shoot();
     
 };
 

@@ -169,17 +169,21 @@ void View::Render()
             game->defaultPortl.draw();
     }
     //game->floor.draw();
-/*
+
     for (unsigned int i = 0; i < game->walls.size(); i++) {
-        game->walls[i].Draw();
+        game->walls[i].render();
     }
-*/
+
     for(unsigned int i = 0; i < game->mobs.size(); i++){
         // These textures should be set in the mob draw
         // function where it knows what itself is.
         //glBindTexture(GL_TEXTURE_2D, mobTex);
         game->mobs[i]->render();
         //glBindTexture(GL_TEXTURE_2D, 0);
+    }
+    
+    for (unsigned int i = 0; i < game->bullets.size(); i++) {
+        game->bullets[i].render();
     }
     
     float fl = 200.0;
@@ -208,7 +212,7 @@ void View::HUD()
     int h = height;
     SwitchTo2D();
     int l = h / 1;
-
+    glLineWidth(1);
     glBegin(GL_LINES);
     glColor3f(1.0f,1.0f,1.0f);
     glVertex2d(w / 2 - l / 20, h / 2);

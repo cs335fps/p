@@ -13,11 +13,26 @@
 //
 #include "nickG.h"
 
+void Bullet::render()
+{
+    glEnable (GL_BLEND);
+    glDisable(GL_LIGHTING);
+    glLineWidth(5.0);
+    glColor4f(1,1,1,((float)age / 10.0));
+    glBegin(GL_LINES);
+    glVertex3fv(&start.x);
+    glColor4f(1,1,1,0);
+    glVertex3fv(&end.x);
+    glEnd();
+    glEnable(GL_LIGHTING);
+}
+
+
 // ######################## Wall class #############################
 // #################################################################
 Wall::Wall()
 {
-    
+
 }
 
 Wall::Wall(Vec a, Vec b, float w, float h, Vec col)
@@ -74,7 +89,7 @@ void Wall::render()
         glColor3fv(&color[0]);
         glNormal3fv(&Normal(c[s[i][2]],c[s[i][1]],c[s[i][0]])[0]);
         for (int j = 0; j < 4; j++) {
-            
+
             glVertex3fv(&c[s[i][j]][0]);
         }
         glEnd();
@@ -321,6 +336,7 @@ Vec Cross(Vec a, Vec b)
     c.z = a.x * b.y - a.y * b.x;
     return c;
 }
+
 
 
 

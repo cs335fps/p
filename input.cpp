@@ -97,6 +97,7 @@ void Input::CheckMouse(XEvent *e)
         if (e->xbutton.button==1) {
             //Left button was pressed
             openal_sound();
+            game->Shoot();
             return;
         }
         if (e->xbutton.button==3) {
