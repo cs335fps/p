@@ -11,6 +11,8 @@ Game::Game()
     maxZoom = .55f;
     minZoom = .15f;
     togPortal =0;
+    nbullets = 10;
+    maxbullets = 10;
 
     position = Vec(0,2,0);
     direction = Vec(0.0,0.0,0.0);

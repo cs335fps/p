@@ -24,6 +24,8 @@ public:
     float velocityX;
     float velocityY;
     int aiming;
+    int nbullets;
+    int maxbullets;
     
     float maxZoom;
     float minZoom;

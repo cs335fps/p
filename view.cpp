@@ -1,5 +1,6 @@
 #include "view.h"
 #include "log.h"
+#include "ppm.h"
 extern "C" {
     #include "fonts.h"
 }
@@ -12,6 +13,7 @@ View::View(Game *g, int w, int h)
     is3D = -1;
     InitWindow();
     SwitchTo3D();
+    initialize_fonts();
     game = g;
     ox = oy = oz =0;
     mobTex = lbmp.getBMP("enemy.bmp");
@@ -226,21 +228,21 @@ void View::HUD()
     glVertex2d(w / 2+1, h / 2 - l / 20);
     glVertex2d(w / 2+1, h / 2 + l / 20);
     glEnd();
+    //Game Menu
     glBegin(GL_LINES);
     Rect r;
-    r.bot = h - 50;
+    r.bot = h - 10;
     r.left = 10;
     r.center = 0;
-    initialize_fonts();
-    ggprint8b(&r, 16, 1, "Spacebar - Reload");
+    ggprint8b(&r, 16, 0, "");
+    ggprint8b(&r, 16, 0, "Spacebar - Reload");
     ggprint8b(&r, 16, 0, "Left click - Shoot");
     ggprint8b(&r, 16, 0, "S - Sniper");
     ggprint8b(&r, 16, 0, "N - 9mm");
     ggprint8b(&r, 16, 0, "G - ShotGun");
-    ggprint8b(&r, 16, 0, "Nround:  0 / 10");
+    ggprint8b(&r, 16, 0, "Nround:  'game->nbullets' / 10");
     ggprint8b(&r, 16, 0, "Kills: Deflection");
     ggprint8b(&r, 16, 0, "Score: Sounds");
-    cleanup_fonts();
     glEnd();
 }
 
