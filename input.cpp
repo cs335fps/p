@@ -6,6 +6,7 @@ Input::Input(Game *g, View *v)
     game = g;
     dpy = view->GetDisplay();
     view->CenterCursor();
+    initopenal();
 }
 
 int Input::CheckInput()
@@ -26,7 +27,7 @@ int Input::CheckKeys(XEvent *e)
     if (e->type == KeyPress) {
         int key = XLookupKeysym(&e->xkey, 0);
 
-        initopenal();
+        
         if (key == XK_Escape) {
             clean_al();
             return 1;
