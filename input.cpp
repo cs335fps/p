@@ -27,7 +27,7 @@ int Input::CheckKeys(XEvent *e)
     if (e->type == KeyPress) {
         int key = XLookupKeysym(&e->xkey, 0);
 
-        
+
         if (key == XK_Escape) {
             clean_al();
             return 1;
@@ -44,25 +44,22 @@ int Input::CheckKeys(XEvent *e)
         if (key == XK_d) {
             game->moveY = -1;
         }
-        if (key == XK_n) {
-            openal_sound();
+        if(key == XK_r) {
+            //Fire Roy's key
+            game->togPortal ^=1;
         }
-	if(key == XK_r) {
-	    //Fire Roy's key
-         game->togPortal ^=1;
-	}
-	if(key == XK_r) {
-	    //Fire Roy's key
-	
-	}
-	if(key == XK_n) {
-	    //Fire Nick's key
+        if(key == XK_r) {
+            //Fire Roy's key
 
-	}
-	if(key == XK_l) {
-		//Fire Lizandro's key.
+        }
+        if(key == XK_n) {
+            //Fire Nick's key
+            game->partyMode ^= 1;
+        }
+        if(key == XK_l) {
+            //Fire Lizandro's key.
 
-	}
+        }
     }else if (e->type == KeyRelease) {
         int key = XLookupKeysym(&e->xkey, 0);
         if (key == XK_w) {
@@ -130,4 +127,5 @@ void Input::CheckMouse(XEvent *e)
     if (dx != 0 || dy != 0)
         view->CenterCursor();
 }
+
 

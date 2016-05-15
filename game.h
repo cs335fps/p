@@ -31,6 +31,8 @@ public:
     int nbullets;
     int maxbullets;
     
+    int partyMode;
+    
     float maxZoom;
     float minZoom;
     int zoom, togPortal;

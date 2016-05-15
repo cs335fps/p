@@ -13,6 +13,21 @@
 //
 #include "nickG.h"
 
+int hash(int *in, int n)
+{
+    int seed = 0;//533000389;
+    for (int i = 0; i < n; i++) {
+        seed ^= in[i];
+        for(int j = 0; j < 8; j++) {
+            if (seed & 1)
+                seed = (seed >> 1) ^ 0xedb88320;
+            else
+                seed = seed >> 1;
+        }
+    }
+    return seed;
+}
+
 void Bullet::render()
 {
     glEnable (GL_BLEND);
@@ -42,8 +57,13 @@ Wall::Wall(Vec a, Vec b, float w, float h, Vec col)
 
 void Wall::Set(Vec a, Vec b, float w, float h, Vec col)
 {
-    color = col;
-    //w = w + RAND * 0.001;
+
+    int nums[] = {int(a.x * 10),int(a.z * 10),int(b.x * 10),int(b.z * 10)};
+    int ha = hash(nums, 4);
+    ha = ha >> 8 & 3;
+    float colf = ((float)ha / 3 * 0.4) + .1;
+    color = Vec(colf, colf, colf);
+    //color = col;
     float o[][4] = { // offsets
         {1, -1, 1, 1},
         {1, 1, 1, -1},
@@ -86,8 +106,12 @@ void Wall::render()
 
     for (int i = 0; i < 6; i++) {
         glBegin(GL_POLYGON);
-        glColor3fv(&color[0]);
-        //glColor3f(RAND,RAND,RAND); // PARTY MODE
+  
+        if (game->partyMode)
+            glColor3f(RAND,RAND,RAND); // PARTY MODE
+        else
+            glColor3fv(&color[0]);
+            
         glNormal3fv(&Normal(c[s[i][2]],c[s[i][1]],c[s[i][0]])[0]);
         for (int j = 0; j < 4; j++) {
 

@@ -13,6 +13,7 @@ Game::Game()
     togPortal =0;
     nbullets = 10;
     maxbullets = 10;
+    partyMode = 0;
 
     position = Vec(0,2,0);
     direction = Vec(0.0,0.0,0.0);
@@ -106,7 +107,9 @@ Game::Game()
     walls.push_back(Wall(Vec(-85,0,-50),Vec(-85,0,-25),0.1, wHeight,RCOLOR));
     walls.push_back(Wall(Vec(-55,0,45),Vec(-30,0,45),0.1, wHeight,RCOLOR));
     walls.push_back(Wall(Vec(-10,0,40),Vec(-10,0,55),0.1, wHeight,RCOLOR));
-
+    for (unsigned int i = 0; i < walls.size(); i++) {
+        walls[i].game = this;
+    }
     //level1.load("Level1.obj");
     floor.load("floor.obj");
 }

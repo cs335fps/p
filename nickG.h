@@ -8,7 +8,8 @@
 #include "charlesE.h"
 
 #define RAND ((float)rand()/RAND_MAX)
-
+int hash(int *, int);
+class Game;
 class Bullet
 {
 public:
@@ -37,6 +38,7 @@ class Wall
         void render();
         int Collide(Vec *);
         void death();
+        Game* game;
 };
 
 class Seconds
