@@ -87,6 +87,7 @@ void Wall::render()
     for (int i = 0; i < 6; i++) {
         glBegin(GL_POLYGON);
         glColor3fv(&color[0]);
+        //glColor3f(RAND,RAND,RAND); // PARTY MODE
         glNormal3fv(&Normal(c[s[i][2]],c[s[i][1]],c[s[i][0]])[0]);
         for (int j = 0; j < 4; j++) {
 
@@ -98,9 +99,22 @@ void Wall::render()
 
 int Wall::Collide(Vec *pos)
 {
+    float pDia = 1.0; // player diameter
     Vec p = *pos;
     p.y = 0.0;
     for (int i = 0; i < 4; i++) {
+    
+        // corner collide
+        Vec pc = c[i] - p;
+        if (pc.Magnitude() < pDia / 2.0) {
+            pc.Normalize();
+            p = c[i] - pc * pDia / 2.0;
+            pos->x = p.x;
+            pos->z = p.z;
+        }
+    
+    
+        // Wall collide
         Vec AP = p - c[i];
         Vec AB = c[(i+1)%4] - c[i];
         float t = Dot(AB, AP) / Dot(AB, AB);
@@ -112,7 +126,7 @@ int Wall::Collide(Vec *pos)
         Vec closestPoint = c[i] + AB * t;  
 
         float dist = (p - closestPoint).Magnitude();
-        if (dist < 1.0 / 2.0) {
+        if (dist < pDia / 2.0) {
             // Figure out which side of the wall we are on.
             float side = -Cross(AP,AB).y;
             if (side < 0.0)
@@ -121,7 +135,7 @@ int Wall::Collide(Vec *pos)
                 side = 1.0;
             Vec perp(AB.z,0,-AB.x);
             perp.Normalize();
-            p = closestPoint + perp * (1.0 / 2.0) * side;
+            p = closestPoint + perp * (pDia / 2.0) * side;
             pos->x = p.x;
             pos->z = p.z;
             return 1;
