@@ -5,13 +5,20 @@
 #include "solidSphere.h"
 #include "charlesE.h"
 
+Mob::Mob()
+{
 
-Mob::Mob(){
+}
+Mob::Mob(int mobID, Vec* spawnpoint)
+{ 
+    this->id = mobID;
     body.redraw(2.0, 10, 10);
-    this->spawn();
+    this->spawn(spawnpoint);
 }
 
-void Mob::spawn(){
+void Mob::spawn(Vec* spawnpoint)
+{
+
     location.z = 2;
     location.x = 2;
     location.y = 2; // y is up and down.
@@ -21,22 +28,26 @@ void Mob::spawn(){
     //velocity.y = 0.05;
 }
 
-void Mob::death(Game* g){
-    delete this;	
+void Mob::death(Game* g)
+{
+     	
 
 }
-void Mob::damage(int health, Game* g){
+void Mob::damage(int health, Game* g)
+{
 
     this->hp -= health;
     if(this->hp < 0)
 	this->death(g);
 }
 
-void Mob::move(){
+void Mob::move()
+{
     this->move(NULL);
 }
 
-void Mob::move(Game* g){
+void Mob::move(Game* g)
+{
 //Put AI logic here.
 //
 //1) Collision detection: gather local objects
@@ -69,7 +80,8 @@ void Mob::move(Game* g){
 	velocity.x = 0;
 }
 
-void Mob::render(){
+void Mob::render()
+{
     this->move();
     body.draw(location.x, location.y, location.z);
 
@@ -79,21 +91,30 @@ int Mob::Collide(Vec* p)
 {
     if(body.isTouching(p->x, p->y, p->z)){
         this->velocity = (this->location - *p);
-	//cout << "Object touching" << " x " << this->velocity.x << " y " << this->velocity.y 
+	//cout << "Object touching" << " x " << this->velocity.x << " y " 
+	//<< this->velocity.y 
 	//    << " z " << this->velocity.z<<endl;
     }	
     return 0;
 }
-
-void Enemy::move(){
+float r(float min, float max)
+{
+    return (
+       static_cast<float> (rand()) / (static_cast<float> (RAND_MAX) / (max-min)) + min
+    );
+}
+void Enemy::move()
+{
 
 
 }
-cWall::cWall()
+
+cWall::cWall(int mobID, Vec* spawnpoint):Mob(mobID, spawnpoint)
 {
 
 }
-cWall::cWall(Vec a, Vec b, float w, float h)
+
+cWall::cWall(Vec a, Vec b, float w, float h):Mob()
 {
     Set(a, b, w, h);
 }

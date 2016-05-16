@@ -18,27 +18,30 @@
 #ifndef _SOLIDSPHERE_H_
     #include "solidSphere.h"
 #endif
-
+float r(float, float);
 class Game;
 class Mob
 {
 private:
+    int id;
     float hp;
     Vec location;
     Vec velocity;
     Vec maxSpeed;
     solidSphere body;
-   
+    unsigned int texture;
 public:
     Mob();
-    void spawn();
+    Mob(int, Vec*);
+    void spawn(Vec*);
     void death(Game*);
     void damage(int, Game*);
     void move();
     virtual void render();
     void move(Game*);
     virtual int Collide(Vec*);
-    Vec* getLoc() { return &location; } 
+    Vec* getLoc() { return &location; }
+    void setTex(unsigned int t); 
 };
 
 class Enemy: public Mob
@@ -58,6 +61,7 @@ class cWall: public Mob{
 
     public:
 	cWall();
+	cWall(int, Vec*);
 	cWall(Vec, Vec, float, float);
 	void Set(Vec, Vec, float, float);
 	void Draw();

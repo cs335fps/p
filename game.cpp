@@ -18,8 +18,8 @@ Game::Game()
 
     position = Vec(0,2,0);
     direction = Vec(0.0,0.0,0.0);
-    mobs.push_back(new Mob());
-    
+    for(int i = 0; i < 10; i++)
+       mobs.push_back(new Mob(i, new Vec(r(50, -50), 0, r(50, -50))));	
     
     float wHeight = 50.0;
     // Yeah, I'll find a different way of doing this.

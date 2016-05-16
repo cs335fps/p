@@ -7,7 +7,7 @@ extern "C" {
 
 View::View(Game *g, int w, int h)
 {
-	loadBMP lbmp;
+    loadBMP lbmp;
     wOverride = w;
     hOverride = h;
     is3D = -1;
