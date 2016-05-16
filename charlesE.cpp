@@ -4,6 +4,7 @@
 
 #include "solidSphere.h"
 #include "charlesE.h"
+#define vmi vector<Mob*>::iterator
 
 Mob::Mob()
 {
@@ -19,9 +20,9 @@ Mob::Mob(int mobID, Vec* spawnpoint)
 void Mob::spawn(Vec* spawnpoint)
 {
 
-    location.z = 2;
-    location.x = 2;
-    location.y = 2; // y is up and down.
+    location.z = spawnpoint->z;
+    location.x = spawnpoint->x;
+    location.y = spawnpoint->y; // y is up and down.
     body.draw(location.x, location.y, location.z);
     //velocity.z = -0.05;
     //velocity.x = .15;
@@ -30,8 +31,19 @@ void Mob::spawn(Vec* spawnpoint)
 
 void Mob::death(Game* g)
 {
-     	
-
+    int i = 0;
+    for(vmi m = g->mobs.begin(); m != g->mobs.end(); i++, m++){
+        if((**m) == this->id){
+	    //causes an undefined behavior warning.
+	    Mob* temp = *m;
+	    std::swap(*m, temp);
+	    delete *m;
+            g->mobs.erase(g->mobs.begin()+this->id);
+            break;
+	}
+    }
+    
+    throw -1;
 }
 void Mob::damage(int health, Game* g)
 {
@@ -46,6 +58,16 @@ void Mob::move()
     this->move(NULL);
 }
 
+bool Mob::operator==(int b)
+{
+    return this->id == b;
+}
+
+bool Mob::operator==(Mob* b)
+{
+    return this->id == b->id;
+}
+
 void Mob::move(Game* g)
 {
 //Put AI logic here.
@@ -58,7 +80,7 @@ void Mob::move(Game* g)
 
 
 //3) collision detection: if touching object, bounce
-    Vec* tmp = new Vec;
+    static Vec* tmp = new Vec;
     *tmp = location+velocity;
     //if(this->Collide(tmp))
 //	velocity = velocity * -1;
@@ -78,6 +100,7 @@ void Mob::move(Game* g)
     	velocity.x -= 0.05;
     else
 	velocity.x = 0;
+
 }
 
 void Mob::render()
@@ -99,8 +122,9 @@ int Mob::Collide(Vec* p)
 }
 float r(float min, float max)
 {
+    static float r_m = static_cast<float> (RAND_MAX);
     return (
-       static_cast<float> (rand()) / (static_cast<float> (RAND_MAX) / (max-min)) + min
+       static_cast<float> (rand()) / (r_m / (max-min)) + min
     );
 }
 void Enemy::move()

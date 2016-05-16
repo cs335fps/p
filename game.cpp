@@ -196,8 +196,9 @@ void Game::Shoot()
     Bullet b;
     b.start = position - Vec(0,.25,0);
     b.end = end;
-    b.age = 10;
+    b.age = 30;
     bullets.push_back(b);
+    
 }
 
 
