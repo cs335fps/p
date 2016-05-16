@@ -1,5 +1,7 @@
 #ifndef _FONTS_H_
 #define _FONTS_H_
+
+#include "game.h"
 typedef struct t_rect {
 	int left;
 	int top;
@@ -13,7 +15,7 @@ typedef struct t_rect {
 } Rect;
 extern void initialize_fonts(void);
 extern void cleanup_fonts(void);
-extern void ggprint16(Rect *r, int advance, int cref, const char *fmt, ...);
+extern void ggprint16(Rect *r, int advance, int cref, const char *fmt, int bullets, ...);
 extern void ggprint12(Rect *r, int advance, int cref, const char *fmt, ...);
 extern void ggprint13(Rect *r, int advance, int cref, const char *fmt, ...);
 extern void ggprint10(Rect *r, int advance, int cref, const char *fmt, ...);

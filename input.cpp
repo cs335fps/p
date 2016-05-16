@@ -60,6 +60,9 @@ int Input::CheckKeys(XEvent *e)
             //Fire Lizandro's key.
 
         }
+        if(key == XK_space) {
+            game->nbullets = 10;
+        }
     }else if (e->type == KeyRelease) {
         int key = XLookupKeysym(&e->xkey, 0);
         if (key == XK_w) {
@@ -95,6 +98,7 @@ void Input::CheckMouse(XEvent *e)
             //Left button was pressed
             openal_sound();
             game->Shoot();
+            game->nbullets -= 1;
             return;
         }
         if (e->xbutton.button==3) {

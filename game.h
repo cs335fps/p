@@ -30,6 +30,7 @@ public:
     int aiming;
     int nbullets;
     int maxbullets;
+    int nkills;
     
     int partyMode;
     

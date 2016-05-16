@@ -244,9 +244,9 @@ void View::HUD()
     ggprint8b(&r, 16, 0, "S - Sniper");
     ggprint8b(&r, 16, 0, "N - 9mm");
     ggprint8b(&r, 16, 0, "G - ShotGun");
-    ggprint8b(&r, 16, 0, "Nround:  'game->nbullets' / 10");
-    ggprint8b(&r, 16, 0, "Kills: Deflection");
-    ggprint8b(&r, 16, 0, "Score: Sounds");
+    ggprint8b(&r, 16, 0, "Nround: %i / %i", game->nbullets, game->maxbullets);
+    ggprint8b(&r, 16, 0, "Kills: %i", game->nkills);
+    // ggprint8b(&r, 16, 0, "Score: Sounds");
     glEnd();
 }
 

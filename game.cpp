@@ -14,6 +14,7 @@ Game::Game()
     nbullets = 10;
     maxbullets = 10;
     partyMode = 0;
+    nkills=0;
 
     position = Vec(0,2,0);
     direction = Vec(0.0,0.0,0.0);
