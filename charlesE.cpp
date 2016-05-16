@@ -40,7 +40,12 @@ void Mob::move(Game* g){
 //Put AI logic here.
 //
 //1) Collision detection: gather local objects
+
+
 //2) Collision detection: for each local object, is touching object?
+
+
+
 //3) collision detection: if touching object, bounce
     Vec* tmp = new Vec;
     *tmp = location+velocity;
