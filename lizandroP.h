@@ -16,7 +16,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include </usr/include/AL/alut.h>
-#define numOfSounds 3
+
 	int initopenal();
 	void openal_sound();
 	void clean_al();
