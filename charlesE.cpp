@@ -21,15 +21,15 @@ void Mob::spawn(){
     //velocity.y = 0.05;
 }
 
-void Mob::death(){
+void Mob::death(Game* g){
     delete this;	
 
 }
-void Mob::damage(int health){
+void Mob::damage(int health, Game* g){
 
     this->hp -= health;
     if(this->hp < 0)
-	this->death();
+	this->death(g);
 }
 
 void Mob::move(){
@@ -40,7 +40,12 @@ void Mob::move(Game* g){
 //Put AI logic here.
 //
 //1) Collision detection: gather local objects
+
+
 //2) Collision detection: for each local object, is touching object?
+
+
+
 //3) collision detection: if touching object, bounce
     Vec* tmp = new Vec;
     *tmp = location+velocity;
@@ -74,8 +79,8 @@ int Mob::Collide(Vec* p)
 {
     if(body.isTouching(p->x, p->y, p->z)){
         this->velocity = (this->location - *p);
-	cout << "Object touching" << " x " << this->velocity.x << " y " << this->velocity.y 
-	    << " z " << this->velocity.z<<endl;
+	//cout << "Object touching" << " x " << this->velocity.x << " y " << this->velocity.y 
+	//    << " z " << this->velocity.z<<endl;
     }	
     return 0;
 }
@@ -150,7 +155,7 @@ void cWall::Draw()
     }
 }
 int cWall::Collide(Vec * pos, float diameter = 0)
-{ // TODO: Ask nick to comment his variables.
+{ 
     Vec position = *pos;
     position.y = 0.0; // this is our vertical element
     Vec AP = position - this->endpoints[0];

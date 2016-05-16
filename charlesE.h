@@ -32,8 +32,8 @@ private:
 public:
     Mob();
     void spawn();
-    void death();
-    void damage(int health);
+    void death(Game*);
+    void damage(int, Game*);
     void move();
     virtual void render();
     void move(Game*);

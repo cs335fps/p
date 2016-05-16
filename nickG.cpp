@@ -119,6 +119,7 @@ void Wall::render()
         }
         glEnd();
     }
+    glDisable(GL_COLOR_MATERIAL);
 }
 
 int Wall::Collide(Vec *pos)
