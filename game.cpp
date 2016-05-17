@@ -11,6 +11,7 @@ Game::Game()
     maxZoom = .55f;
     minZoom = .15f;
     togPortal =0;
+    setPortal =0;
     nbullets = 10;
     maxbullets = 10;
     partyMode = 0;
@@ -117,6 +118,7 @@ Game::Game()
 
 void Game::Move()
 {
+    float ox, oz;
     if (zoom == 1 && depth < maxZoom) {
         depth += (maxZoom - minZoom) / 15;
     }else if (zoom == 0 && depth > minZoom) {
@@ -136,7 +138,9 @@ void Game::Move()
 
     // slow down when aiming
     float speed = 0.2f - (float) aiming * 0.1f;
-
+    
+    oz = position.z;
+    ox = position.x;
     position.z -= (velocityX * cos(direction.x)
             + velocityY * -sin(direction.x)) * speed;
     position.x -= (velocityY * cos(direction.x)
@@ -162,6 +166,7 @@ void Game::Move()
         }
     }
 
+    // handle portals and portal placement
     if (togPortal == 1){
         defaultPortl.reLocateOBJ(position.x,
                 position.y,
@@ -170,16 +175,12 @@ void Game::Move()
                 position.x,
                 position.y,
                 position.z);
+        if (setPortal == 1){
+                setPortal ^= 1;
+                defaultPortl.loc(position.x, position.y, position.z,
+                                 ox, 2, oz);
+        }
     }
-    /*
-       if (level1.isTouching(position.x, position.y, position.z,1, tmpPos)){
-       position.x = tmpPos[0];
-       position.z = tmpPos[2];
-       } else{
-       tmpPos[0] = position.x;
-       tmpPos[2] = position.z;
-       }
-     */
 
 }
 
