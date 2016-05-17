@@ -6,6 +6,9 @@
 #include "charlesE.h"
 #define vmi vector<Mob*>::iterator
 
+Mob::~Mob(){
+	
+}
 Mob::Mob()
 {
 

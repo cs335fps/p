@@ -18,11 +18,19 @@
 #ifndef _SOLIDSPHERE_H_
     #include "solidSphere.h"
 #endif
+#ifndef _GAME_H_
+//	#include <cstdlib>
+#endif
+#ifndef OPENAL_H
+//    #include <unistd>
+#endif
 
 float r(float, float);
 Vec MakeVector(float, float, float);
 
 class Game;
+
+
 class Mob
 {
 private:
@@ -47,6 +55,7 @@ public:
     void setTex(unsigned int t); 
     bool operator==(int b);
     bool operator==(Mob* b);
+    virtual ~Mob();
 };
 
 class Enemy: public Mob
