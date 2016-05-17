@@ -39,6 +39,7 @@ class Wall
         int Collide(Vec *);
         void death();
         Game* game;
+		vector<Vec> GetPoints(double units = 1.0);
 };
 
 class Seconds

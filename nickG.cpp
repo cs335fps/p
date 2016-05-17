@@ -55,6 +55,17 @@ Wall::Wall(Vec a, Vec b, float w, float h, Vec col)
     Set(a, b, w, h, col);
 }
 
+vector<Vec> Wall::GetPoints(double units)
+{
+    vector<Vec> points;
+    int n = ceil(length / units);
+    Vec dir = (v[1] - v[0]) / (float)n;
+    for (float i = 0; i <= n; i+=1.0) {
+        points.push_back(v[0] + dir * i);
+    }
+    return points;
+}
+
 void Wall::Set(Vec a, Vec b, float w, float h, Vec col)
 {
 
