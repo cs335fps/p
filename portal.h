@@ -16,7 +16,7 @@ class portal
                 float portLocA[3],
                       portLocB[3],
                       enterPoint[3];
-                int entered;
+                int entered, placed;
                 unsigned int ptexa, ptexb;
         public:
                 portal();
@@ -25,7 +25,8 @@ class portal
                        float x, float y, float z,
                        float rad);
                 void draw();
-                void loc(float x, float y, float z);
+                void loc(float px, float py, float pz, 
+                         float vx, float vy, float vz);
                 void reLocateOBJ(float *point, float *newLoc);
                 void reLocateOBJ(float x, float y, float z,
                                  float &nx, float &ny, float &nz);
