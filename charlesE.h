@@ -52,6 +52,8 @@ public:
     void move(Game*);
     virtual int Collide(Vec*); 
     Vec* getLoc() { return &location; }
+    void setLocY(float y = 1);
+    void setVelY(float y = 0);
     void setTex(unsigned int t); 
     bool operator==(int b);
     bool operator==(Mob* b);
@@ -92,4 +94,6 @@ class Npc: public Mob
 {
 
 };
+
+void chadKey(Game* g);
 #endif
