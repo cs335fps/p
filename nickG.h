@@ -13,8 +13,9 @@ class Game;
 class Bullet
 {
 public:
-    Vec start;
-    Vec end;
+	Vec origin;
+	Vec direction;
+	Vec end;
     int age;
     
     void render();
@@ -25,13 +26,13 @@ class Wall
     private:
         Vec start;
         Vec end;
-        float height;
         float width;
         float length;
         Vec c[8]; // corners
         Vec v[2]; // endpoints
         Vec color;
     public:
+		float height;
         Wall();
         Wall(Vec, Vec, float, float, Vec col = Vec(1,1,1));
         void Set(Vec, Vec, float, float, Vec);
@@ -40,6 +41,7 @@ class Wall
         void death();
         Game* game;
 		vector<Vec> GetPoints(double units = 1.0);
+		int Ray(Vec origin, Vec direction, float * closest);
 };
 
 class Seconds

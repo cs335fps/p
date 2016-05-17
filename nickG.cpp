@@ -35,7 +35,7 @@ void Bullet::render()
     glLineWidth(5.0);
     glColor4f(1,1,1,((float)age / 10.0));
     glBegin(GL_LINES);
-    glVertex3fv(&start.x);
+    glVertex3fv(&origin.x);
     glColor4f(1,1,1,0);
     glVertex3fv(&end.x);
     glEnd();
@@ -64,6 +64,32 @@ vector<Vec> Wall::GetPoints(double units)
         points.push_back(v[0] + dir * i);
     }
     return points;
+}
+
+int Wall::Ray(Vec origin, Vec direction, float * closest)
+{
+    
+    direction.Normalize();
+    Vec n = Normal(v[0],v[0]+Vec(0,1,0),v[1]);
+    float dirDotNormal = direction.Dot(n);
+    if (dirDotNormal == 0.0)
+        return 0; // Parallel
+    float t = -1.0 * (origin - v[0]).Dot(n) / dirDotNormal;
+    if (t < 0.0 || t < *closest) {
+        return 0; // Behind us
+    }
+    
+    Vec location = origin + (direction * t);
+    if (location.y < 0 || location.y > height)
+        return 0; // Over or under wall
+
+    location.y = 0;
+    if ((location - v[0]).Magnitude() > length ||
+        (location - v[1]).Magnitude() > length)
+        return 0; // Too far left or right
+    
+    *closest = t;
+    return 1;
 }
 
 void Wall::Set(Vec a, Vec b, float w, float h, Vec col)

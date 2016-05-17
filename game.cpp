@@ -190,13 +190,28 @@ void Game::Shoot()
     float rotx = direction.x;
     float roty = direction.y - PI / 2.0;
     float trailLen = 5.0;
-    Vec end(position.x+sin(rotx) * sin(roty) * trailLen,
-            position.y+cos(roty) * trailLen,
-            position.z+cos(rotx) * sin(roty) * trailLen);
+    
 
     Bullet b;
-    b.start = position - Vec(0,.25,0);
-    b.end = end;
+    Vec origin = position - Vec(0,.25,0);
+    Vec direction = Vec(sin(rotx) * sin(roty) * trailLen,
+            cos(roty) * trailLen,
+            cos(rotx) * sin(roty) * trailLen);
+    
+    // Check collision;
+    float closest = 9999999.9;
+    int wallHit = 0;
+    int wallCount = walls.size();
+    for (int i = 0; i < wallCount; i++) {
+        if (walls[i].Ray(b.origin, b.direction, &closest) == 1)
+            wallHit = i;
+    }
+    //cout << wallHit << endl;
+    
+    b.origin = origin;
+    b.direction = direction;
+    b.end = b.origin + b.direction;
+
     b.age = 30;
     bullets.push_back(b);
     
