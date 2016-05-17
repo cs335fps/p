@@ -957,9 +957,9 @@ void portal::loc(float px, float py, float pz,
         vz = ((vz - pz) / mag) * 5;
 
         // add distance to player center
-        px += vx;
-        py += vy;
-        pz += vz;
+        px -= vx;
+        py -= vy;
+        pz -= vz;
 
         // choose which portal to place
         switch (placed % 2){
