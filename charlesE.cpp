@@ -5,7 +5,10 @@
 #include "solidSphere.h"
 #include "charlesE.h"
 #define vmi vector<Mob*>::iterator
-
+#define vwi vector<Wall>::iterator
+Mob::~Mob(){
+	
+}
 Mob::Mob()
 {
 
@@ -227,8 +230,46 @@ int cWall::Collide(Vec * pos, float diameter = 0)
     }
     return 0;
 }
-
-
-
+void Mob::setLocY(float y) 
+{
+    this->location.y = y;
+}
+void Mob::setVelY(float y) 
+{
+    this->velocity.y = y;
+} 
+void chadKey(Game* g)
+{
+    static int toggle = 0;
+    if(toggle == 0) {
+        toggle = 1;
+        /*//Set all mobs to color red and float straight up.
+        for(vmi m = g->mobs.begin(); m != g->mobs.end(); m++){
+                *m->setVelY(0.075);
+        }
+        for(
+            vwi w = g->walls.begin(); 
+            w != g->walls.end(); 
+            w++;
+        ){
+            w.height = 0.5;
+        }*/
+    }
+    else {
+        toggle = 1;
+        /*for(vmi m = g->mobs.begin(); m != g->mobs.end(); m++){
+            *m->setPosY(1);
+            *m->setVelY(0);
+        }
+        for(
+            vwi w = g->walls.begin();
+            w != g->walls.end();
+            w++;
+        ){
+            w.height = 40;
+        }*/
+        
+    }
+}
 
 

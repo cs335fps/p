@@ -6,7 +6,10 @@
 #include "WorldEngine.h"
 #include "portal.h"
 #include <vector>
-#include <stdlib.h>
+#ifndef _mob_h_
+	#include <stdlib.h>
+#endif
+
 
 #define RAND ((float)rand()/RAND_MAX)
 #define RCOLOR Vec(RAND,RAND,RAND)
