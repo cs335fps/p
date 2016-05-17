@@ -26,6 +26,7 @@
 #include "WorldEngine.h"
 #include "loadBMP.h"
 #include "portal.h"
+#include "charlesE.h"
      
 using namespace std;
 
@@ -792,13 +793,17 @@ portal::portal()
         innerA.redraw(1.9,32,32);
         innerB.redraw(1.9,32,32);
 
+        // setup defualt location for portals
         portLocA[0] = -3;
-        portLocA[1] = 2;
+        portLocA[1] = -22;
         portLocA[2] = -3;
 
         portLocB[0] = 0;
-        portLocB[1] = 2;
+        portLocB[1] = -22;
         portLocB[2] = -17;
+        
+        // set whitch portal to be place first
+        placed=0;
         
         entered = 0;
         ptexa = ptexb = 0;
@@ -819,6 +824,7 @@ portal::portal(float *a, float *b, float rad)
         portLocB[1] = b[1];
         portLocB[2] = b[2];
 
+        placed=0;
         entered = 0;
         ptexa = ptexb = 0;
 }
@@ -840,6 +846,7 @@ portal::portal(float a, float b, float c,
         portLocB[1] = y;
         portLocB[2] = z;
         
+        placed=0;
         entered = 0;
         ptexa = ptexb = 0;
 }
@@ -925,11 +932,52 @@ void portal::reLocateOBJ(float x, float y, float z,
         ny = recalcPoint[1];
         nz = recalcPoint[2];
 }
+// ////////////////////////////////////////////////////////////////////////////
 void portal::assignTexA(unsigned int txt)
 {
         ptexa = txt;
 }
+// ////////////////////////////////////////////////////////////////////////////
 void portal::assignTexB(unsigned int txt)
 {
         ptexb = txt;
+}
+// ////////////////////////////////////////////////////////////////////////////
+void portal::loc(float px, float py, float pz,
+                 float vx, float vy, float vz)
+{
+        float mag = ((vx - px) * (vx - px)) + 
+                    ((vy - py) * (vy - py)) + 
+                    ((vz - pz) * (vz - pz));
+        
+        // calculate distance from player
+        mag = sqrt(mag);
+        vx = ((vx - px) / mag) * 5;
+        vy = ((vy - py) / mag) * 5;
+        vz = ((vz - pz) / mag) * 5;
+
+        // add distance to player center
+        px += vx;
+        py += vy;
+        pz += vz;
+
+        // choose which portal to place
+        switch (placed % 2){
+                case 0:
+                        portLocA[0] = px;
+                        portLocA[1] = 2;
+                        portLocA[2] = pz;
+                case 1:
+                        portLocB[0] = px;
+                        portLocB[1] = 2;
+                        portLocB[2] = pz;
+        }
+        placed +=1;
+}
+// ////////////////////////////////////////////////////////////////////////////
+// /////       /////       /////       /////       /////       /////       ///
+// //////////////////////////////////////////////////////////////////////////
+void Mob::setTex(unsigned int t)
+{
+     texture = t;
 }
