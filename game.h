@@ -36,7 +36,7 @@ public:
     
     float maxZoom;
     float minZoom;
-    int zoom, togPortal;
+    int zoom, togPortal, setPortal;
     float depth;
     
     vector<Mob*> mobs;
