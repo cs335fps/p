@@ -8,6 +8,7 @@ extern "C" {
 View::View(Game *g, int w, int h)
 {
     loadBMP lbmp;
+    loadBMP loadimg;
     wOverride = w;
     hOverride = h;
     is3D = -1;
@@ -17,6 +18,7 @@ View::View(Game *g, int w, int h)
     game = g;
     ox = oy = oz =0;
     mobTex = lbmp.getBMP("enemy.bmp");
+    reload = loadimg.getBMP("reload.bmp");
     game->defaultPortl.assignTexA(lbmp.getBMP("portalA_tex.bmp"));
     game->defaultPortl.assignTexB(lbmp.getBMP("portalB_tex.bmp"));
 }
@@ -232,6 +234,23 @@ void View::HUD()
     glVertex2d(w / 2+1, h / 2 - l / 20);
     glVertex2d(w / 2+1, h / 2 + l / 20);
     glEnd();
+    glBindTexture(GL_TEXTURE_2D, reload);
+    if (game->nbullets==0){
+    glBegin(GL_QUADS);
+    glTexCoord2f(0,1);
+    glVertex2i(w/3, (h/3)*2);
+    
+    glTexCoord2f(1,1);
+    glVertex2i((w/3)*2, (h/3)*2);
+    
+    glTexCoord2f(1,0);
+    glVertex2i((w/3)*2, (h/3));
+       
+    glTexCoord2f(0,0);
+    glVertex2i(w/3, h/3);
+    glEnd();
+    }
+    glBindTexture(GL_TEXTURE_2D, 0);
     //Game Menu
     glBegin(GL_LINES);
     Rect r;
