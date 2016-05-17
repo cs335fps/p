@@ -48,10 +48,11 @@ int Input::CheckKeys(XEvent *e)
             //Fire Roy's key
             game->togPortal ^=1;
         }
-        if(key == XK_r) {
-            //Fire Roy's key
-
-        }
+        if(key == XK_f) {
+	    //Fire Roy's key
+	    if(game->togPortal == 1)
+                game->setPortal ^=1;
+	}
         if(key == XK_n) {
             //Fire Nick's key
             game->partyMode ^= 1;
