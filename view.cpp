@@ -15,6 +15,7 @@ View::View(Game *g, int w, int h)
     SwitchTo3D();
     initialize_fonts();
     game = g;
+    depth = game->depth;
     ox = oy = oz =0;
     mobTex = lbmp.getBMP("enemy.bmp");
     game->defaultPortl.assignTexA(lbmp.getBMP("portalA_tex.bmp"));
@@ -135,6 +136,7 @@ Display *View::GetDisplay()
 
 void View::Render()
 {
+    depth = game->depth;
     SwitchTo3D();
 
     float rotx = game->direction.x;
@@ -313,7 +315,7 @@ void View::SwitchTo3D()
     // Calculate The Aspect Ratio Of The Window
     //gluPerspective(45.0f,(GLfloat)xres/(GLfloat)yres,0.1f,900.0f);	
     glFrustum(-0.1/height*width, 0.1/height*width,
-            -0.1, 0.1, game->depth, 200.0);
+            -0.1, 0.1, depth, 200.0);
 
     is3D = 1;
 }

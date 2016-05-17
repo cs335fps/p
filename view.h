@@ -28,6 +28,7 @@ private:
     int width;
     int height;
     int is3D;
+    GLdouble depth;
     Display *dpy;
     Window root;
     Window win;
