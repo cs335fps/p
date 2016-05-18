@@ -210,7 +210,8 @@ void Game::Shoot()
             wallHit = i;
     }
     //cout << wallHit << endl;
-    
+    if(wallHit != 0)
+	return;
     b.origin = origin;
     b.direction = direction;
     b.end = b.origin + b.direction;

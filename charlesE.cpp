@@ -6,7 +6,9 @@
 #include "charlesE.h"
 #define vmi vector<Mob*>::iterator
 #define vwi vector<Wall>::iterator
-Mob::~Mob(){
+class wall;
+Mob::~Mob()
+{
 	
 }
 Mob::Mob()
@@ -77,10 +79,7 @@ void Mob::move(Game* g)
 //
 //1) Collision detection: gather local objects
 
-
 //2) Collision detection: for each local object, is touching object?
-
-
 
 //3) collision detection: if touching object, bounce
     static Vec* tmp = new Vec;
@@ -170,9 +169,13 @@ void cWall::Set(Vec a, Vec b, float w = 2, float h = 2)
 	for (int i = 0; i < 4; i++)
     	{
             this->corners[i] = Vec(
-		endpoints[i / 2].x - w * (offsets[i][0] * xScale + offsets[i][1] * zScale),
+		endpoints[i / 2].x - w * (
+		    offsets[i][0] * xScale + offsets[i][1] * zScale
+		),
 		0,
-		endpoints[i / 2].z - w * (offsets[i][2] * zScale + offsets[i][3] * xScale)
+		endpoints[i / 2].z - w * (
+		    offsets[i][2] * zScale + offsets[i][3] * xScale
+		)
 	    );
 	    corners[i+4] = corners[i] + Vec(0, height, 0);	    
 	}
@@ -215,7 +218,7 @@ int cWall::Collide(Vec * pos, float diameter = 0)
 
     Vec closestPoint = this->endpoints[0] + AB * t;
 
-    if ( ( position - closestPoint).Magnitude() < 1.0 + this->width / 2.0){
+    if ( ( position - closestPoint).Magnitude() < 1.0 + this->width / 2.0) {
 	float side = -Cross(AP, AB).y;
 	if (side < 0.0) 
 	    side = -1.0;
@@ -240,20 +243,27 @@ void Mob::setVelY(float y)
 } 
 void chadKey(Game* g)
 {
+
     static int toggle = 0;
     if(toggle == 0) {
         toggle = 1;
-        /*//Set all mobs to color red and float straight up.
-        for(vmi m = g->mobs.begin(); m != g->mobs.end(); m++){
-                *m->setVelY(0.075);
+        //Set all mobs to color red and float straight up.
+        for (
+		vmi m = g->mobs.begin(); 
+		m != g->mobs.end(); 
+		m++
+	){
+                (*m)->setVelY(0.075);
+		(*m)->setLocY(3.0);
+    		cout <<"now in chadkey";
         }
         for(
             vwi w = g->walls.begin(); 
             w != g->walls.end(); 
-            w++;
-        ){
-            w.height = 0.5;
-        }*/
+            w++ 
+	){
+            w->height = 0.5;
+        }
     }
     else {
         toggle = 1;
@@ -264,12 +274,40 @@ void chadKey(Game* g)
         for(
             vwi w = g->walls.begin();
             w != g->walls.end();
-            w++;
+            w++
         ){
             w.height = 40;
-        }*/
-        
+        }
+        */
     }
 }
-
+#include <iostream>
+#include <stdio.h>
+double celsiusToFahrenheit()
+{
+    static double f;
+//#define _L8T_
+#ifdef _L8T_
+    static double test[] = {
+         180, 356, 
+	 100, 212,
+	 40,  104,
+	 37,   98,
+	 30,   86,
+	 21,   70,
+	 10,   50,
+         0,    32,
+         -18,   0,
+         -40, -40
+     };
+     printf("%lf\n", test[2*4]);
+     printf("%lf\n", test[2*2+1]);
+     printf("%lf\n", test[1*2+1]);
+#endif
+     std::cout << "Enter Celcius temp: " << endl;
+     std::cin >> f;
+     f = (9.0/5.0) * f + 32;
+     printf("Fahrenheit: %lf\n", f);
+     return f; 
+}
 

@@ -1,4 +1,5 @@
 #include "input.h"
+void chadKey(Game*);
 Input::Input(Game *g, View *v, Openal *o)
 {
     view = v;
@@ -61,6 +62,11 @@ int Input::CheckKeys(XEvent *e)
             //Fire Lizandro's key.
 
         }
+	if(key == XK_c) {
+	    //Fire Chad's key
+	    cout << "c key pressed.";
+	    chadKey(this->game);
+	}
         if(key == XK_h) {
             game->guntype =0;
             game->nbullets =10;
