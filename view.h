@@ -36,7 +36,7 @@ private:
     Game *game;
     float ox,oy,oz;
     int wOverride, hOverride;    
-    unsigned int mobTex;
+    unsigned int mobTex, reload;
 public:
 
     
