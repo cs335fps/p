@@ -1,8 +1,24 @@
-//Lizandro Perez
-//cs335 software engineering 
-//Prof. Gordon
-//Sound Files
-//
+/*
+
+Lizandro Perez
+cs335
+software engineering 
+Prof. Gordon
+
+
+created: 4/30/16
+modified: 05/17/16
+
+
+task:
+Create Sound Files
+Game Menu
+Toggle from lab
+adjust bullets, max bullets, reload, 
+zoom according to weapon selected.
+
+
+*/
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
@@ -14,9 +30,11 @@
 #include "lizandroP.h"
 
 
-Openal::Openal(){
-	
+Openal::Openal()
+{
+
 }
+
 //initalize and add source of sound
 int Openal::initopenal()
 {
@@ -34,7 +52,7 @@ int Openal::initopenal()
 	alListenerf(AL_GAIN, 1.0f);
 
 	//load sound file into buffer 
-	alBuffer0 = alutCreateBufferFromFile("./shot.wav");
+	alBuffer0 = alutCreateBufferFromFile("./test.wav");
 	alBuffer1 = alutCreateBufferFromFile("./shot.wav");
 	alBuffer2 = alutCreateBufferFromFile("./ninemm.wav");
 	alGenSources(1, &alSource[0]);
@@ -67,10 +85,10 @@ int Openal::initopenal()
 }
 
 //function to play sound
-void Openal::openal_sound()
+void Openal::openal_sound(int num)
 {
 	//play selected sound
-	alSourcePlay(alSource[2]);
+	alSourcePlay(alSource[num]);
 }
 
 //Function to clean and delete sound files
