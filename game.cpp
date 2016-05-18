@@ -189,29 +189,38 @@ void Game::Move()
 
 void Game::Shoot()
 {
-
     float rotx = direction.x;
     float roty = direction.y - PI / 2.0;
     float trailLen = 5.0;
     
-
     Bullet b;
     Vec origin = position - Vec(0,.25,0);
     Vec direction = Vec(sin(rotx) * sin(roty) * trailLen,
             cos(roty) * trailLen,
             cos(rotx) * sin(roty) * trailLen);
     
-    // Check collision;
-    float closest = 9999999.9;
-    int wallHit = 0;
+    // -----------Check collision----------------
+    float closest = 9e9;
+    int hit = 0;
     int wallCount = walls.size();
     for (int i = 0; i < wallCount; i++) {
-        if (walls[i].Ray(b.origin, b.direction, &closest) == 1)
-            wallHit = i;
+        if (walls[i].Ray(origin, direction, &closest) == 1)
+            hit = 1;
+    }
+    /*
+    // Here's how'd you use this.
+    // You may not even need "hit" if you are just comparing wall dist to
+    // some mob's dist unless that mob was > 9e9 away for some reason.
+    if (hit == 1) {
+        cout << "hit distant: " << closest << endl;
+    } else {
+        cout << "no hit" << endl;
     }
     //cout << wallHit << endl;
     if(wallHit != 0)
 	return;
+    */
+    
     b.origin = origin;
     b.direction = direction;
     b.end = b.origin + b.direction;

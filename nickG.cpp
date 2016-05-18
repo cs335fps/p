@@ -75,7 +75,7 @@ int Wall::Ray(Vec origin, Vec direction, float * closest)
     if (dirDotNormal == 0.0)
         return 0; // Parallel
     float t = -1.0 * (origin - v[0]).Dot(n) / dirDotNormal;
-    if (t < 0.0 || t < *closest) {
+    if (t < 0.0 || t > *closest) {
         return 0; // Behind us
     }
     
@@ -87,6 +87,7 @@ int Wall::Ray(Vec origin, Vec direction, float * closest)
     if ((location - v[0]).Magnitude() > length ||
         (location - v[1]).Magnitude() > length)
         return 0; // Too far left or right
+    
     
     *closest = t;
     return 1;

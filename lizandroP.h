@@ -25,12 +25,13 @@ ALuint alBuffer2;
 
 //sound source 
 ALuint alSource[3];
+unsigned int lizandro;
 
 public:
 
 	Openal();
 	int initopenal();
-	void openal_sound();
+	void openal_sound(int num);
 	void clean_al();
 
 };
