@@ -64,7 +64,7 @@ int Input::CheckKeys(XEvent *e)
         }
 	if(key == XK_c) {
 	    //Fire Chad's key
-	    cout << "c key pressed.";
+	    //cout << "c key pressed.";
 	    chadKey(this->game);
 	}
         if(key == XK_h) {

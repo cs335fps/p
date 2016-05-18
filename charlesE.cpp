@@ -18,7 +18,7 @@ Mob::Mob()
 Mob::Mob(int mobID, Vec* spawnpoint)
 { 
     this->id = mobID;
-    body.redraw(2.0, 10, 10);
+    body.redraw(1.0, 10, 10);
     this->spawn(spawnpoint);
 }
 
@@ -27,7 +27,7 @@ void Mob::spawn(Vec* spawnpoint)
 
     location.z = spawnpoint->z;
     location.x = spawnpoint->x;
-    location.y = spawnpoint->y; // y is up and down.
+    location.y = 2; // y is up and down.
     body.draw(location.x, location.y, location.z);
     //velocity.z = -0.05;
     //velocity.x = .15;
@@ -90,16 +90,36 @@ void Mob::move(Game* g)
     location.y += velocity.y;
     location.x += velocity.x;
     
-    if(velocity.z > 0.05)
-    	velocity.z -= 0.05;
+    if(velocity.z > 0.075)
+       velocity.z = 0.075;	
+    else if(velocity.z < -0.075)
+	velocity.z = -0.075;
+    if(velocity.z > 0.001)
+    	velocity.z -= .0005;
+    else if(velocity.z < -0.001)
+	velocity.z += 0.0005;
     else
 	velocity.z = 0;
-    if(velocity.y > 0.05)
-    	velocity.y -= 0.05;
+    if(velocity.y > 0.075)
+	velocity.y = 0.075;
+    else if(velocity.y < -0.075)
+	velocity.y = -0.075;
+    if(velocity.y > 0.001)
+    	velocity.y -= 0.0005;
+    else if (velocity.y < -0.001)
+	velocity.y += 0.0005;
     else
 	velocity.y = 0;
-    if(velocity.x > 0.05)
-    	velocity.x -= 0.05;
+    if(location.y < 2)
+	velocity.y = 0;
+    if(velocity.x > 0.075)
+	velocity.x = 0.075;
+    else if (velocity.x < -0.075)
+	velocity.x = -0.075;
+    if(velocity.x > 0.001)
+    	velocity.x -= 0.0005;
+    else if (velocity.x < -0.001)
+	velocity.x += 0.0005;
     else
 	velocity.x = 0;
 
@@ -108,8 +128,9 @@ void Mob::move(Game* g)
 void Mob::render()
 {
     this->move();
+    glBindTexture(GL_TEXTURE_2D, texture);
     body.draw(location.x, location.y, location.z);
-
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 int Mob::Collide(Vec* p)
@@ -164,7 +185,8 @@ void cWall::Set(Vec a, Vec b, float w = 2, float h = 2)
 	w = w / 2.0;
 	Vec dif = (b - a);
 	float xScale = dif.x / length;
-	float zScale = dif.z / length; // Z is the second flat axis; y is the vertical axis.
+	float zScale = dif.z / length; 
+	// Z is the second flat axis; y is the vertical axis.
 	
 	for (int i = 0; i < 4; i++)
     	{
@@ -253,32 +275,31 @@ void chadKey(Game* g)
 		m != g->mobs.end(); 
 		m++
 	){
-                (*m)->setVelY(0.075);
-		(*m)->setLocY(3.0);
-    		cout <<"now in chadkey";
+                (*m)->setVelY(0.055);
+    		//cout <<"now in chadkey";
         }
         for(
             vwi w = g->walls.begin(); 
             w != g->walls.end(); 
             w++ 
 	){
-            w->height = 0.5;
+            w->SetHeight(0.5);
         }
     }
     else {
-        toggle = 1;
-        /*for(vmi m = g->mobs.begin(); m != g->mobs.end(); m++){
-            *m->setPosY(1);
-            *m->setVelY(0);
+        toggle = 0;
+        for(vmi m = g->mobs.begin(); m != g->mobs.end(); m++){
+            (*m)->setVelY(-0.055);
+	    (*m)->setLocY((*m)->getLoc()->y - 0.05);
         }
         for(
             vwi w = g->walls.begin();
-            w != g->walls.end();
+	    w != g->walls.end();
             w++
         ){
-            w.height = 40;
+            w->SetHeight(40);
         }
-        */
+        
     }
 }
 #include <iostream>
