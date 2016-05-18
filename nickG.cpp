@@ -126,6 +126,14 @@ void Wall::Set(Vec a, Vec b, float w, float h, Vec col)
         c[i+4] = c[i] + Vec(0,height,0);
     }
 }
+void Wall::SetHeight(float h)
+{
+    height = h;
+    for (int i = 4; i < 8; i++) {
+        c[i].y = h;
+    }
+
+}
 void Wall::render()
 {
 
