@@ -34,6 +34,7 @@ public:
     int nbullets;
     int maxbullets;
     int nkills;
+    int guntype;
     
     int partyMode;
     

@@ -61,8 +61,22 @@ int Input::CheckKeys(XEvent *e)
             //Fire Lizandro's key.
 
         }
+        if(key == XK_h) {
+            game->guntype =0;
+            game->nbullets =10;
+            game->maxbullets =10;
+        }
+        if(key == XK_y) {
+            game->guntype=1;
+            game->nbullets =5;
+            game->maxbullets =5;
+        }if(key == XK_u) {
+            game->guntype=2;
+            game->nbullets=12;
+            game->maxbullets=12;
+        }
         if(key == XK_space) {
-            game->nbullets = 10;
+            game->nbullets = game->maxbullets;
         }
     }else if (e->type == KeyRelease) {
         int key = XLookupKeysym(&e->xkey, 0);
@@ -106,7 +120,11 @@ void Input::CheckMouse(XEvent *e)
         }
         if (e->xbutton.button==3) {
             //Right button was pressed
-            game->zoom = 1;
+            if(game->guntype==1)
+                game->zoom =2;
+            else
+                game->zoom = 1;
+            
             game->aiming = 1;
             return;
         }

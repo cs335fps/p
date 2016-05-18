@@ -261,11 +261,12 @@ void View::HUD()
     r.left = 10;
     r.center = 0;
     ggprint8b(&r, 16, 0, "");
+    ggprint8b(&r, 16, 0, "Toggles - N: Nick, L: Lizandro, C: Charles, R: Roy");
     ggprint8b(&r, 16, 0, "Spacebar - Reload");
     ggprint8b(&r, 16, 0, "Left click - Shoot");
-    ggprint8b(&r, 16, 0, "S - Sniper");
-    ggprint8b(&r, 16, 0, "N - 9mm");
-    ggprint8b(&r, 16, 0, "G - ShotGun");
+    ggprint8b(&r, 16, 0, "Y - Sniper");
+    ggprint8b(&r, 16, 0, "H - 9mm");
+    ggprint8b(&r, 16, 0, "U - ShotGun");
     ggprint8b(&r, 16, 0, "Nround: %i / %i", game->nbullets, game->maxbullets);
     ggprint8b(&r, 16, 0, "Kills: %i", game->nkills);
     // ggprint8b(&r, 16, 0, "Score: Sounds");
