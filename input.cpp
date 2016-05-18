@@ -1,12 +1,12 @@
 #include "input.h"
-#include "lizandroP.h"
-Input::Input(Game *g, View *v)
+Input::Input(Game *g, View *v, Openal *o)
 {
     view = v;
     game = g;
+    openal = o;
     dpy = view->GetDisplay();
     view->CenterCursor();
-    initopenal();
+    openal->initopenal();
 }
 
 int Input::CheckInput()
@@ -29,7 +29,7 @@ int Input::CheckKeys(XEvent *e)
 
 
         if (key == XK_Escape) {
-            clean_al();
+            openal->clean_al();
             return 1;
         }
         if (key == XK_w) {
@@ -113,7 +113,7 @@ void Input::CheckMouse(XEvent *e)
             //Left button was pressed
 	    if(game->nbullets < 1)
 		return;
-            openal_sound();
+            openal->openal_sound();
             game->Shoot();
             game->nbullets -= 1;
             return;
@@ -121,10 +121,10 @@ void Input::CheckMouse(XEvent *e)
         if (e->xbutton.button==3) {
             //Right button was pressed
             if(game->guntype==1)
-                game->zoom =2;
+                game->zoom =1.5;
             else
                 game->zoom = 1;
-            
+
             game->aiming = 1;
             return;
         }

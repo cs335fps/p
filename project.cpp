@@ -4,6 +4,7 @@
 #include "nickG.h" // Seconds, Vec
 #include <stdio.h>
 #include <string.h>
+#include "lizandroP.h"
 
 using namespace std;
 
@@ -22,10 +23,11 @@ int main(int argc, char* argv[])
 
     Seconds sec; // Start timer
     Game game;
+    Openal openal;
 
     View view(&game, overrideWidth, overrideHeight);
 
-    Input input(&game, &view);
+    Input input(&game, &view, &openal);
     int done=0;
 
     const double secPerMove = 1.0/60.0;

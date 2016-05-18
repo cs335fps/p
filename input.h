@@ -5,6 +5,7 @@
 #include <X11/keysym.h>
 #include "game.h"
 #include "view.h"
+#include "lizandroP.h"
 
 #define PI 3.14159
 
@@ -14,9 +15,10 @@ private:
 View *view;;
 Game *game;
 Display *dpy;
+Openal *openal;
     
 public:
-    Input(Game *g, View *v);
+    Input(Game *g, View *v, Openal *o);
     int CheckInput();
     int CheckKeys(XEvent *e);
     void CheckMouse(XEvent *e);

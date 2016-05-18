@@ -1,4 +1,5 @@
 #include "game.h"
+#include "lizandroP.h"
 
 Game::Game()
 {
@@ -18,7 +19,7 @@ Game::Game()
     nkills=0;
     guntype =0;
 
-
+  
     position = Vec(0,2,0);
     direction = Vec(0.0,0.0,0.0);
     for(int i = 0; i < 10; i++)

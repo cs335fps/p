@@ -229,19 +229,19 @@ void View::HUD()
 
     glBindTexture(GL_TEXTURE_2D, reload);
     if (game->nbullets<1){
-	glBegin(GL_QUADS);
-	glTexCoord2f(0,1);
-	glVertex2i(w/3, (h/3)*2);
-	
-	glTexCoord2f(1,1);
-	glVertex2i((w/3)*2, (h/3)*2);
-	
-	glTexCoord2f(1,0);
-	glVertex2i((w/3)*2, (h/3));
-       
-	glTexCoord2f(0,0);
-	glVertex2i(w/3, h/3);
-	glEnd();
+		glBegin(GL_QUADS);
+		glTexCoord2f(0,1);
+		glVertex2i(w/3, (h/3)*2);
+		
+		glTexCoord2f(1,1);
+		glVertex2i((w/3)*2, (h/3)*2);
+		
+		glTexCoord2f(1,0);
+		glVertex2i((w/3)*2, (h/3));
+	       
+		glTexCoord2f(0,0);
+		glVertex2i(w/3, h/3);
+		glEnd();
     }
     glBindTexture(GL_TEXTURE_2D, 0);
 

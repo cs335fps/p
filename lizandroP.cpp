@@ -13,16 +13,12 @@
 #include </usr/include/AL/alut.h>
 #include "lizandroP.h"
 
-//sounds buffers
-ALuint alBuffer0;
-ALuint alBuffer1;
-ALuint alBuffer2;
 
-//sound source 
-ALuint alSource[3];
-
+Openal::Openal(){
+	
+}
 //initalize and add source of sound
-int initopenal()
+int Openal::initopenal()
 {
 	alutInit(0, NULL);
 	if (alGetError() != AL_NO_ERROR) {
@@ -71,14 +67,14 @@ int initopenal()
 }
 
 //function to play sound
-void openal_sound()
+void Openal::openal_sound()
 {
 	//play selected sound
 	alSourcePlay(alSource[2]);
 }
 
 //Function to clean and delete sound files
-void clean_al()
+void Openal::clean_al()
 {
 	//clear source 
 	alDeleteSources(1, &alSource[0]);
