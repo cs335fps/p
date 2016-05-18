@@ -700,8 +700,8 @@ GLuint loadBMP::getBMP(char *path)
      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 
-     delete data;
-     delete data_A;
+     delete [] data;
+     delete [] data_A;
      return textureID;
 }
 // /////////////////////////////////////////////////////////////////////////////
@@ -779,8 +779,8 @@ GLuint loadBMP::getBMP(const char *path)
      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 
-     delete data;
-     delete data_A;
+     delete [] data;
+     delete [] data_A;
      return textureID;
 }
 // ////////////////////////////////////////////////////////////////////////////
