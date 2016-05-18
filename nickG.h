@@ -42,6 +42,7 @@ class Wall
         Game* game;
 		vector<Vec> GetPoints(double units = 1.0);
 		int Ray(Vec origin, Vec direction, float * closest);
+        void SetHeight(float);
 };
 
 class Seconds
