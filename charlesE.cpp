@@ -49,7 +49,7 @@ void Mob::death(Game* g)
 	}
     }
     
-    throw -1;
+    //throw -1;
 }
 void Mob::damage(int health, Game* g)
 {
