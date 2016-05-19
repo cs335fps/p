@@ -27,10 +27,10 @@
 
 float r(float, float);
 Vec MakeVector(float, float, float);
-
 class Game;
 
-
+void respawn_mobs(Game*, int);
+void chadKey(Game* g);
 class Mob
 {
 private:
@@ -65,7 +65,8 @@ class Enemy: public Mob
 
     void move();
 };
-class cWall: public Mob{
+class cWall: public Mob
+{
     private:
 	Vec start;
 	Vec end;
@@ -95,5 +96,26 @@ class Npc: public Mob
 
 };
 
-void chadKey(Game* g);
+class Node
+{
+public:
+    double cost;
+    bool visited;
+    bool peeked;
+    int parent[2];
+    char c;
+    bool obstacle;
+};
+class Map
+{
+private:
+    vector<Node> squares;
+    vector<Node>::iterator current;
+    const static int n = 10000; // map size is 100x100
+public: 
+    Map(Game*);
+    void displayMap();
+    bool inBounds(Vec);
+    void getLowestCost();
+};
 #endif

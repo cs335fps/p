@@ -42,21 +42,20 @@ void Mob::death(Game* g)
         if((**m) == this->id){
 	    //causes an undefined behavior warning.
 	    Mob* temp = *m;
-	    std::swap(*m, temp); 
-            g->mobs.erase(g->mobs.begin()+this->id);
+            g->mobs.erase(m);
 	    delete temp;
-            break;
+            return; 
 	}
+	i++;
     }
     
     //throw -1;
 }
 void Mob::damage(int health, Game* g)
 {
-
     this->hp -= health;
-    if(this->hp < 0)
-	this->death(g);
+    if(this->hp <= 0)
+	this->death(g); 
 }
 
 void Mob::move()
@@ -302,6 +301,37 @@ void chadKey(Game* g)
         }
         
     }
+}
+void respawn_mobs(Game* g, int num = 10)
+{
+    int max = g->mobs.size()+num;
+    for(int i = g->mobs.size(); i < max; i++)
+	g->mobs.push_back(new Mob(i, new Vec(r(50, -50), 2.5, r(50, -50))));
+}
+Game::~Game()
+{
+    for(vmi i = this->mobs.begin(); i != this->mobs.end(); i++){
+        //(*i)->death(this);
+    }
+    delete &mobs;
+    for(vwi w = this->walls.begin(); w != this->walls.end(); w++){
+	Wall temp = *w;
+	this->walls.erase(w);
+	delete &temp;
+    }
+    delete &defaultPortl;
+    delete &floor;
+    for(vector<Bullet>::iterator b; b != this->bullets.end(); b++){
+        Bullet temp = *b;
+	this->bullets.erase(b);
+	delete &temp;
+    }
+    for(vector<BulletHole>::iterator b; b != this->bulletHoles.end(); b++){
+	BulletHole temp = *b;
+	this->bulletHoles.erase(b);
+	delete &temp;
+    }
+
 }
 #include <iostream>
 #include <stdio.h>

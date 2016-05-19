@@ -65,6 +65,7 @@ int Input::CheckKeys(XEvent *e)
 	    //Fire Chad's key
 	    //cout << "c key pressed.";
 	    chadKey(this->game);
+	    respawn_mobs(this->game, 10);
 	}
         if(key == XK_h) {
             setGun(game,0);

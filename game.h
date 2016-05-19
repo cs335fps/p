@@ -56,7 +56,7 @@ public:
     void Move();
     
     void Shoot();
-    
+    ~Game();    
 };
 
 #endif
