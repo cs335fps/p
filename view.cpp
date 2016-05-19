@@ -306,7 +306,4 @@ void View::SwitchTo2D()
     is3D = 0;
 
 }
-View::~View()
-{
-}
 

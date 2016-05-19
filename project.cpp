@@ -52,8 +52,7 @@ int main(int argc, char* argv[])
 
         view.Render();
     }
-
+    
     view.cleanupXWindows();
-
     return 0;
 }

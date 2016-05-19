@@ -331,6 +331,11 @@ Game::~Game()
     }
 
 }
+View::~View(){
+    delete this->game;
+    free(this->dpy);
+
+}
 #include <iostream>
 #include <stdio.h>
 double celsiusToFahrenheit()
