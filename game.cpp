@@ -196,22 +196,24 @@ void Game::Shoot()
     float rotx = direction.x;
     float roty = direction.y - PI / 2.0;
     float trailLen = 5.0;
+    Vec hitNormal;
 
     Bullet b;
-    Vec origin = position - Vec(0,.25,0);
+    Vec origin = position - Vec(0,.1,0);
     Vec direction = Vec(sin(rotx) * sin(roty) * trailLen,
             cos(roty) * trailLen,
             cos(rotx) * sin(roty) * trailLen);
 
     // -----------Check collision----------------
     float closest = 9e9;
-    int hit = 0;
+    int wallHit = 0;
     int wallCount = walls.size();
     for (int i = 0; i < wallCount; i++) {
-        if (walls[i].Ray(origin, direction, &closest) == 1)
-            hit = 1;
+        if (walls[i].Ray(origin, direction, &closest, &hitNormal) == 1)
+            wallHit = 1;
     }
     /*
+    // &hitNormal is optional, I'm using it for bulletholes
     // Here's how'd you use this.
     // You may not even need "hit" if you are just comparing wall dist to
     // some mob's dist unless that mob was > 9e9 away for some reason.
@@ -224,18 +226,24 @@ void Game::Shoot()
     if(wallHit != 0)
     return;
      */
-    hit = -1; // Using 'hit' to pick which mob we shot now
+    int mobHit = -1; // Using 'hit' to pick which mob we shot now
     int mobCount = mobs.size();
     for (int i = 0; i < mobCount; i++) {
         if (RaySphere(origin, direction,
                     *(mobs[i]->getLoc()), 1.0, &closest) == 1)
-            hit = i;
+            mobHit = i;
     }
-    if (hit >= 0) {
+    if (mobHit >= 0) {
+        wallHit = 0;
         hitAnim = 20;
-        cout << "Shot Mob #" << hit
+        cout << "Shot Mob #" << mobHit
             << " dist: " << closest << endl;
         // !--- This cout can get removed after actual Mob damage works
+    }
+    
+    if (wallHit == 1) {
+        Vec loc = origin + direction.Norm() * (closest - 0.01);
+        bulletHoles.push_back(BulletHole(loc,hitNormal));
     }
 
     b.origin = origin;

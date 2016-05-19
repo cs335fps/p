@@ -193,6 +193,10 @@ void View::Render()
     for (unsigned int i = 0; i < game->bullets.size(); i++) {
         game->bullets[i].render();
     }
+    
+    for (unsigned int i = 0; i < game->bulletHoles.size(); i++) {
+        game->bulletHoles[i].render();
+    }
 
     float fl = 200.0;
     glColor3f(0,0,0);

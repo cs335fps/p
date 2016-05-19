@@ -15,6 +15,14 @@ int RaySphere(Vec rayOrigin, Vec rayDirection,
 class Game;
 void DrawCrosshairs(Game *game, int w, int h);
 
+class BulletHole
+{
+    public:
+        Vec origin;
+        Vec normal;
+        void render();
+        BulletHole(Vec, Vec);
+};
 
 class Bullet
 {
@@ -47,7 +55,8 @@ class Wall
         void death();
         Game* game;
         vector<Vec> GetPoints(double units = 1.0);
-        int Ray(Vec origin, Vec direction, float * closest);
+        int Ray(Vec origin, Vec direction, 
+                float * closest, Vec * normal = NULL);
         void SetHeight(float);
 };
 
@@ -65,5 +74,6 @@ class Seconds
 
 
 #endif
+
 
 
