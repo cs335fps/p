@@ -6,6 +6,7 @@
 #include "WorldEngine.h"
 #include "portal.h"
 #include <vector>
+#include <deque>
 #ifndef _mob_h_
 	#include <stdlib.h>
 #endif
@@ -13,6 +14,7 @@
 
 #define RAND ((float)rand()/RAND_MAX)
 #define RCOLOR Vec(RAND,RAND,RAND)
+#define MAX_BULLET_HOLES 50
 class Mob;
 class Wall;
 class BulletHole;
@@ -26,7 +28,7 @@ public:
     Vec direction;
     
     vector<Bullet> bullets;
-    vector<BulletHole> bulletHoles;
+    deque<BulletHole> bulletHoles;
     
     int moveX;
     int moveY;

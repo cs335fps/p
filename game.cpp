@@ -244,6 +244,8 @@ void Game::Shoot()
     if (wallHit == 1) {
         Vec loc = origin + direction.Norm() * (closest - 0.01);
         bulletHoles.push_back(BulletHole(loc,hitNormal));
+        while (bulletHoles.size() > MAX_BULLET_HOLES)
+            bulletHoles.pop_front();
     }
 
     b.origin = origin;
