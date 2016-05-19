@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include "charlesE.h"
 #include "nickG.h"
+#include "lizandroP.h"
 
 #define PI 3.14159
 
@@ -36,7 +37,7 @@ private:
     Game *game;
     float ox,oy,oz;
     int wOverride, hOverride;    
-    unsigned int mobTex, reload;
+    unsigned int mobTex;
 public:
 
     
