@@ -15,6 +15,7 @@
 #define RCOLOR Vec(RAND,RAND,RAND)
 class Mob;
 class Wall;
+class BulletHole;
 class Bullet;
 class Game
 {
@@ -25,6 +26,7 @@ public:
     Vec direction;
     
     vector<Bullet> bullets;
+    vector<BulletHole> bulletHoles;
     
     int moveX;
     int moveY;

@@ -111,6 +111,34 @@ void Bullet::render()
     glEnable(GL_LIGHTING);
 }
 
+BulletHole::BulletHole(Vec o, Vec n)
+{
+    origin = o;
+    normal = n;
+}
+
+void BulletHole::render()
+{
+    glDisable(GL_LIGHTING);
+    glBegin(GL_POLYGON);
+    glColor3f(0.0, 0.0, 0.0);
+    float circMax = 8;
+    Vec x;
+    float rad = 0.05;
+    float th;
+    for (float i = 0.0; i < circMax; i+=1.0) {
+        th = i / circMax * 6.2831;
+        x = (origin + Vec(
+                    -normal.z * cos(th) * rad,
+                    sin(th) * rad,
+                    normal.x * cos(th) * rad
+                    ));
+        glVertex3fv(&x.x);
+    }
+    glEnd();
+    glEnable(GL_LIGHTING);
+}
+
 
 // ######################## Wall class #############################
 // #################################################################
@@ -135,7 +163,7 @@ vector<Vec> Wall::GetPoints(double units)
     return points;
 }
 
-int Wall::Ray(Vec origin, Vec direction, float * closest)
+int Wall::Ray(Vec origin, Vec direction, float * closest, Vec * normal)
 {
 
     direction.Normalize();
@@ -158,7 +186,10 @@ int Wall::Ray(Vec origin, Vec direction, float * closest)
         return 0; // Too far left or right
 
 
-    *closest = t;
+    *closest = t - (width/2.0) * (1.0/fabs(dirDotNormal));
+    if (normal != NULL) {
+        *normal = n;
+    }
     return 1;
 }
 
@@ -490,6 +521,8 @@ Vec Cross(Vec a, Vec b)
     c.z = a.x * b.y - a.y * b.x;
     return c;
 }
+
+
 
 
 
