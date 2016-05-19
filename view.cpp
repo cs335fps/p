@@ -1,25 +1,17 @@
 #include "view.h"
-#include "log.h"
-#include "ppm.h"
-extern "C" {
-#include "fonts.h"
-}
 
 View::View(Game *g, int w, int h)
 {
     loadBMP lbmp;
-    loadBMP rload;
     wOverride = w;
     hOverride = h;
     is3D = -1;
     InitWindow();
     SwitchTo3D();
-    initialize_fonts();
     game = g;
     depth = game->depth;
     ox = oy = oz =0;
     mobTex = lbmp.getBMP("enemy.bmp");
-    reload = rload.getBMP("reload.bmp");
     game->defaultPortl.assignTexA(lbmp.getBMP("portalA_tex.bmp"));
     game->defaultPortl.assignTexB(lbmp.getBMP("portalB_tex.bmp"));
 
@@ -222,44 +214,8 @@ void View::HUD()
     SwitchTo2D();
 
     DrawCrosshairs(game,width,height);
-
-    glColor3f(1.0f,1.0f,1.0f);
-    glBindTexture(GL_TEXTURE_2D, reload);
-    if (game->nbullets<1){
-        glBegin(GL_QUADS);
-        glTexCoord2f(0,1);
-        glVertex2i(w/3, (h/3)*2);
-
-        glTexCoord2f(1,1);
-        glVertex2i((w/3)*2, (h/3)*2);
-
-        glTexCoord2f(1,0);
-        glVertex2i((w/3)*2, (h/3));
-
-        glTexCoord2f(0,0);
-        glVertex2i(w/3, h/3);
-        glEnd();
-    }
-    glBindTexture(GL_TEXTURE_2D, 0);
-
-
-    //Game Menu
-    glBegin(GL_LINES);
-    Rect r;
-    r.bot = h - 10;
-    r.left = 10;
-    r.center = 0;
-    ggprint8b(&r, 16, 0, "");
-    ggprint8b(&r, 16, 0, "Toggles - N: Nick, L: Lizandro, C: Charles, R: Roy");
-    ggprint8b(&r, 16, 0, "Spacebar - Reload");
-    ggprint8b(&r, 16, 0, "Left click - Shoot");
-    ggprint8b(&r, 16, 0, "Y - Sniper");
-    ggprint8b(&r, 16, 0, "H - 9mm");
-    ggprint8b(&r, 16, 0, "U - ShotGun");
-    ggprint8b(&r, 16, 0, "Nround: %i / %i", game->nbullets, game->maxbullets);
-    ggprint8b(&r, 16, 0, "Kills: %i", game->nkills);
-    // ggprint8b(&r, 16, 0, "Score: Sounds");
-    glEnd();
+    GameMenu(game,width,height);
+    reloadMessage(game,width,height);
 }
 
 void View::Lighting()

@@ -16,6 +16,12 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include </usr/include/AL/alut.h>
+
+
+class Game;
+void reloadMessage(Game *game, int w, int h);
+void GameMenu(Game *game, int w, int h);
+
 class Openal{
 private:
 	//sounds buffers
