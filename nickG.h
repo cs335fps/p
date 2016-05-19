@@ -9,16 +9,22 @@
 
 #define RAND ((float)rand()/RAND_MAX)
 int hash(int *, int);
+
+int RaySphere(Vec rayOrigin, Vec rayDirection, 
+        Vec sphereOrigin, float sphereRadius, float *closest);
 class Game;
+void DrawCrosshairs(Game *game, int w, int h);
+
+
 class Bullet
 {
-public:
-	Vec origin;
-	Vec direction;
-	Vec end;
-    int age;
-    
-    void render();
+    public:
+        Vec origin;
+        Vec direction;
+        Vec end;
+        int age;
+
+        void render();
 };
 
 class Wall
@@ -32,7 +38,7 @@ class Wall
         Vec v[2]; // endpoints
         Vec color;
     public:
-		float height;
+        float height;
         Wall();
         Wall(Vec, Vec, float, float, Vec col = Vec(1,1,1));
         void Set(Vec, Vec, float, float, Vec);
@@ -40,8 +46,8 @@ class Wall
         int Collide(Vec *);
         void death();
         Game* game;
-		vector<Vec> GetPoints(double units = 1.0);
-		int Ray(Vec origin, Vec direction, float * closest);
+        vector<Vec> GetPoints(double units = 1.0);
+        int Ray(Vec origin, Vec direction, float * closest);
         void SetHeight(float);
 };
 
@@ -59,4 +65,5 @@ class Seconds
 
 
 #endif
+
 

@@ -28,6 +28,75 @@ int hash(int *in, int n)
     return seed;
 }
 
+int RaySphere(Vec rayOrigin, Vec rayDirection, 
+        Vec sphereOrigin, float sphereRadius, float *closest)
+{
+    rayDirection.Normalize();
+    float a = rayDirection.Dot(rayDirection);
+    Vec oDiff = rayOrigin - sphereOrigin;
+    float b = (rayDirection.Dot(oDiff));
+    float c = oDiff.Dot(oDiff) - sphereRadius * sphereRadius;
+    float s = b * b - a * c;
+    if (s < 0.0)
+        return 0;
+    float d1 = (-1.0 * b + sqrt(s)) / a;
+    float d2 = (-1.0 * b - sqrt(s)) / a;
+
+    if (d2 < d1 && d2 > 0.0)
+        d1 = d2;
+    if (d1 < 0.0)
+        return 0;
+
+    if (d1 > *closest)
+        return 0;
+
+    *closest = d1;
+
+    return 1;
+
+}
+
+void DrawCrosshairs(Game *game, int w, int h)
+{
+    int l = h / 1;
+
+
+    int hitAnim = game->hitAnim;
+    if (hitAnim > 0) {
+        glPushMatrix();
+        glTranslatef(w/2,h/2,0);
+        glColor4f(1,0,0,((float)hitAnim / 20.0));
+        glBegin(GL_LINE);
+        GLUquadric* qobj = gluNewQuadric();
+        gluQuadricOrientation(qobj,GLU_INSIDE);
+        gluDisk(qobj, (float)l/20.0*.75, l/20, 32, 1);
+        glEnd(); 
+        glPopMatrix();
+    }
+    glLineWidth(1);
+    glBegin(GL_LINES);
+    glColor3f(1.0f,1.0f,1.0f);
+    glVertex2d(w / 2 - l / 20, h / 2);
+    glVertex2d(w / 2 + l / 20, h / 2);
+    glEnd();
+    glBegin(GL_LINES);
+    glVertex2d(w / 2, h / 2 - l / 20);
+    glVertex2d(w / 2, h / 2 + l / 20);
+    glEnd();
+    glBegin(GL_LINES);
+    glColor3f(0.0f,0.0f,0.0f);
+    glVertex2d(w / 2 - l / 20, h / 2+1);
+    glVertex2d(w / 2 + l / 20, h / 2+1);
+    glEnd();
+    glBegin(GL_LINES);
+    glVertex2d(w / 2+1, h / 2 - l / 20);
+    glVertex2d(w / 2+1, h / 2 + l / 20);
+    glEnd();
+}
+
+
+// ######################## Bullet Class ###########################
+// #################################################################
 void Bullet::render()
 {
     glEnable (GL_BLEND);
@@ -68,7 +137,7 @@ vector<Vec> Wall::GetPoints(double units)
 
 int Wall::Ray(Vec origin, Vec direction, float * closest)
 {
-    
+
     direction.Normalize();
     Vec n = Normal(v[0],v[0]+Vec(0,1,0),v[1]);
     float dirDotNormal = direction.Dot(n);
@@ -78,17 +147,17 @@ int Wall::Ray(Vec origin, Vec direction, float * closest)
     if (t < 0.0 || t > *closest) {
         return 0; // Behind us
     }
-    
+
     Vec location = origin + (direction * t);
     if (location.y < 0 || location.y > height)
         return 0; // Over or under wall
 
     location.y = 0;
     if ((location - v[0]).Magnitude() > length ||
-        (location - v[1]).Magnitude() > length)
+            (location - v[1]).Magnitude() > length)
         return 0; // Too far left or right
-    
-    
+
+
     *closest = t;
     return 1;
 }
@@ -152,12 +221,12 @@ void Wall::render()
 
     for (int i = 0; i < 6; i++) {
         glBegin(GL_POLYGON);
-  
+
         if (game->partyMode)
             glColor3f(RAND,RAND,RAND); // PARTY MODE
         else
             glColor3fv(&color[0]);
-            
+
         glNormal3fv(&Normal(c[s[i][2]],c[s[i][1]],c[s[i][0]])[0]);
         for (int j = 0; j < 4; j++) {
 
@@ -174,7 +243,7 @@ int Wall::Collide(Vec *pos)
     Vec p = *pos;
     p.y = 0.0;
     for (int i = 0; i < 4; i++) {
-    
+
         // corner collide
         Vec pc = c[i] - p;
         if (pc.Magnitude() < pDia / 2.0) {
@@ -183,8 +252,8 @@ int Wall::Collide(Vec *pos)
             pos->x = p.x;
             pos->z = p.z;
         }
-    
-    
+
+
         // Wall collide
         Vec AP = p - c[i];
         Vec AB = c[(i+1)%4] - c[i];
@@ -421,6 +490,7 @@ Vec Cross(Vec a, Vec b)
     c.z = a.x * b.y - a.y * b.x;
     return c;
 }
+
 
 
 

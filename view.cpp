@@ -2,7 +2,7 @@
 #include "log.h"
 #include "ppm.h"
 extern "C" {
-    #include "fonts.h"
+#include "fonts.h"
 }
 
 View::View(Game *g, int w, int h)
@@ -174,7 +174,7 @@ void View::Render()
 
     glPushMatrix();
     if (game->togPortal == 1){
-            game->defaultPortl.draw();
+        game->defaultPortl.draw();
     }
     //game->floor.draw();
 
@@ -189,11 +189,11 @@ void View::Render()
         game->mobs[i]->render();
         //glBindTexture(GL_TEXTURE_2D, 0);
     }
-    
+
     for (unsigned int i = 0; i < game->bullets.size(); i++) {
         game->bullets[i].render();
     }
-    
+
     float fl = 200.0;
     glColor3f(0,0,0);
     glBegin(GL_POLYGON);
@@ -216,48 +216,33 @@ void View::Render()
 
 void View::HUD()
 {
+
     int w = width;
     int h = height;
     SwitchTo2D();
-    int l = h / 1;
-    glLineWidth(1);
-    glBegin(GL_LINES);
-    glColor3f(1.0f,1.0f,1.0f);
-    glVertex2d(w / 2 - l / 20, h / 2);
-    glVertex2d(w / 2 + l / 20, h / 2);
-    glEnd();
-    glBegin(GL_LINES);
-    glVertex2d(w / 2, h / 2 - l / 20);
-    glVertex2d(w / 2, h / 2 + l / 20);
-    glEnd();
 
+    DrawCrosshairs(game,width,height);
+
+    glColor3f(1.0f,1.0f,1.0f);
     glBindTexture(GL_TEXTURE_2D, reload);
     if (game->nbullets<1){
-		glBegin(GL_QUADS);
-		glTexCoord2f(0,1);
-		glVertex2i(w/3, (h/3)*2);
-		
-		glTexCoord2f(1,1);
-		glVertex2i((w/3)*2, (h/3)*2);
-		
-		glTexCoord2f(1,0);
-		glVertex2i((w/3)*2, (h/3));
-	       
-		glTexCoord2f(0,0);
-		glVertex2i(w/3, h/3);
-		glEnd();
+        glBegin(GL_QUADS);
+        glTexCoord2f(0,1);
+        glVertex2i(w/3, (h/3)*2);
+
+        glTexCoord2f(1,1);
+        glVertex2i((w/3)*2, (h/3)*2);
+
+        glTexCoord2f(1,0);
+        glVertex2i((w/3)*2, (h/3));
+
+        glTexCoord2f(0,0);
+        glVertex2i(w/3, h/3);
+        glEnd();
     }
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    glBegin(GL_LINES);
-    glColor3f(0.0f,0.0f,0.0f);
-    glVertex2d(w / 2 - l / 20, h / 2+1);
-    glVertex2d(w / 2 + l / 20, h / 2+1);
-    glEnd();
-    glBegin(GL_LINES);
-    glVertex2d(w / 2+1, h / 2 - l / 20);
-    glVertex2d(w / 2+1, h / 2 + l / 20);
-    glEnd();
+
     //Game Menu
     glBegin(GL_LINES);
     Rect r;
@@ -367,3 +352,4 @@ void View::SwitchTo2D()
 View::~View()
 {
 }
+

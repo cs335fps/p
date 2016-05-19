@@ -18,13 +18,14 @@ Game::Game()
     partyMode = 0;
     nkills=0;
     guntype =0;
+    hitAnim = 0;
 
-  
+
     position = Vec(0,2,0);
     direction = Vec(0.0,0.0,0.0);
     for(int i = 0; i < 10; i++)
-       mobs.push_back(new Mob(i, new Vec(r(50, -50), 0, r(50, -50))));	
-    
+        mobs.push_back(new Mob(i, new Vec(r(50, -50), 0, r(50, -50))));	
+
     float wHeight = 50.0;
     // Yeah, I'll find a different way of doing this.
     walls.push_back(Wall(Vec(-5,0,-10),Vec(-5,0,0),0.1, wHeight,RCOLOR));
@@ -121,6 +122,9 @@ Game::Game()
 
 void Game::Move()
 {
+    if (hitAnim > 0)
+        hitAnim--;
+
     float ox, oz;
     if (zoom == 1 && depth < maxZoom) {
         depth += (maxZoom - minZoom) / 15;
@@ -141,7 +145,7 @@ void Game::Move()
 
     // slow down when aiming
     float speed = 0.2f - (float) aiming * 0.1f;
-    
+
     oz = position.z;
     ox = position.x;
     position.z -= (velocityX * cos(direction.x)
@@ -160,7 +164,7 @@ void Game::Move()
     for (unsigned int i = 0; i < walls.size(); i++) {
         walls[i].Collide(&position);
     }
-    
+
     for (unsigned int i = 0; i < bullets.size(); i++) {
         if (bullets[i].age-- < 1) {
             bullets[i] = bullets.back();
@@ -179,9 +183,9 @@ void Game::Move()
                 position.y,
                 position.z);
         if (setPortal == 1){
-                setPortal ^= 1;
-                defaultPortl.loc(position.x, position.y, position.z,
-                                 ox, 2, oz);
+            setPortal ^= 1;
+            defaultPortl.loc(position.x, position.y, position.z,
+                    ox, 2, oz);
         }
     }
 
@@ -192,13 +196,13 @@ void Game::Shoot()
     float rotx = direction.x;
     float roty = direction.y - PI / 2.0;
     float trailLen = 5.0;
-    
+
     Bullet b;
     Vec origin = position - Vec(0,.25,0);
     Vec direction = Vec(sin(rotx) * sin(roty) * trailLen,
             cos(roty) * trailLen,
             cos(rotx) * sin(roty) * trailLen);
-    
+
     // -----------Check collision----------------
     float closest = 9e9;
     int hit = 0;
@@ -212,23 +216,37 @@ void Game::Shoot()
     // You may not even need "hit" if you are just comparing wall dist to
     // some mob's dist unless that mob was > 9e9 away for some reason.
     if (hit == 1) {
-        cout << "hit distant: " << closest << endl;
+    cout << "hit distant: " << closest << endl;
     } else {
-        cout << "no hit" << endl;
+    cout << "no hit" << endl;
     }
     //cout << wallHit << endl;
     if(wallHit != 0)
-	return;
-    */
-    
+    return;
+     */
+    hit = -1; // Using 'hit' to pick which mob we shot now
+    int mobCount = mobs.size();
+    for (int i = 0; i < mobCount; i++) {
+        if (RaySphere(origin, direction,
+                    *(mobs[i]->getLoc()), 1.0, &closest) == 1)
+            hit = i;
+    }
+    if (hit >= 0) {
+        hitAnim = 20;
+        cout << "Shot Mob #" << hit
+            << " dist: " << closest << endl;
+        // !--- This cout can get removed after actual Mob damage works
+    }
+
     b.origin = origin;
     b.direction = direction;
     b.end = b.origin + b.direction;
 
     b.age = 30;
     bullets.push_back(b);
-    
+
 }
+
 
 
 
