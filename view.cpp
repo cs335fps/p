@@ -208,9 +208,6 @@ void View::Render()
 
 void View::HUD()
 {
-
-    int w = width;
-    int h = height;
     SwitchTo2D();
 
     DrawCrosshairs(game,width,height);
