@@ -333,7 +333,7 @@ Game::~Game()
 }
 View::~View(){
     delete this->game;
-    free(this->dpy);
+    delete this->dpy;
 
 }
 #include <iostream>
