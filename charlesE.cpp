@@ -16,7 +16,8 @@ Mob::Mob()
 
 }
 Mob::Mob(int mobID, Vec* spawnpoint)
-{ 
+{
+    this->hp = 30; 
     this->id = mobID;
     body.redraw(1.0, 10, 10);
     this->spawn(spawnpoint);
@@ -41,9 +42,9 @@ void Mob::death(Game* g)
         if((**m) == this->id){
 	    //causes an undefined behavior warning.
 	    Mob* temp = *m;
-	    std::swap(*m, temp);
-	    delete *m;
+	    std::swap(*m, temp); 
             g->mobs.erase(g->mobs.begin()+this->id);
+	    delete temp;
             break;
 	}
     }

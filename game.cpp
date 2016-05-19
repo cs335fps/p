@@ -239,6 +239,7 @@ void Game::Shoot()
         cout << "Shot Mob #" << mobHit
             << " dist: " << closest << endl;
         // !--- This cout can get removed after actual Mob damage works
+	mobs[mobHit]->damage(10, this);
     }
     
     if (wallHit == 1) {
