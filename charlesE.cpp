@@ -310,26 +310,24 @@ void respawn_mobs(Game* g, int num = 10)
 }
 Game::~Game()
 {
-    for(vmi i = this->mobs.begin(); i != this->mobs.end(); i++){
-        //(*i)->death(this);
+    for(Mob* i = this->mobs.back(); !this->mobs.empty(); i = this->mobs.back()){
+        cout << "Killing mob " << endl;
+	i->death(this);
     }
-    delete &mobs;
-    for(vwi w = this->walls.begin(); w != this->walls.end(); w++){
-	Wall temp = *w;
-	this->walls.erase(w);
-	delete &temp;
+    int i = 0; 
+    for(Wall w = this->walls.back(); !this->walls.empty(); w = this->walls.back()){
+	i++;
+	cout << "Razing wall " << i << endl;
+	if(i > 999) break;
+	this->walls.pop_back();
     }
-    delete &defaultPortl;
-    delete &floor;
-    for(vector<Bullet>::iterator b; b != this->bullets.end(); b++){
-        Bullet temp = *b;
-	this->bullets.erase(b);
-	delete &temp;
+    while(!this->bullets.empty()){
+	cout << "Killing Bullet: " << endl;
+	this->bullets.pop_back();
     }
-    for(vector<BulletHole>::iterator b; b != this->bulletHoles.end(); b++){
-	BulletHole temp = *b;
-	this->bulletHoles.erase(b);
-	delete &temp;
+    while(!this->bulletHoles.empty()){
+        cout << "Cleaning up bullet holes.";
+	this->bulletHoles.pop_back();
     }
 
 }
