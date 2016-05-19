@@ -31,6 +31,16 @@ zoom according to weapon selected.
 #include "view.h"
 #include "game.h"
 unsigned int reload;
+
+int nsound =2;
+
+	//sounds buffers
+ALuint alBuffer0;
+ALuint alBuffer1;
+ALuint alBuffer2;
+
+//sound source 
+ALuint alSource[3];
 extern "C" {
 #include "fonts.h"
 }
@@ -62,8 +72,8 @@ int Openal::initopenal()
 	alListenerf(AL_GAIN, 1.0f);
 
 	//load sound file into buffer 
-	alBuffer0 = alutCreateBufferFromFile("./test.wav");
-	alBuffer1 = alutCreateBufferFromFile("./shot.wav");
+	alBuffer0 = alutCreateBufferFromFile("./sblast.wav");
+	alBuffer1 = alutCreateBufferFromFile("./50.wav");
 	alBuffer2 = alutCreateBufferFromFile("./ninemm.wav");
 	alGenSources(1, &alSource[0]);
 	alGenSources(1, &alSource[1]);
@@ -95,10 +105,10 @@ int Openal::initopenal()
 }
 
 //function to play sound
-void Openal::openal_sound(int num)
+void openal_sound()
 {
-	//play selected sound
-	alSourcePlay(alSource[num]);
+
+	alSourcePlay(alSource[nsound]);
 }
 
 //Function to clean and delete sound files
@@ -120,6 +130,34 @@ void Openal::clean_al()
 	alcDestroyContext(Context);
 	alcCloseDevice(Device);
 }
+void setGun(Game *game, int n)
+{
+
+	//sets settings for Handgun
+	if(n == 0){
+		game->guntype =0;
+        game->nbullets =10;
+        game->maxbullets =10;
+        nsound = 2;
+	}
+
+	//sets settings for Snipper
+	if(n == 1){
+		game->guntype = 1;
+        game->nbullets = 5;
+        game->maxbullets = 5;
+        nsound = 1;
+	}
+
+	//sets settings for shotgun
+	if(n == 2){
+		game->guntype=2;
+	    game->nbullets=12;
+	    game->maxbullets=12;
+	    nsound = 0;
+	}
+}
+
 void reloadMessage(Game *game, int w, int h){
     glColor3f(1.0f,1.0f,1.0f);
     glBindTexture(GL_TEXTURE_2D, reload);
@@ -162,3 +200,4 @@ void GameMenu(Game *game, int w, int h)
     // ggprint8b(&r, 16, 0, "Score: Sounds");
     glEnd();
 }
+

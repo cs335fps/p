@@ -59,7 +59,6 @@ int Input::CheckKeys(XEvent *e)
             game->partyMode ^= 1;
         }
         if(key == XK_l) {
-            //Fire Lizandro's key.
 
         }
 	if(key == XK_c) {
@@ -68,18 +67,13 @@ int Input::CheckKeys(XEvent *e)
 	    chadKey(this->game);
 	}
         if(key == XK_h) {
-            game->guntype =0;
-            game->nbullets =10;
-            game->maxbullets =10;
+            setGun(game,0);
         }
         if(key == XK_y) {
-            game->guntype=1;
-            game->nbullets =5;
-            game->maxbullets =5;
-        }if(key == XK_u) {
-            game->guntype=2;
-            game->nbullets=12;
-            game->maxbullets=12;
+            setGun(game,1);
+        }
+        if(key == XK_u) {
+            setGun(game,2);
         }
         if(key == XK_space) {
             game->nbullets = game->maxbullets;
@@ -117,12 +111,9 @@ void Input::CheckMouse(XEvent *e)
     if (e->type == ButtonPress) {
         if (e->xbutton.button==1) {
             //Left button was pressed
-	    if (game->nbullets < 1) {
-            openal->openal_sound(0);
-            return;
-        }
-		
-            openal->openal_sound(2);
+            if(game->nbullets <1)
+                return;
+            openal_sound();
             game->Shoot();
             game->nbullets -= 1;
             return;
