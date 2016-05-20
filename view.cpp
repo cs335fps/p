@@ -11,7 +11,7 @@ View::View(Game *g, int w, int h)
     game = g;
     depth = game->depth;
     ox = oy = oz =0;
-    mobTex = lbmp.getBMP("enemy.bmp");
+    this->mobTex = lbmp.getBMP("enemy.bmp");
     game->defaultPortl.assignTexA(lbmp.getBMP("portalA_tex.bmp"));
     game->defaultPortl.assignTexB(lbmp.getBMP("portalB_tex.bmp"));
 
@@ -178,6 +178,8 @@ void View::Render()
         // These textures should be set in the mob draw
         // function where it knows what itself is.
         //glBindTexture(GL_TEXTURE_2D, mobTex);
+	if(game->mobs[i]->getTex() == 0)
+	    game->mobs[i]->setTex(this->mobTex);
         game->mobs[i]->render();
         //glBindTexture(GL_TEXTURE_2D, 0);
     }
