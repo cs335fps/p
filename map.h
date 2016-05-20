@@ -1,5 +1,6 @@
 #ifndef _MAP_h
 #define _MAP_h
+class Game;
 class Node
 {
 public:
@@ -18,6 +19,7 @@ private:
     Node* squares[100][100];
     Node current;
 public:
+    Map();
     Map(Game*);
     void displayMap();
     bool inBounds(Vec);

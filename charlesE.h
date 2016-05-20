@@ -24,6 +24,9 @@
 #ifndef OPENAL_H
 //    #include <unistd>
 #endif
+#ifndef _MAP_h
+    #include "map.h"
+#endif
 
 float r(float, float);
 Vec MakeVector(float, float, float);
