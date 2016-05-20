@@ -19,6 +19,7 @@ class Mob;
 class Wall;
 class BulletHole;
 class Bullet;
+
 class Game
 {
 private:
@@ -50,7 +51,6 @@ public:
     
     vector<Mob*> mobs;
     vector<Wall> walls;
-
     portal defaultPortl;
     worldEngine floor;
     

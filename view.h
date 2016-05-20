@@ -15,6 +15,7 @@
 #include "charlesE.h"
 #include "nickG.h"
 #include "lizandroP.h"
+#include "map.h"
 
 #define PI 3.14159
 

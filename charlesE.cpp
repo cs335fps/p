@@ -22,6 +22,7 @@ Mob::Mob(int mobID, Vec* spawnpoint)
     body.redraw(1.0, 10, 10);
     this->spawn(spawnpoint);
     this->texture = 0;
+    this->moved = (int)(r(0,5));
 }
 
 void Mob::spawn(Vec* spawnpoint)
@@ -61,6 +62,7 @@ void Mob::damage(int health, Game* g)
 
 void Mob::move()
 {
+    return;
     this->move(NULL);
 }
 
@@ -76,6 +78,18 @@ bool Mob::operator==(Mob* b)
 
 void Mob::move(Game* g)
 {
+location.z += (float) velocity.z / 40.0;
+location.y += velocity.y / 40.0;
+location.x += velocity.x / 40.0;
+    
+
+if(this->moved > 2){
+    this->moved = 0;
+}
+else{
+    this->moved++;
+    return;
+}
 //Put AI logic here.
 //
 //1) Collision detection: gather local objects
@@ -85,56 +99,44 @@ void Mob::move(Game* g)
 //3) collision detection: if touching object, bounce
     static Vec* tmp = new Vec;
     *tmp = location+velocity;
-    if(this->Collide(tmp)){
-	Vec distance;
-	distance.x = location.x - tmp->x;
-	distance.y = location.y - tmp->y;
-	distance.z = location.z - tmp->z;
-	location.z -= distance.z;
-        location.y -= distance.y;
-	location.x -= distance.x;
-	velocity.z *= -1*distance.z;
-	velocity.y *= -1*distance.y;
-	velocity.x *= -1*distance.x;
-
-    }
-    location.z += velocity.z;
-    location.y += velocity.y;
-    location.x += velocity.x;
-    /*
-    if(velocity.z > 0.075)
-       velocity.z = 0.075;	
-    else if(velocity.z < -0.075)
-	velocity.z = -0.075;
-    if(velocity.z > 0.001)
-    	velocity.z -= .0002;
-    else if(velocity.z < -0.001)
-	velocity.z += 0.0002;
+    if(this->Collide(tmp) == 1){
+	    }
+    if(velocity.z > 4.075)
+       velocity.z = 4.075;	
+    else if(velocity.z < -4.075)
+	velocity.z = -4.075;
+    if(velocity.z > 0.0305)
+    	velocity.z -= .0012;
+    else if(velocity.z < -0.0305)
+	velocity.z += 0.0102;
     else
 	velocity.z = 0;
-    if(velocity.y > 0.075)
-	velocity.y = 0.075;
-    else if(velocity.y < -0.075)
-	velocity.y = -0.075;
-    if(velocity.y > 0.001)
-    	velocity.y -= 0.0002;
-    else if (velocity.y < -0.001)
-	velocity.y += 0.0002;
+    if(velocity.y > 4.075)
+	velocity.y = 4.075;
+    else if(velocity.y < -4.075)
+	velocity.y = -4.075;
+    if(velocity.y > 0.0305)
+    	velocity.y -= 0.0102;
+    else if (velocity.y < -0.0305)
+	velocity.y += 0.012;
     else
 	velocity.y = 0;
     if(location.y < 2)
 	velocity.y = 0;
-    if(velocity.x > 0.075)
-	velocity.x = 0.075;
-    else if (velocity.x < -0.075)
-	velocity.x = -0.075;
-    if(velocity.x > 0.001)
-    	velocity.x -= 0.0005;
-    else if (velocity.x < -0.001)
-	velocity.x += 0.0005;
+    if(velocity.x > 4.075)
+	velocity.x = 4.075;
+    else if (velocity.x < -4.075)
+	velocity.x = -4.075;
+    if(velocity.x > 0.061)
+    	velocity.x -= 0.0035;
+    else if (velocity.x < -0.061)
+	velocity.x += .035;
     else
 	velocity.x = 0;
-*/
+    if(velocity.x == 0 && velocity.y == 0 && velocity.z == 0){
+        velocity.x = r(-3.05, 3.05);
+        velocity.z = r(-3.05, 3.05);
+    }
 }
 
 void Mob::render()
@@ -148,7 +150,17 @@ void Mob::render()
 int Mob::Collide(Vec* p)
 {
     if(body.isTouching(p->x, p->y, p->z)){
-        this->velocity = (this->location - *p);
+	Vec distance;
+	distance.x = location.x - p->x;
+	distance.y = location.y - p->y;
+	distance.z = location.z - p->z;
+	location.z -= distance.z;
+        location.y -= distance.y;
+	location.x -= distance.x;
+	velocity.z *= -1*distance.z;
+	velocity.y *= -1*distance.y;
+	velocity.x *= -1*distance.x;
+	return 1;
 	//cout << "Object touching" << " x " << this->velocity.x << " y " 
 	//<< this->velocity.y 
 	//    << " z " << this->velocity.z<<endl;

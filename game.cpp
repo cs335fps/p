@@ -20,7 +20,6 @@ Game::Game()
     guntype =0;
     hitAnim = 0;
 
-
     position = Vec(0,2,0);
     direction = Vec(0.0,0.0,0.0);
     respawn_mobs(this, 10);

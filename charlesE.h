@@ -40,6 +40,7 @@ private:
     Vec velocity;
     Vec maxSpeed;
     solidSphere body;
+    int moved;
     unsigned int texture;
 public:
     Mob();
@@ -95,29 +96,5 @@ class Munition: public Enemy
 class Npc: public Mob
 {
 
-};
-
-class Node
-{
-public:
-    double cost;
-    bool visited;
-    bool peeked;
-    int parent[2];
-    char c;
-    bool obstacle;
-
-    Node();
-};
-class Map
-{
-private:
-    Node* squares[100][100];
-    Node current;
-public: 
-    Map(Game*);
-    void displayMap();
-    bool inBounds(Vec);
-    void getLowestCost();
 };
 #endif
