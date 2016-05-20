@@ -105,13 +105,14 @@ public:
     int parent[2];
     char c;
     bool obstacle;
+
+    Node();
 };
 class Map
 {
 private:
-    vector<Node> squares;
-    vector<Node>::iterator current;
-    const static int n = 10000; // map size is 100x100
+    Node* squares[100][100];
+    Node current;
 public: 
     Map(Game*);
     void displayMap();

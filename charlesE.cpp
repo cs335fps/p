@@ -311,13 +311,13 @@ void respawn_mobs(Game* g, int num = 10)
 Game::~Game()
 {
     for(Mob* i = this->mobs.back(); !this->mobs.empty(); i = this->mobs.back()){
-        cout << "Killing mob " << endl;
+       // cout << "Killing mob " << endl;
 	i->death(this);
     }
     int i = 0; 
     for(Wall w = this->walls.back(); !this->walls.empty(); w = this->walls.back()){
 	i++;
-	cout << "Razing wall " << i << endl;
+        // cout << "Razing wall " << i << endl;
 	if(i > 999) break;
 	this->walls.pop_back();
     }
@@ -332,8 +332,8 @@ Game::~Game()
 
 }
 View::~View(){
-    delete this->game;
-    delete this->dpy;
+    delete this->game; // pointer to game object.
+   // delete this->dpy; Says it won't delete. How do we free this memory?
 
 }
 #include <iostream>
@@ -365,4 +365,29 @@ double celsiusToFahrenheit()
      printf("Fahrenheit: %lf\n", f);
      return f; 
 }
-
+Node::Node(){
+    this->visited = false;
+    this->cost = 2047;
+    this->peeked = false;
+    parent[0] = 0;
+    parent[1] = 0;
+    c = '.';
+    obstacle = false;
+}
+Map::Map(Game* g){
+    for(int i = 0; i < 100; i++)
+	for(int j = 0; j < 100; j++)
+	    squares[i][j] = new Node();
+    static vector<Vec> vv;
+    for(vwi w = g->walls.begin(); w != g->walls.end(); w++){
+	vv = w->GetPoints(); 
+        for(
+	    vector<Vec>::iterator vvi = vv.begin();
+            vvi != vv.end(); 
+	    vvi++
+	){
+	    squares[(int) vvi->x][(int) vvi->z]->obstacle = true;
+	    cout << "Obstacle: " << (int) vvi->x << " " << (int) vvi->z << endl;
+	}
+    }
+}
