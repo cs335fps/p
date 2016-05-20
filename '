@@ -13,7 +13,7 @@ Mob::~Mob()
 }
 Mob::Mob()
 {
-    this->hp = 0;
+
 }
 Mob::Mob(int mobID, Vec* spawnpoint)
 {
@@ -30,9 +30,9 @@ void Mob::spawn(Vec* spawnpoint)
     location.x = spawnpoint->x;
     location.y = 2; // y is up and down.
     body.draw(location.x, location.y, location.z);
-    velocity.z = r(-0.05, 0.05);
-    velocity.x = r(-0.05, 0.05);
-    velocity.y = r(-0.05, 0.05);
+    //velocity.z = -0.05;
+    //velocity.x = .15;
+    //velocity.y = 0.05;
 }
 
 void Mob::death(Game* g)
@@ -84,19 +84,8 @@ void Mob::move(Game* g)
 //3) collision detection: if touching object, bounce
     static Vec* tmp = new Vec;
     *tmp = location+velocity;
-    if(this->Collide(tmp)){
-	Vec distance;
-	distance.x = location.x - tmp->x;
-	distance.y = location.y - tmp->y;
-	distance.z = location.z - tmp->z;
-	location.z -= distance.z;
-        location.y -= distance.y;
-	location.x -= distance.x;
-	velocity.z *= -1*distance.z;
-	velocity.y *= -1*distance.y;
-	velocity.x *= -1*distance.x;
-
-    }
+    //if(this->Collide(tmp))
+//	velocity = velocity * -1;
     location.z += velocity.z;
     location.y += velocity.y;
     location.x += velocity.x;
@@ -106,9 +95,9 @@ void Mob::move(Game* g)
     else if(velocity.z < -0.075)
 	velocity.z = -0.075;
     if(velocity.z > 0.001)
-    	velocity.z -= .0002;
+    	velocity.z -= .0005;
     else if(velocity.z < -0.001)
-	velocity.z += 0.0002;
+	velocity.z += 0.0005;
     else
 	velocity.z = 0;
     if(velocity.y > 0.075)
@@ -116,9 +105,9 @@ void Mob::move(Game* g)
     else if(velocity.y < -0.075)
 	velocity.y = -0.075;
     if(velocity.y > 0.001)
-    	velocity.y -= 0.0002;
+    	velocity.y -= 0.0005;
     else if (velocity.y < -0.001)
-	velocity.y += 0.0002;
+	velocity.y += 0.0005;
     else
 	velocity.y = 0;
     if(location.y < 2)
@@ -170,7 +159,7 @@ void Enemy::move()
 
 cWall::cWall(int mobID, Vec* spawnpoint):Mob(mobID, spawnpoint)
 {
-//We're not using cWalls because...we're just not using them.
+
 }
 
 cWall::cWall(Vec a, Vec b, float w, float h):Mob()
@@ -398,8 +387,8 @@ Node::Node(){
 }
 
 Map::Map(Game* g){
-    for(int i = 0; i < 200; i++)
-	for(int j = 0; j < 200; j++)
+    for(int i = 0; i < 100; i++)
+	for(int j = 0; j < 100; j++)
 	    squares[i][j] = new Node();
     static vector<Vec> vv;
     for(vwi w = g->walls.begin(); w != g->walls.end(); w++){
@@ -409,14 +398,11 @@ Map::Map(Game* g){
             vvi != vv.end(); 
 	    vvi++
 	){
-            squares[(int) vvi->x + 100][(int) vvi->z + 100]->obstacle = true;
-            cout << "Obstacle: " 
-                 << (int) vvi->x << " " << (int) vvi->z << endl;
+	    squares[(int) vvi->x][(int) vvi->z]->obstacle = true;
+	    cout << "Obstacle: " 
+		<< (int) vvi->x << " " << (int) vvi->z << endl;
 	}
     }
 }
 
-bool Map::inBounds(Vec v)
-{
-    return(v.x >= -75 && v.x <= 75 && v.z <= 75 && v.z >= -75);
-}
+
