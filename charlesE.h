@@ -54,6 +54,7 @@ public:
     Vec* getLoc() { return &location; }
     void setLocY(float y = 1);
     void setVelY(float y = 0);
+    unsigned int getTex() { return texture; }
     void setTex(unsigned int t); 
     bool operator==(int b);
     bool operator==(Mob* b);

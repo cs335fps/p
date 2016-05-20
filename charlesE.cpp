@@ -21,6 +21,7 @@ Mob::Mob(int mobID, Vec* spawnpoint)
     this->id = mobID;
     body.redraw(1.0, 10, 10);
     this->spawn(spawnpoint);
+    this->texture = 0;
 }
 
 void Mob::spawn(Vec* spawnpoint)
@@ -100,7 +101,7 @@ void Mob::move(Game* g)
     location.z += velocity.z;
     location.y += velocity.y;
     location.x += velocity.x;
-    
+    /*
     if(velocity.z > 0.075)
        velocity.z = 0.075;	
     else if(velocity.z < -0.075)
@@ -133,7 +134,7 @@ void Mob::move(Game* g)
 	velocity.x += 0.0005;
     else
 	velocity.x = 0;
-
+*/
 }
 
 void Mob::render()
@@ -286,7 +287,8 @@ void chadKey(Game* g)
     static int toggle = 0;
     if(toggle == 0) {
         toggle = 1;
-        //Set all mobs to color red and float straight up.
+        respawn_mobs(g, 10);
+	//Set all mobs to color red and float straight up.
         for (
 		vmi m = g->mobs.begin(); 
 		m != g->mobs.end(); 
