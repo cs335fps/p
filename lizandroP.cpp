@@ -181,7 +181,11 @@ void reloadMessage(Game *game, int w, int h){
 
 void GameMenu(Game *game, int w, int h)
 {
-	initialize_fonts();
+    static int si = 0;
+    if (si == 0) {
+        initialize_fonts();
+        si++;
+    }
     //Game Menu
     glBegin(GL_LINES);
     Rect r;
