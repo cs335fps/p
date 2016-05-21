@@ -312,9 +312,9 @@ void worldEngine::load(const char filename[200])
     GLfloat X,Y,Z;
     GLfloat u,v,s;
     GLfloat tvec[3][3];
-    int vertNum[3];
+    int vertNum[3], uvNum[3];
     int triangle_index = 0,
-     vertlim;
+     vertlim,tx,ty,tz;
 
     solid = true;
     TotalConnectedTriangles = 0;
@@ -327,7 +327,7 @@ void worldEngine::load(const char filename[200])
     vertex.resize(0);
     normals.resize(0);
     Faces_Triangles.resize(0);
-    vertexBuffer.resize(0);
+    texBuffer.resize(0);
     UVs.resize(0); 
 
     ifstream objFile (filename);
@@ -354,8 +354,8 @@ void worldEngine::load(const char filename[200])
                case 't':
                    line[1] = ' ';
                    sscanf(line,"%g %g", &u,&v);
-                   UVs.push_back(u);
-                   UVs.push_back(v);
+                   texBuffer.push_back(u);
+                   texBuffer.push_back(v);
                    break;
                case 'n':
                    line[1] = ' ';
@@ -369,26 +369,51 @@ void worldEngine::load(const char filename[200])
 
           case 'f':
               line[0] = ' ';
-              sscanf(line,"%i %i %i",
-                   &vertNum[0],
-                   &vertNum[1],
-                   &vertNum[2]);
-              vertNum[0] -= 1;
-              vertNum[1] -= 1;
-              vertNum[2] -= 1;
+              if (texBuffer.size() >0){
+               sscanf(line,"%i/%i %i/%i %i/%i",
+                        &vertNum[0],&uvNum[0],
+                        &vertNum[1],&uvNum[1],
+                        &vertNum[2],&uvNum[2]);
+                   // assign vert coordinate
+                   vertNum[0] -= 1;
+                   vertNum[1] -= 1;
+                   vertNum[2] -= 1;
+
+                   uvNum[0] -= 1;
+                   uvNum[1] -= 1;
+                   uvNum[2] -= 1;
+                   
+                   // assign texture coordinate
+                   for (int i = 0; i < 3; i++) {
+                        u = (texBuffer[(2*uvNum[i])]);
+                        v = (texBuffer[(2*uvNum[i])+1]);
+
+                        UVs.push_back(u);
+                        UVs.push_back(v);
+                   }
+              }else{
+                   sscanf(line,"%i %i %i",
+                        &vertNum[0],
+                        &vertNum[1],
+                        &vertNum[2]);
+                   // assign vert coordinate
+                   vertNum[0] -= 1;
+                   vertNum[1] -= 1;
+                   vertNum[2] -= 1;
+              }
               vertlim = vertex.size();
               for (int i = 0; i < 3; i++) {
-               u = (vertex[(3*vertNum[i]) % vertlim]);
-               v = (vertex[(3*vertNum[i]+1) %vertlim]);
-               s = (vertex[(3*vertNum[i]+2) %vertlim]);
+                   u = (vertex[(3*vertNum[i]) % vertlim]);
+                   v = (vertex[(3*vertNum[i]+1) %vertlim]);
+                   s = (vertex[(3*vertNum[i]+2) %vertlim]);
 
-               tvec[i][0] = u;
-               tvec[i][1] = v;
-               tvec[i][2] = s;
+                   tvec[i][0] = u;
+                   tvec[i][1] = v;
+                   tvec[i][2] = s;
 
-               Faces_Triangles.push_back(u);
-               Faces_Triangles.push_back(v);
-               Faces_Triangles.push_back(s);
+                   Faces_Triangles.push_back(u);
+                   Faces_Triangles.push_back(v);
+                   Faces_Triangles.push_back(s);
               }
               
               collideFaces.push_back(new vec(
@@ -471,6 +496,8 @@ void worldEngine::draw()
     glVertexPointer(3 ,GL_FLOAT, 0, Faces_Triangles.data());
     // Normal pointer to normal array
     glNormalPointer(GL_FLOAT, 0, normals.data());
+    // assign texture quadinates
+    glTexCoordPointer(2, GL_FLOAT, 0, &UVs[0]);
     // Draw the triangles
     glDrawArrays(GL_TRIANGLES, 0, TotalConnectedTriangles);
     glDisableClientState(GL_VERTEX_ARRAY);  // Disable vertex arrays
@@ -697,8 +724,8 @@ GLuint loadBMP::getBMP(char *path)
           height, 0, GL_BGRA, GL_UNSIGNED_BYTE, data_A);
      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 
      delete [] data;
      delete [] data_A;
@@ -776,8 +803,8 @@ GLuint loadBMP::getBMP(const char *path)
           height, 0, GL_BGRA, GL_UNSIGNED_BYTE, data_A);
      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 
      delete [] data;
      delete [] data_A;
