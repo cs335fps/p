@@ -314,7 +314,7 @@ void worldEngine::load(const char filename[200])
     GLfloat tvec[3][3];
     int vertNum[3], uvNum[3];
     int triangle_index = 0,
-     vertlim,tx,ty,tz;
+     vertlim;
 
     solid = true;
     TotalConnectedTriangles = 0;
