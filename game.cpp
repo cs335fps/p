@@ -24,7 +24,7 @@ Game::Game()
     direction = Vec(0.0,0.0,0.0);
     respawn_mobs(this, 10);
 
-    float wHeight = 50.0;
+    float wHeight = 3.0;
     // Yeah, I'll find a different way of doing this.
     walls.push_back(Wall(Vec(-5,0,-10),Vec(-5,0,0),0.1, wHeight,RCOLOR));
     walls.push_back(Wall(Vec(-5,0,5),Vec(10,0,5),0.1, wHeight,RCOLOR));
