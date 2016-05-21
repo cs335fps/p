@@ -12,8 +12,11 @@ View::View(Game *g, int w, int h)
     depth = game->depth;
     ox = oy = oz =0;
     this->mobTex = lbmp.getBMP("enemy.bmp");
+    game->sky.redraw(100,30,30,true );
+    skyTex = lbmp.getBMP("sky.bmp");
     game->defaultPortl.assignTexA(lbmp.getBMP("portalA_tex.bmp"));
     game->defaultPortl.assignTexB(lbmp.getBMP("portalB_tex.bmp"));
+
 
     for(unsigned int i = 0; i < game->mobs.size(); i++){
         game->mobs[i]->setTex(mobTex);
@@ -168,7 +171,10 @@ void View::Render()
     if (game->togPortal == 1){
         game->defaultPortl.draw();
     }
-    //game->floor.draw();
+
+    glBindTexture(GL_TEXTURE_2D, skyTex);
+    game->sky.draw(ox,oy,oz);
+    glBindTexture(GL_TEXTURE_2D, 0);
 
     for (unsigned int i = 0; i < game->walls.size(); i++) {
         game->walls[i].render();
@@ -177,7 +183,6 @@ void View::Render()
     for(unsigned int i = 0; i < game->mobs.size(); i++){
         // These textures should be set in the mob draw
         // function where it knows what itself is.
-        //glBindTexture(GL_TEXTURE_2D, mobTex);
 	if(game->mobs[i]->getTex() == 0)
 	    game->mobs[i]->setTex(this->mobTex);
         game->mobs[i]->render();

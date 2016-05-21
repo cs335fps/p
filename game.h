@@ -43,6 +43,7 @@ public:
     int hitAnim;
     
     int partyMode;
+    unsigned int skyTex;
     
     float maxZoom;
     float minZoom;
@@ -53,6 +54,7 @@ public:
     vector<Wall> walls;
     portal defaultPortl;
     worldEngine floor;
+    solidSphere sky;
     
     Game();
     void Move();
