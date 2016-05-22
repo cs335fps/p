@@ -59,7 +59,7 @@ class worldEngine
           vector<GLfloat> vertex;
           vector<GLfloat> normals;
           vector<GLfloat> Faces_Triangles;
-          vector<GLfloat> vertexBuffer;
+          vector<GLfloat> texBuffer;
           vector<GLfloat> UVs;
           vector<vec*> collideFaces;
           long TotalConnectedPoints;
