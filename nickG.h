@@ -52,6 +52,7 @@ class Wall
         void Set(Vec, Vec, float, float, Vec);
         void render();
         int Collide(Vec *);
+        int Collide(Vec *, float, Vec*);
         void death();
         Game* game;
         vector<Vec> GetPoints(double units = 1.0);
