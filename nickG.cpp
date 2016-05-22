@@ -13,6 +13,10 @@
 //
 #include "nickG.h"
 
+
+// ######################## General Functions ######################
+// #################################################################
+
 int hash(int *in, int n)
 {
     int seed = 0;//533000389;
@@ -92,6 +96,55 @@ void DrawCrosshairs(Game *game, int w, int h)
     glVertex2d(w / 2+1, h / 2 - l / 20);
     glVertex2d(w / 2+1, h / 2 + l / 20);
     glEnd();
+}
+
+void ParseLevel(const char* fileName, Game* game,  float height)
+{
+    vector<string> lines;
+    ifstream file(fileName);
+    if (!file.is_open()) {
+        cout << "file not found.\n";
+        return;
+    }
+    string line;
+    string cmp;
+    while (getline(file, line)) {
+        lines.push_back(line);
+    }
+    game->walls.clear();
+    int lCount = lines.size();
+    for (int i = 0; i < lCount; i++) {
+        line = lines[i];
+        cmp = "<line";
+        if (line.compare(0, cmp.length(), cmp) == 0) {
+            vector<string> elems = Split(line, "\"");
+            game->walls.push_back(Wall(Vec(
+                atof(elems[1].c_str()), 0, atof(elems[3].c_str())
+                ),Vec(
+                atof(elems[5].c_str()), 0, atof(elems[7].c_str())
+                ),0.1, height, Vec(1,1,1)));
+        }
+    }
+
+}
+
+vector<string> Split(string s, string del)
+{
+    vector<string> ret;
+    size_t lastPos = 0;
+    size_t nextPos = 0;
+
+    nextPos = s.find(del, lastPos);
+
+    while (nextPos != string::npos) {
+        ret.push_back(s.substr(lastPos,nextPos - lastPos));
+        lastPos = nextPos + del.length();
+        nextPos = s.find(del, lastPos);
+    }
+
+    ret.push_back(s.substr(lastPos,s.length() - lastPos));
+    
+    return ret;
 }
 
 
@@ -312,10 +365,10 @@ int Wall::Collide(Vec* pos, float radius, Vec* normal = NULL)
             p = closestPoint + perp * (radius / 2.0) * side;
             pos->x = p.x;
             pos->z = p.z;
-            
+
             if (normal != NULL)
                 *normal = perp;
-                
+
             return 1;
         }
     }
@@ -534,6 +587,8 @@ Vec Cross(Vec a, Vec b)
     c.z = a.x * b.y - a.y * b.x;
     return c;
 }
+
+
 
 
 
