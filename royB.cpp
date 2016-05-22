@@ -323,13 +323,13 @@ void worldEngine::load(const char filename[200])
     root = NULL;
     x = y= z =0;
     rx = ry =rz =0;
-
+/*
     vertex.resize(0);
     normals.resize(0);
     Faces_Triangles.resize(0);
     texBuffer.resize(0);
     UVs.resize(0); 
-
+*/
     ifstream objFile (filename);
 
     // If obj file is open, continue
