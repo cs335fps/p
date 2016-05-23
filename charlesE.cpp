@@ -99,8 +99,8 @@ else{
 //3) collision detection: if touching object, bounce
     static Vec* tmp = new Vec;
     *tmp = location+velocity;
-    if(this->Collide(tmp) == 1){
-	    }
+    //if(this->Collide(tmp) == 1){
+    //}
     if(velocity.z > 4.075)
        velocity.z = 4.075;	
     else if(velocity.z < -4.075)
@@ -137,6 +137,7 @@ else{
         velocity.x = r(-3.05, 3.05);
         velocity.z = r(-3.05, 3.05);
     }
+    
 }
 
 void Mob::render()
