@@ -19,6 +19,7 @@ Game::Game()
     nkills=0;
     guntype =0;
     hitAnim = 0;
+    gundamage= 0;
 
     position = Vec(0,2,0);
     direction = Vec(0.0,0.0,0.0);
@@ -151,7 +152,7 @@ void Game::Shoot()
         cout << "Shot Mob #" << mobHit
             << " dist: " << closest << endl;
         // !--- This cout can get removed after actual Mob damage works
-	mobs[mobHit]->damage(10, this);
+	mobs[mobHit]->damage(gundamage, this);
     }
     
     if (wallHit == 1) {

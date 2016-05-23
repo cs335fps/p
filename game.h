@@ -41,6 +41,7 @@ public:
     int nkills;
     int guntype;
     int hitAnim;
+    int gundamage;
     
     int partyMode;
     unsigned int skyTex;
