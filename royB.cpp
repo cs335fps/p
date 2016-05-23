@@ -27,6 +27,7 @@
 #include "loadBMP.h"
 #include "portal.h"
 #include "charlesE.h"
+#include "enemy.h"
      
 using namespace std;
 
@@ -1007,4 +1008,21 @@ void portal::loc(float px, float py, float pz,
 void Mob::setTex(unsigned int t)
 {
      texture = t;
+}
+// ////////////////////////////////////////////////////////////////////////////
+void Enemy::render()
+{
+    this->move();
+    Vec *tmp = this->getLoc();
+    
+    glBindTexture(GL_TEXTURE_2D, texture);
+    obj.draw();
+    obj.loc(tmp->x, tmp->y, tmp->z);
+    // obj.rot();
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+// ////////////////////////////////////////////////////////////////////////////
+void Enemy::move()
+{
+//Never got implemented!
 }
