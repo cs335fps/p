@@ -10,13 +10,15 @@ public:
     int parent[2];
     char c;
     bool obstacle;
-
+    int x;
+    int z;
     Node();
 };
 class Map
 {
-private:
-    Node* squares[100][100];
+private: 
+    const static int size = 200;
+    Node* squares[size][size];
     Node current;
 public:
     Map();
@@ -24,6 +26,8 @@ public:
     void displayMap();
     bool inBounds(Vec);
     void getLowestCost();
+    Vec aStar(Vec start, Vec end);
+
 };
 
 

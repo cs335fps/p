@@ -64,12 +64,12 @@ public:
     bool operator==(Mob* b);
     virtual ~Mob();
 };
-
+/*
 class Enemy: public Mob
 {
-
+    void render();
     void move();
-};
+};*/
 class cWall: public Mob
 {
     private:
@@ -92,10 +92,6 @@ class cWall: public Mob
 
 
 
-class Munition: public Enemy
-{
-
-};
 class Npc: public Mob
 {
 

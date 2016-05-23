@@ -31,7 +31,9 @@ void Mob::spawn(Vec* spawnpoint)
     location.z = spawnpoint->z;
     location.x = spawnpoint->x;
     location.y = 2; // y is up and down.
-    body.draw(location.x, location.y, location.z);
+
+    //body.draw(location.x, location.y, location.z);
+    body.drawObj(location.x, location.y, location.z);
     velocity.z = r(-0.05, 0.05);
     velocity.x = r(-0.05, 0.05);
     velocity.y = r(-0.05, 0.05);
@@ -147,7 +149,15 @@ void Mob::render()
     body.draw(location.x, location.y, location.z);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
-
+/*
+void Enemy::render()
+{
+    this->move();
+    glBindTexture(GL_TEXTURE_2D, texture);
+    body.drawObj(location.x, location.y, location.z);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+*/
 int Mob::Collide(Vec* p)
 {
     if(body.isTouching(p->x, p->y, p->z)){
@@ -176,12 +186,12 @@ float r(float min, float max)
        static_cast<float> (rand()) / (r_m / (max-min)) + min
     );
 }
-
+/*
 void Enemy::move()
 {
 //Never got implemented!
 }
-
+*/
 cWall::cWall(int mobID, Vec* spawnpoint):Mob(mobID, spawnpoint)
 {
 //We're not using cWalls because...we're just not using them.
@@ -339,7 +349,7 @@ void respawn_mobs(Game* g, int num = 10)
 {
     int max = g->mobs.size()+num;
     for(int i = g->mobs.size(); i < max; i++)
-	g->mobs.push_back(new Mob(i, new Vec(r(50, -50), 2.5, r(50, -50))));
+	g->mobs.push_back(new Mob(i, new Vec(r(50, -50), 0.5, r(50, -50))));
 }
 
 Game::~Game()
@@ -414,8 +424,11 @@ Node::Node(){
 
 Map::Map(Game* g){
     for(int i = 0; i < 200; i++)
-	for(int j = 0; j < 200; j++)
+	for(int j = 0; j < 200; j++){
 	    squares[i][j] = new Node();
+            squares[i][j]->x = i;
+	    squares[i][j]->z = j;
+	}
     static vector<Vec> vv;
     for(vwi w = g->walls.begin(); w != g->walls.end(); w++){
 	vv = w->GetPoints(); 
@@ -435,3 +448,34 @@ bool Map::inBounds(Vec v)
 {
     return(v.x >= -75 && v.x <= 75 && v.z <= 75 && v.z >= -75);
 }
+
+void Map::getLowestCost(){
+    double lowCost = 9e9;
+    for (int i = 0; i < 100; i++){
+	for(int j = 0; j < 100; j++){
+	    if(!this->squares[i][j]->obstacle&&
+	       !this->squares[i][j]->visited && 
+	       this->squares[i][j]->cost < lowCost
+	    ) {
+		lowCost = squares[i][j]->cost;
+		this->current.x = i;
+		this->current.z = j;
+	    }
+	}
+    }
+}
+
+Vec Map::aStar(Vec start, Vec end){
+    double root2 = sqrt(2);
+    Vec nextPath;
+    do{
+        int tmp[2];
+        getLowestCost();      
+
+
+
+    } while (1);
+    return nextPath;
+}
+
+
