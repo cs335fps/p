@@ -38,6 +38,7 @@ int nsound =2;
 ALuint alBuffer0;
 ALuint alBuffer1;
 ALuint alBuffer2;
+ALuint alBuffer3;
 
 //sound source 
 ALuint alSource[3];
@@ -51,8 +52,6 @@ Openal::Openal()
 
 	loadBMP rload;
 	reload = rload.getBMP("reload.bmp");
-
-
 }
 
 //initalize and add source of sound
@@ -75,9 +74,11 @@ int Openal::initopenal()
 	alBuffer0 = alutCreateBufferFromFile("./sblast.wav");
 	alBuffer1 = alutCreateBufferFromFile("./50.wav");
 	alBuffer2 = alutCreateBufferFromFile("./ninemm.wav");
+	alBuffer3 = alutCreateBufferFromFile("./test.wav");
 	alGenSources(1, &alSource[0]);
 	alGenSources(1, &alSource[1]);
 	alGenSources(1, &alSource[2]);
+	alGenSources(1, &alSource[3]);
 	
 	//setting for first sound 
 	alSourcei(alSource[0], AL_BUFFER, alBuffer0);
@@ -96,6 +97,12 @@ int Openal::initopenal()
 	alSourcef(alSource[2], AL_GAIN, 1.0f);
 	alSourcef(alSource[2], AL_PITCH, 1.0f);
 	alSourcei(alSource[2], AL_LOOPING, AL_FALSE);
+
+	//setting for fourth sound
+	alSourcei(alSource[3], AL_BUFFER, alBuffer3);
+	alSourcef(alSource[3], AL_GAIN, 1.0f);
+	alSourcef(alSource[3], AL_PITCH, 1.0f);
+	alSourcei(alSource[3], AL_LOOPING, AL_FALSE);
 
 	if (alGetError() != AL_NO_ERROR) {
 		printf("ERROR: setting source\n");
@@ -138,6 +145,7 @@ void setGun(Game *game, int n)
 		game->guntype =0;
         game->nbullets =10;
         game->maxbullets =10;
+        game->gundamage = 10;
         nsound = 2;
 	}
 
@@ -146,6 +154,7 @@ void setGun(Game *game, int n)
 		game->guntype = 1;
         game->nbullets = 5;
         game->maxbullets = 5;
+        game->gundamage = 30;
         nsound = 1;
 	}
 
@@ -154,10 +163,23 @@ void setGun(Game *game, int n)
 		game->guntype=2;
 	    game->nbullets=12;
 	    game->maxbullets=12;
+	    game->gundamage = 15;
 	    nsound = 0;
 	}
 }
 
+void reloadAmmo(Game *game){
+	if(game->guntype == 2){
+		usleep(250000);
+	}
+	else if (game->guntype == 1){
+		usleep(2500000);
+	}
+	game->nbullets = game->maxbullets;
+}
+void emptysound(Game *game){	
+	alSourcePlay(alSource[3]);
+}
 void reloadMessage(Game *game, int w, int h){
     glColor3f(1.0f,1.0f,1.0f);
     glBindTexture(GL_TEXTURE_2D, reload);

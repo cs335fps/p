@@ -77,7 +77,7 @@ int Input::CheckKeys(XEvent *e)
             setGun(game,2);
         }
         if(key == XK_space) {
-            game->nbullets = game->maxbullets;
+           reloadAmmo(game);
         }
     }else if (e->type == KeyRelease) {
         int key = XLookupKeysym(&e->xkey, 0);
@@ -112,8 +112,10 @@ void Input::CheckMouse(XEvent *e)
     if (e->type == ButtonPress) {
         if (e->xbutton.button==1) {
             //Left button was pressed
-            if(game->nbullets <1)
+            if(game->nbullets <1){
+                emptysound(game);
                 return;
+            }
             openal_sound();
             game->Shoot();
             game->nbullets -= 1;
