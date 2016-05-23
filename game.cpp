@@ -19,7 +19,7 @@ Game::Game()
     nkills=0;
     guntype =0;
     hitAnim = 0;
-    gundamage= 0;
+    gundamage= 10;
 
     position = Vec(0,2,0);
     direction = Vec(0.0,0.0,0.0);

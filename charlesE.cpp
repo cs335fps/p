@@ -466,6 +466,8 @@ void Map::getLowestCost(){
 }
 
 Vec Map::aStar(Vec start, Vec end){
+    // Dijkstra's derived from my CS 312 Lab 6. -- Charles Enright
+    // May contain code derived from Gordon.
     double root2 = sqrt(2);
     Vec nextPath;
     squares[int(start.x + 100)][(int)(start.z + 100)]->cost = 0.0;
@@ -476,21 +478,47 @@ Vec Map::aStar(Vec start, Vec end){
     int offset[8][2] = {{-1, 0}, {1, 0},
 	                {0, -1}, {0, 1},
 			{-1, -1}, {-1, 1},
-			{1, -1}, {1, 1}
-                       };
+			{1, -1}, {1, 1}};
     do{
-        Vec tmp;
+        int x, y;
 	getLowestCost();      
-        tmp.x = this->current.x;
-        tmp.z = this->current.z;
         for(int i = 0; i < 8; i++) {	
-	    if(inBounds(tmp) && 
-                !squares[(int) tmp.x][(int) tmp.z]->visited
-	    ){
+	    x = this->current.x;
+            y = this->current.z;
             
+	    if(inBounds(Vec(x, 0, y)) && 
+                !squares[x][y]->visited
+	    ){
+                double cost;
+                squares[x][y]->peeked = true;
+
+		//if diagonal, cost is root 2; else cost = 1;
+		if(offset[i][0] == offset[i][1]
+		    || offset[i][0] == -1 * offset[i][1]
+		){
+                    cost = squares[x][y]->cost + root2;
+		} 
+		else {
+                    cost = squares[x][y]->cost + 1.0;
+		}
+		double d0, d1, dist;
+		d0 = (double) x - end.x;
+		d1 = (double) y - end.z;
+		dist = d0*d0+d1*d1;
+		cost += dist;
+		if (squares[x][y]->cost > cost) {
+                    squares[x][y]->cost = cost;
+		    squares[x][y]->parent[0] = x;
+		    squares[x][y]->parent[1] = y;
+		} 
 	    }
 	}
+	squares[x][y]->visited = true;
     } while (this->current.x != end.x && this->current.z != end.z);
+    while(1) {
+        break;
+
+    }
     return nextPath;
 }
 
