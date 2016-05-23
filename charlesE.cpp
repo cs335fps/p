@@ -438,8 +438,8 @@ Map::Map(Game* g){
 	    vvi++
 	){
             squares[(int) vvi->x + 100][(int) vvi->z + 100]->obstacle = true;
-            cout << "Obstacle: " 
-                 << (int) vvi->x << " " << (int) vvi->z << endl;
+            //cout << "Obstacle: " 
+            //     << (int) vvi->x << " " << (int) vvi->z << endl;
 	}
     }
 }
@@ -468,13 +468,29 @@ void Map::getLowestCost(){
 Vec Map::aStar(Vec start, Vec end){
     double root2 = sqrt(2);
     Vec nextPath;
+    squares[int(start.x + 100)][(int)(start.z + 100)]->cost = 0.0;
+    start.x = (int) start.x;
+    start.z = (int) start.z;
+    end.x = (int) start.x;
+    end.z = (int) start.z;
+    int offset[8][2] = {{-1, 0}, {1, 0},
+	                {0, -1}, {0, 1},
+			{-1, -1}, {-1, 1},
+			{1, -1}, {1, 1}
+                       };
     do{
-        int tmp[2];
-        getLowestCost();      
-
-
-
-    } while (1);
+        Vec tmp;
+	getLowestCost();      
+        tmp.x = this->current.x;
+        tmp.z = this->current.z;
+        for(int i = 0; i < 8; i++) {	
+	    if(inBounds(tmp) && 
+                !squares[(int) tmp.x][(int) tmp.z]->visited
+	    ){
+            
+	    }
+	}
+    } while (this->current.x != end.x && this->current.z != end.z);
     return nextPath;
 }
 
