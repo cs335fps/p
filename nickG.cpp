@@ -17,6 +17,12 @@
 // ######################## General Functions ######################
 // #################################################################
 
+Vec Reflect(Vec dir, Vec norm)
+{
+    return dir - (norm * 2.0 * dir.Dot(norm));
+
+}
+
 int hash(int *in, int n)
 {
     int seed = 0;//533000389;

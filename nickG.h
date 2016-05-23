@@ -21,6 +21,8 @@ void DrawCrosshairs(Game *game, int w, int h);
 void ParseLevel(const char* fileName, Game* game, float);
 vector<string> Split(string, string);
 
+Vec Reflect(Vec dir, Vec norm);
+
 class BulletHole
 {
     public:
