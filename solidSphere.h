@@ -4,6 +4,7 @@
 #include <GL/glu.h>
 #include <vector>
 #include <cmath>
+#include "WorldEngine.h"
 
 using namespace std;
 
@@ -16,15 +17,18 @@ class solidSphere
           vector<GLfloat> normal;
           vector<GLfloat> texcoords;
           vector<GLushort> indices;
+          worldEngine obj;
      public:
           solidSphere()
           {
                redraw(1, 16, 32);
+               obj.load("raptor.obj");
           }
           solidSphere(float radius, unsigned int rings, 
                     unsigned int sectors)
           {
                redraw(radius,rings,sectors);
+               obj.load("raptor.obj");
           }
           void redraw(float radius, unsigned int rings, 
                     unsigned int sectors,bool normalFlip= false)
@@ -148,6 +152,15 @@ class solidSphere
           {
                redraw(r,16,32);
           }
+// ////////////////////////////////////////////////////////////////////////////
+// //     //////      ///////       ///////       ///////       //////     ///
+// //////////////////////////////////////////////////////////////////////////
+         void drawObj(float p1, float p2, float p3)
+         {
+                 obj.draw();
+                 obj.loc(p1,p2,p3);
+                 obj.rot(rotx, roty, rotz);
+         }
 };
 
 #endif
