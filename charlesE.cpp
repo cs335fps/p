@@ -175,7 +175,7 @@ int Mob::Collide(Vec* p)
 	//cout << "Object touching" << " x " << this->velocity.x << " y " 
 	//<< this->velocity.y 
 	//    << " z " << this->velocity.z<<endl;
-    }	
+    }
     return 0;
 }
 
@@ -308,6 +308,7 @@ void chadKey(Game* g)
 {
 
     static int toggle = 0;
+    //static float wallHeight = 0.5;
     if(toggle == 0) {
         toggle = 1;
         respawn_mobs(g, 10);
@@ -339,7 +340,7 @@ void chadKey(Game* g)
 	    w != g->walls.end();
             w++
         ){
-            w->SetHeight(40);
+            w->SetHeight(3);
         }
         
     }
@@ -516,10 +517,34 @@ Vec Map::aStar(Vec start, Vec end){
 	squares[x][y]->visited = true;
     } while (this->current.x != end.x && this->current.z != end.z);
     while(1) {
+
         break;
 
     }
     return nextPath;
 }
+void Map::displayMap(){
+    for(int i = 0; i < 200; i++){
+	for(int j = 0; j < 200; j++){
+            if(this->squares[i][j]->obstacle){
+		if(this->squares[i][j]->peeked)
+		    cout << "\033[1;34m#\033[0m ";
+                else
+	            cout << "\033[1;33m#\033[0m ";
+	    }
+	    else if (this->squares[i][j]->visited) {
+		cout << "\033[1;";
+	        if(this->squares[i][j]->c != '\0')
+		    cout << "31m" << this->squares[i][j]->c;
+		else
+                    cout << "34m*";
+            }
+            cout << "\033[0m ";
+	}
+	cout << endl;
+    }
+}
+
+
 
 

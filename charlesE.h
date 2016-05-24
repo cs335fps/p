@@ -56,6 +56,7 @@ public:
     void move(Game*);
     virtual int Collide(Vec*); 
     Vec* getLoc() { return &location; }
+    Vec* getVel() { return &velocity; }
     void setLocY(float y = 1);
     void setVelY(float y = 0);
     unsigned int getTex() { return texture; }

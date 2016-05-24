@@ -68,7 +68,13 @@ void Game::Move()
 
     for (unsigned int i = 0; i < mobs.size(); i++) {
         mobs[i]->Collide(&position);
-        //for(unsigned int j = 0; j < mobs.size(); j++){
+        for(unsigned int j = 0; j < walls.size(); j++){
+	    Vec temp;
+	    Vec* velocity = mobs[i]->getVel();
+            walls[j].Collide(mobs[i]->getLoc(), 2.0, &temp);
+	    *velocity = Reflect(*velocity, temp);
+	}	
+	//for(unsigned int j = 0; j < mobs.size(); j++){
         //    mobs[j]->Collide(mobs[i]->getLoc());
         //}
         mobs[i]->move(this);
