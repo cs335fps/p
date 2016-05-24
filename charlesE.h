@@ -31,21 +31,27 @@
 float r(float, float);
 Vec MakeVector(float, float, float);
 class Game;
+class View;
 
 void respawn_mobs(Game*, int);
-void chadKey(Game* g);
+void chadKey(Game* g, View* v);
+double celsiusToFahrenheit(double);
+double fahrToCels(double);
 class Mob
 {
 private:
     int id;
+    int moved;
+    unsigned int texture;
+
     float hp;
     Vec location;
     Vec velocity;
     Vec maxSpeed;
     solidSphere body;
-    int moved;
-    unsigned int texture;
-public:
+public: 
+    bool hasMap;
+    Map* map2d;
     Mob();
     Mob(int, Vec*);
     void spawn(Vec*);
@@ -53,6 +59,7 @@ public:
     void damage(int, Game*);
     void move();
     virtual void render();
+    //void render(Game*);
     void move(Game*);
     virtual int Collide(Vec*); 
     Vec* getLoc() { return &location; }

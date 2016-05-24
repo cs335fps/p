@@ -42,7 +42,8 @@ public:
     int guntype;
     int hitAnim;
     int gundamage;
-    
+    double temperature;
+
     int partyMode;
     unsigned int skyTex;
     

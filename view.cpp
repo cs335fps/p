@@ -16,8 +16,6 @@ View::View(Game *g, int w, int h)
     skyTex = lbmp.getBMP("sky.bmp");
     game->defaultPortl.assignTexA(lbmp.getBMP("portalA_tex.bmp"));
     game->defaultPortl.assignTexB(lbmp.getBMP("portalB_tex.bmp"));
-    this->map2d = new Map(g);
-
     for(unsigned int i = 0; i < game->mobs.size(); i++){
         game->mobs[i]->setTex(mobTex);
     }

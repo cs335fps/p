@@ -23,7 +23,6 @@ using namespace std;
 
 class Game;
 class Mob;
-class Map;
 
 class View
 {
@@ -40,10 +39,8 @@ private:
     float ox,oy,oz;
     int wOverride, hOverride;    
     unsigned int mobTex, skyTex;
-    Map* map2d;
-public:
 
-    
+public:
     View(Game *g, int w = 0, int h = 0);
     void InitWindow();
     void cleanupXWindows(void);

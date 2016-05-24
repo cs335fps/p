@@ -1,6 +1,9 @@
 #ifndef _MAP_h
 #define _MAP_h
+#include <vector>
 class Game;
+//class vector;
+class Vec;
 class Node
 {
 public:
@@ -21,12 +24,13 @@ private:
     Node* squares[size][size];
     Node current;
 public:
+//    vector<Node> solution;
     Map();
     Map(Game*);
     void displayMap();
     bool inBounds(Vec);
     void getLowestCost();
-    Vec aStar(Vec start, Vec end);
+    Vec* aStar(Vec start, Vec end);
 
 };
 

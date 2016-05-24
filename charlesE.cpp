@@ -6,10 +6,11 @@
 #include "charlesE.h"
 #define vmi vector<Mob*>::iterator
 #define vwi vector<Wall>::iterator
-class wall;
+class Wall;
+class Map;
 Mob::~Mob()
 {
-	
+    delete this->map2d;
 }
 Mob::Mob()
 {
@@ -22,7 +23,10 @@ Mob::Mob(int mobID, Vec* spawnpoint)
     body.redraw(1.0, 10, 10);
     this->spawn(spawnpoint);
     this->texture = 0;
-    this->moved = (int)(r(0,5));
+    this->moved = (int)(r(0,120));
+    // Must wait until we have walls to draw map.
+    // Walls are in the game object.
+    this->hasMap = false;
 }
 
 void Mob::spawn(Vec* spawnpoint)
@@ -45,7 +49,7 @@ void Mob::death(Game* g)
     for(vmi m = g->mobs.begin(); m != g->mobs.end(); i++, m++){
         if((**m) == this->id){
 	    //causes an undefined behavior warning.
-	    Mob* temp = *m;
+	    Mob* temp = *m; 
             g->mobs.erase(m);
 	    delete temp;
             return; 
@@ -80,13 +84,17 @@ bool Mob::operator==(Mob* b)
 
 void Mob::move(Game* g)
 {
-location.z += (float) velocity.z / 40.0;
-location.y += velocity.y / 40.0;
-location.x += velocity.x / 40.0;
+location.z += (float) velocity.z / 240.0;
+location.y += velocity.y / 240.0;
+location.x += velocity.x / 240.0;
     
 
-if(this->moved > 2){
+if (this->moved > 120) { 
     this->moved = 0;
+    /*if(!this->hasMap){
+	this->map2d = new Map(g);
+	this->hasMap = true;
+    }*/
 }
 else{
     this->moved++;
@@ -95,40 +103,60 @@ else{
 //Put AI logic here.
 //
 //1) Collision detection: gather local objects
-
+// This is done in Map::Map(); it prevents overhead from gathering
+// new local objects each time.
 //2) Collision detection: for each local object, is touching object?
-
+// Done in Game::move where each mob iterates over each wall.
 //3) collision detection: if touching object, bounce
-    static Vec* tmp = new Vec;
-    *tmp = location+velocity;
+// Also done in Wall:Collision.
+    static Vec* tmp = new Vec(0,0,0);
+    //*tmp = location+velocity;
     //if(this->Collide(tmp) == 1){
     //}
-    if(velocity.z > 4.075)
-       velocity.z = 4.075;	
-    else if(velocity.z < -4.075)
-	velocity.z = -4.075;
-    if(velocity.z > 0.0305)
-    	velocity.z -= .0012;
-    else if(velocity.z < -0.0305)
-	velocity.z += 0.0102;
+//4) Map new route to player and start traversing route.
+    if(hasMap)
+        tmp = this->map2d->aStar(this->location, g->position);
+    //check if no solution; if so, jump and teleport.
+    if(!hasMap || (tmp->x == 0 && tmp->y == 0 && tmp->z == 0)){
+        tmp->x = g->position.x - this->location.x;
+	this->location.y = 2.0;
+	this->velocity.y = 0.5;
+        tmp->z =  g->position.x - this->location.z;
+	this->location.x = this->location.x + (tmp->x / 3.0);
+	this->location.z = this->location.z + (tmp->z / 3.0);
+    }
+    else{
+        this->velocity.x = 3 * tmp->x;//should be about 3-5.
+        this->velocity.z = 3 * tmp->z;
+    }
+    if(velocity.z > 24.075)
+       velocity.z = 24.075;	
+    else if(velocity.z < -24.075)
+	velocity.z = -24.075;
+    if(velocity.z > 0.1305)
+    	velocity.z -= .0112;
+    else if(velocity.z < -0.1305)
+	velocity.z += 0.1102;
     else
 	velocity.z = 0;
-    if(velocity.y > 4.075)
-	velocity.y = 4.075;
-    else if(velocity.y < -4.075)
-	velocity.y = -4.075;
-    if(velocity.y > 0.0305)
-    	velocity.y -= 0.0102;
-    else if (velocity.y < -0.0305)
-	velocity.y += 0.012;
+    if(velocity.y > 26.075)
+	velocity.y = 26.075;
+    else if(velocity.y < -26.075)
+	velocity.y = -26.075;
+    if(location.y > 2) // gravity.
+    	velocity.y -= 0.6102;
+    else if (location.y < 2){
+	velocity.y = 0.0;
+	location.y = 2;
+    }
     else
 	velocity.y = 0;
     if(location.y < 2)
 	velocity.y = 0;
-    if(velocity.x > 4.075)
-	velocity.x = 4.075;
-    else if (velocity.x < -4.075)
-	velocity.x = -4.075;
+    if(velocity.x > 24.075)
+	velocity.x = 24.075;
+    else if (velocity.x < -24.075)
+	velocity.x = -24.075;
     if(velocity.x > 0.061)
     	velocity.x -= 0.0035;
     else if (velocity.x < -0.061)
@@ -136,15 +164,15 @@ else{
     else
 	velocity.x = 0;
     if(velocity.x == 0 && velocity.y == 0 && velocity.z == 0){
-        velocity.x = r(-3.05, 3.05);
-        velocity.z = r(-3.05, 3.05);
+        velocity.x = r(-13.05, 13.05);
+        velocity.z = r(-13.05, 13.05);
     }
     
 }
 
 void Mob::render()
 {
-    this->move();
+    //this->move(g);
     glBindTexture(GL_TEXTURE_2D, texture);
     body.draw(location.x, location.y, location.z);
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -304,7 +332,42 @@ void Mob::setVelY(float y)
     this->velocity.y = y;
 } 
 
-void chadKey(Game* g)
+double celsiusToFahrenheit(double celsius)
+{
+    static double f;
+//#define _L8T_
+#ifdef _L8T_
+    static double test[] = {
+         180, 356, 
+	 100, 212,
+	 40,  104,
+	 37,   98,
+	 30,   86,
+	 21,   70,
+	 10,   50,
+         0,    32,
+         -18,   0,
+         -40, -40
+     };
+     printf("%lf\n", test[2*4]);
+     printf("%lf\n", test[2*2+1]);
+     printf("%lf\n", test[1*2+1]);
+#endif
+     /*std::cout << "Enter Celcius temp: " << endl;
+     std::cin >> f;*/
+
+     f = (9.0/5.0) * celsius + 32;
+     printf("Fahrenheit: %lf\n", f);
+     return f; 
+}
+double fahrToCels(double fahr){
+    static double c;
+    c = (5.0/9.0) * (fahr - 32);
+    printf("Centigrade: %lf\n", c);
+    return c;
+}
+
+void chadKey(Game* g, View* v)
 {
 
     static int toggle = 0;
@@ -318,9 +381,19 @@ void chadKey(Game* g)
 		m != g->mobs.end(); 
 		m++
 	){
-                (*m)->setVelY(0.055);
-    		//cout <<"now in chadkey";
+                (*m)->setVelY(4.055);
+                if(!(*m)->hasMap){	
+		    (*m)->map2d = new Map(g);
+                    (*m)->hasMap = true;
+		}
+		//cout <<"now in chadkey";
+
         }
+
+        g->mobs[0]->map2d->displayMap();
+        g->mobs[0]->map2d->aStar(
+            *(g->mobs[0]->getLoc()), g->position
+	);
         for(
             vwi w = g->walls.begin(); 
             w != g->walls.end(); 
@@ -328,12 +401,14 @@ void chadKey(Game* g)
 	){
             w->SetHeight(0.5);
         }
+        g->temperature = celsiusToFahrenheit(g->temperature);
     }
     else {
         toggle = 0;
         for(vmi m = g->mobs.begin(); m != g->mobs.end(); m++){
-            (*m)->setVelY(-0.055);
+            (*m)->setVelY(-4.055);
 	    (*m)->setLocY((*m)->getLoc()->y - 0.05);
+	    (*m)->hasMap = false;
         }
         for(
             vwi w = g->walls.begin();
@@ -342,8 +417,9 @@ void chadKey(Game* g)
         ){
             w->SetHeight(3);
         }
-        
+       g->temperature = fahrToCels(g->temperature);	
     }
+
 }
 
 void respawn_mobs(Game* g, int num = 10)
@@ -384,35 +460,6 @@ View::~View(){
 }
 #include <iostream>
 #include <stdio.h>
-
-double celsiusToFahrenheit()
-{
-    static double f;
-//#define _L8T_
-#ifdef _L8T_
-    static double test[] = {
-         180, 356, 
-	 100, 212,
-	 40,  104,
-	 37,   98,
-	 30,   86,
-	 21,   70,
-	 10,   50,
-         0,    32,
-         -18,   0,
-         -40, -40
-     };
-     printf("%lf\n", test[2*4]);
-     printf("%lf\n", test[2*2+1]);
-     printf("%lf\n", test[1*2+1]);
-#endif
-     std::cout << "Enter Celcius temp: " << endl;
-     std::cin >> f;
-     f = (9.0/5.0) * f + 32;
-     printf("Fahrenheit: %lf\n", f);
-     return f; 
-}
-
 Node::Node(){
     this->visited = false;
     this->cost = 2047;
@@ -451,10 +498,10 @@ bool Map::inBounds(Vec v)
 }
 
 void Map::getLowestCost(){
-    double lowCost = 9e9;
-    for (int i = 0; i < 100; i++){
-	for(int j = 0; j < 100; j++){
-	    if(!this->squares[i][j]->obstacle&&
+    double lowCost = 9e6;
+    for (int i = 45; i < 155; i++){
+	for(int j = 45; j < 155; j++){
+	    if(//!this->squares[i][j]->obstacle&&
 	       !this->squares[i][j]->visited && 
 	       this->squares[i][j]->cost < lowCost
 	    ) {
@@ -466,7 +513,7 @@ void Map::getLowestCost(){
     }
 }
 
-Vec Map::aStar(Vec start, Vec end){
+Vec* Map::aStar(Vec start, Vec end){
     // Dijkstra's derived from my CS 312 Lab 6. -- Charles Enright
     // May contain code derived from Gordon.
     double root2 = sqrt(2);
@@ -476,20 +523,32 @@ Vec Map::aStar(Vec start, Vec end){
     start.z = (int) start.z;
     end.x = (int) start.x;
     end.z = (int) start.z;
-    int offset[8][2] = {{-1, 0}, {1, 0},
-	                {0, -1}, {0, 1},
-			{-1, -1}, {-1, 1},
-			{1, -1}, {1, 1}};
-    do{
+    int offset[8][2] = {
+	{-1, 0}, {1, 0},
+	{0, -1}, {0, 1},
+	{-1, -1}, {-1, 1},
+	{1, -1}, {1, 1}
+    };
+    int sentinal = 200;
+    int iter = 0;
+    do {
+	if(iter > sentinal){
+	    cout << "Hit sentinel. Aborting aStar.";
+	    break;
+	}
+	else{
+	    iter++;
+
+	}
         int x, y;
 	getLowestCost();      
-        for(int i = 0; i < 8; i++) {	
+        for (int i = 0; i < 8; i++) {	
 	    x = this->current.x;
             y = this->current.z;
             
-	    if(inBounds(Vec(x, 0, y)) && 
+	    if (inBounds(Vec(x, 0, y)) && 
                 !squares[x][y]->visited
-	    ){
+	    ) {
                 double cost;
                 squares[x][y]->peeked = true;
 
@@ -511,35 +570,43 @@ Vec Map::aStar(Vec start, Vec end){
                     squares[x][y]->cost = cost;
 		    squares[x][y]->parent[0] = x;
 		    squares[x][y]->parent[1] = y;
+		    squares[x][y]->c = '*';
 		} 
 	    }
 	}
 	squares[x][y]->visited = true;
+	usleep(1);
     } while (this->current.x != end.x && this->current.z != end.z);
-    while(1) {
-
-        break;
-
+    //find next node.
+    while(this->current.parent[0] != 0 && this->current.parent[1] != 0) {
+       if(current.parent[0] == start.x && current.parent[1] == start.z)
+	   return new Vec(start.x - current.x, 0, start.z - current.z);
     }
-    return nextPath;
+    //this->displayMap();
+    return new Vec(0, 0, 0);
 }
 void Map::displayMap(){
-    for(int i = 0; i < 200; i++){
-	for(int j = 0; j < 200; j++){
+    for(int i = 45; i < 155; i++){
+	for(int j = 45; j < 155; j++){
             if(this->squares[i][j]->obstacle){
 		if(this->squares[i][j]->peeked)
-		    cout << "\033[1;34m#\033[0m ";
+		    cout << "\033[1;34m#\033[0m";
                 else
-	            cout << "\033[1;33m#\033[0m ";
+	            cout << "\033[1;33m#\033[0m";
 	    }
 	    else if (this->squares[i][j]->visited) {
 		cout << "\033[1;";
 	        if(this->squares[i][j]->c != '\0')
 		    cout << "31m" << this->squares[i][j]->c;
 		else
-                    cout << "34m*";
+                    cout << "o";
+		cout << "\033[0m";
             }
-            cout << "\033[0m ";
+	    else if(this->squares[i][j]->peeked)
+		cout << "\033[1;34mo";
+            else
+		cout << ".";
+            cout << "\033[0m";
 	}
 	cout << endl;
     }

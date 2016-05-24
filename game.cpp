@@ -20,7 +20,7 @@ Game::Game()
     guntype =0;
     hitAnim = 0;
     gundamage= 10;
-
+    temperature = 25.0; // temperature in celsius
     position = Vec(0,2,0);
     direction = Vec(0.0,0.0,0.0);
     respawn_mobs(this, 10);
@@ -77,6 +77,7 @@ void Game::Move()
 	//for(unsigned int j = 0; j < mobs.size(); j++){
         //    mobs[j]->Collide(mobs[i]->getLoc());
         //}
+	//Actually happens in view->render, because it needs the map.
         mobs[i]->move(this);
     }
 
