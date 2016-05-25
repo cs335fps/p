@@ -29,7 +29,7 @@ public:
     Map(Game*);
     void displayMap();
     bool inBounds(Vec);
-    void getLowestCost();
+    void getLowestCost(Vec, Vec);
     Vec* aStar(Vec start, Vec end);
     ~Map();
 };

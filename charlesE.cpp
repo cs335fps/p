@@ -117,18 +117,19 @@ void Mob::move(Game* g)
     if(hasMap)
         tmp = this->map2d->aStar(this->location, g->position);
     //check if no solution; if so, jump and teleport.
-    if(!hasMap || (tmp->x == 0 && tmp->y == 0 && tmp->z == 0)){
+    if(!hasMap){
         tmp->x = g->position.x - this->location.x;
         this->location.y = 2.0;
         this->velocity.y = 0.5;
         tmp->z =  g->position.x - this->location.z;
-        this->location.x = this->location.x + (tmp->x / 3.0);
-        this->location.z = this->location.z + (tmp->z / 3.0);
-    }
-    /*else{
+     }
+    else{
         this->velocity.x = 3 * tmp->x;//should be about 3-5.
         this->velocity.z = 3 * tmp->z;
-    }*/
+	this->location.x = this->location.x + (tmp->x / 3.0);
+        this->location.z = this->location.z + (tmp->z / 3.0);
+   
+    }
     if(velocity.z > 24.075)
         velocity.z = 24.075;	
     else if(velocity.z < -24.075)
@@ -361,7 +362,8 @@ double celsiusToFahrenheit(double celsius)
     printf("Fahrenheit: %lf\n", f);
     return f; 
 }
-double fahrToCels(double fahr){
+double fahrToCels(double fahr)
+{
     static double c;
     c = (5.0/9.0) * (fahr - 32);
     printf("Centigrade: %lf\n", c);
@@ -382,9 +384,10 @@ void startAstar(Game* g)
             ){
             if(!(*m)->hasMap){	
                 (*m)->map2d = new Map(g);
-                (*m)->hasMap = true;
+               // (*m)->hasMap = true;
             }
         }
+	g->mobs[0]->hasMap = true;
         g->mobs[0]->map2d->displayMap();
         g->mobs[0]->map2d->aStar(
                 *(g->mobs[0]->getLoc()), g->position
@@ -398,6 +401,7 @@ void startAstar(Game* g)
             (*m)->hasMap = false;
         }
     }
+//    exit(0); // used for testing.
 }
 void chadKey(Game* g, View* v)
 {
@@ -465,14 +469,14 @@ Game::~Game()
     for(int i = 0; i < m; i++){
         this->mobs[i]->death(this);
     }
-    for(int i = 0; !this->walls.empty();this->walls.pop_back()){
+    /*for(int i = 0; !this->walls.empty();this->walls.pop_back()){
         i++;
         // cout << "Razing wall " << i << endl;
         if(i > 999) break;
 
         this->walls.pop_back();
     }
-    /*while(!this->bullets.empty()){
+    while(!this->bullets.empty()){
         cout << "Killing Bullet: " << endl;
 	delete &this->bullets.back();
         this->bullets.pop_back();
@@ -529,17 +533,31 @@ Map::Map(Game* g)
 
 bool Map::inBounds(Vec v)
 {
-    return(v.x >= -75 && v.x <= 75 && v.z <= 75 && v.z >= -75);
+    return(v.x >= 0 && v.x <= 200 && v.z <= 0 && v.z >= 200);
 }
+/*
+ * # # #
+ * # @ # 
+ * # # #
+ * */
 
-void Map::getLowestCost(){
+void Map::getLowestCost(Vec start, Vec end)
+{
     double lowCost = 9e6;
-    for (int i = 45; i < 155; i++){
-        for(int j = 45; j < 155; j++){
-            if(//!this->squares[i][j]->obstacle&&
-                    !this->squares[i][j]->visited && 
-                    this->squares[i][j]->cost < lowCost
-              ) {
+    Vec temp;
+    temp.x = start.x;
+    temp.z = start.z;
+    for (int i = 35; i < 155; i++) {
+	if( i < 0 || i >= 200) 
+	    continue;
+        for (int j = 55; j < 155; j++) {
+	    if(j < 0 || j > 200)
+		continue;
+            if(
+               !this->squares[i][j]->obstacle&&
+               !this->squares[i][j]->visited && 
+               this->squares[i][j]->cost < lowCost
+            ) {
                 lowCost = squares[i][j]->cost;
                 this->current.x = i;
                 this->current.z = j;
@@ -555,18 +573,21 @@ Vec* Map::aStar(Vec start, Vec end)
     double root2 = sqrt(2);
     Vec nextPath;
     squares[int(start.x + 100)][(int)(start.z + 100)]->cost = 0.0;
-    start.x = (int) start.x;
-    start.z = (int) start.z;
-    end.x = (int) start.x;
-    end.z = (int) start.z;
+    start.x = (int) start.x+100;
+    start.z = (int) start.z+100;
+    end.x = (int) end.x+100;
+    end.z = (int) end.z+100;
     int offset[8][2] = {
         {-1, 0}, {1, 0},
         {0, -1}, {0, 1},
         {-1, -1}, {-1, 1},
         {1, -1}, {1, 1}
     };
-    int sentinal = 200;
+    int sentinal = 2000;
     int iter = 0;
+    Vec temp;
+    temp.x = start.x;
+    temp.z = start.z;
     do {
         if(iter > sentinal){
             cout << "Hit sentinel. Aborting aStar.";
@@ -577,11 +598,12 @@ Vec* Map::aStar(Vec start, Vec end)
 
         }
         int x, y;
-        getLowestCost();      
+        getLowestCost(temp, end);
+        temp.x = current.x;
+        temp.z = current.z;	
         for (int i = 0; i < 8; i++) {	
             x = this->current.x;
             y = this->current.z;
-
             if (inBounds(Vec(x, 0, y)) && 
                     !squares[x][y]->visited
                ) {
@@ -611,15 +633,21 @@ Vec* Map::aStar(Vec start, Vec end)
             }
         }
         squares[x][y]->visited = true;
-        usleep(10);
+        usleep(1);
     } while (this->current.x != end.x && this->current.z != end.z);
     //find next node.
+    static int toggle = 1;
     while(this->current.parent[0] != 0 && this->current.parent[1] != 0) {
         if(current.parent[0] == start.x && current.parent[1] == start.z)
             return new Vec(start.x - current.x, 0, start.z - current.z);
         current = *squares[current.parent[0]][current.parent[1]];
     }
-    //this->displayMap();
+    if(toggle == 1){
+      this->displayMap();
+    }
+    else {
+        toggle = 0;
+    }
     return new Vec(0, 0, 0);
 }
 void Map::displayMap()
