@@ -380,13 +380,10 @@ void startAstar(Game* g)
                 m != g->mobs.end(); 
                 m++
             ){
-            (*m)->setVelY(4.055);
             if(!(*m)->hasMap){	
-                //(*m)->map2d = new Map(g);
-                //(*m)->hasMap = true;
+                (*m)->map2d = new Map(g);
+                (*m)->hasMap = true;
             }
-            //cout <<"now in chadkey";
-
         }
         g->mobs[0]->map2d->displayMap();
         g->mobs[0]->map2d->aStar(
