@@ -162,11 +162,16 @@ void Game::Shoot()
     }
     if (mobHit >= 0) {
         wallHit = 0;
-        hitAnim = 20;
-        cout << "Shot Mob #" << mobHit
-            << " dist: " << closest << endl;
+	float distMult = 15.0 / closest;
+	if (distMult < 0.0)
+	    distMult = 0.0;
+	if (distMult > 1.0)
+	    distMult = 1.0;
         // !--- This cout can get removed after actual Mob damage works
-	mobs[mobHit]->damage(gundamage, this);
+	int totDam = (int)((float)gundamage * distMult);
+	mobs[mobHit]->damage(totDam, this);
+	if (totDam > 0)
+	    hitAnim = 20;
     }
     
     if (wallHit == 1) {
