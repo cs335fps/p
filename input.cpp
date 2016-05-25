@@ -1,5 +1,6 @@
 #include "input.h"
 void chadKey(Game*);
+void startAstar(Game*);
 Input::Input(Game *g, View *v, Openal *o)
 {
     view = v;
@@ -61,6 +62,10 @@ int Input::CheckKeys(XEvent *e)
         if(key == XK_l) {
 
         }
+	if(key == XK_m){
+           //Fire A* algorithm.
+	   startAstar(this->game);
+	}
 	if(key == XK_c) {
 	    //Fire Chad's key
 	    //cout << "c key pressed.";

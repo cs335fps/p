@@ -35,6 +35,7 @@ class View;
 
 void respawn_mobs(Game*, int);
 void chadKey(Game* g, View* v);
+void startAstar(Game* g);
 double celsiusToFahrenheit(double);
 double fahrToCels(double);
 class Mob

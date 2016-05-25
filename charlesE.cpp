@@ -172,7 +172,7 @@ void Mob::move(Game* g)
 
 void Mob::render()
 {
-    cout << "Now rendering mob " << this->id;
+    //cout << "Now rendering mob " << this->id;
     //this->move(g);
     glBindTexture(GL_TEXTURE_2D, texture);
     body.draw(location.x, location.y, location.z);
@@ -367,11 +367,44 @@ double fahrToCels(double fahr){
     printf("Centigrade: %lf\n", c);
     return c;
 }
+void startAstar(Game* g)
+{
+    static int toggle = 0;
+    //static float wallHeight = 0.5;
+    if(toggle == 0) {
+        toggle = 1;
+        //respawn_mobs(g, 10);
+        //Set all mobs to color red and float straight up.
+        for (
+                vmi m = g->mobs.begin(); 
+                m != g->mobs.end(); 
+                m++
+            ){
+            (*m)->setVelY(4.055);
+            if(!(*m)->hasMap){	
+                //(*m)->map2d = new Map(g);
+                //(*m)->hasMap = true;
+            }
+            //cout <<"now in chadkey";
 
+        }
+        g->mobs[0]->map2d->displayMap();
+        g->mobs[0]->map2d->aStar(
+                *(g->mobs[0]->getLoc()), g->position
+                );
+    }
+    else {
+        toggle = 0;
+        for(vmi m = g->mobs.begin(); m != g->mobs.end(); m++){
+            (*m)->setVelY(-4.055);
+            (*m)->setLocY((*m)->getLoc()->y - 0.05);
+            (*m)->hasMap = false;
+        }
+    }
+}
 void chadKey(Game* g, View* v)
 {
-
-    static int toggle = 0;
+ static int toggle = 0;
     //static float wallHeight = 0.5;
     if(toggle == 0) {
         toggle = 1;
@@ -384,17 +417,11 @@ void chadKey(Game* g, View* v)
             ){
             (*m)->setVelY(4.055);
             if(!(*m)->hasMap){	
-                (*m)->map2d = new Map(g);
-                (*m)->hasMap = true;
+                //(*m)->map2d = new Map(g);
+                //(*m)->hasMap = true;
             }
             //cout <<"now in chadkey";
-
         }
-
-        g->mobs[0]->map2d->displayMap();
-        g->mobs[0]->map2d->aStar(
-                *(g->mobs[0]->getLoc()), g->position
-                );
         for(
                 vwi w = g->walls.begin(); 
                 w != g->walls.end(); 
@@ -409,7 +436,7 @@ void chadKey(Game* g, View* v)
         for(vmi m = g->mobs.begin(); m != g->mobs.end(); m++){
             (*m)->setVelY(-4.055);
             (*m)->setLocY((*m)->getLoc()->y - 0.05);
-            (*m)->hasMap = false;
+         //   (*m)->hasMap = false;
         }
         for(
                 vwi w = g->walls.begin();
@@ -421,20 +448,25 @@ void chadKey(Game* g, View* v)
         g->temperature = fahrToCels(g->temperature);	
     }
 
-}
+
+   }
 
 void respawn_mobs(Game* g, int num = 10)
 {
-    int max = g->mobs.size()+num;
+    int s = g->mobs.size();
     for(int i = 0; i < num; i++)
-        g->mobs.push_back(new Mob(i, new Vec(r(-20, 20), 2, r(-20, 20))));
+        g->mobs.push_back(new Mob(s+i, new Vec(r(-20, 20), 2, r(-20, 20))));
 }
 
 Game::~Game()
 {
-    for(Mob* i = this->mobs.back(); !this->mobs.empty(); i = this->mobs.back()){
+    /*for(Mob* i = this->mobs.back(); !this->mobs.empty(); i = this->mobs.back()){
         // cout << "Killing mob " << endl;
         i->death(this);
+    }*/
+    int m = this->mobs.size();
+    for(int i = 0; i < m; i++){
+        this->mobs[i]->death(this);
     }
     for(int i = 0; !this->walls.empty();this->walls.pop_back()){
         i++;
@@ -443,15 +475,17 @@ Game::~Game()
 
         this->walls.pop_back();
     }
-    while(!this->bullets.empty()){
+    /*while(!this->bullets.empty()){
         cout << "Killing Bullet: " << endl;
+	delete &this->bullets.back();
         this->bullets.pop_back();
     }
     while(!this->bulletHoles.empty()){
         cout << "Cleaning up bullet holes.";
         this->bulletHoles.pop_back();
-    }
-    delete[] tmpPos;
+    }*/
+    // tmpPos seems to be automatic allocation/garbage collection.
+    //delete[] tmpPos;
 }
 
 View::~View()
@@ -580,7 +614,7 @@ Vec* Map::aStar(Vec start, Vec end)
             }
         }
         squares[x][y]->visited = true;
-        usleep(1);
+        usleep(10);
     } while (this->current.x != end.x && this->current.z != end.z);
     //find next node.
     while(this->current.parent[0] != 0 && this->current.parent[1] != 0) {
@@ -620,7 +654,8 @@ void Map::displayMap()
 }
 Map::~Map()
 {
-    delete[] squares;
+    //automatic allocate/deallocate
+    //delete[] squares;
 }
 Wall::~Wall()
 {
