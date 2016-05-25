@@ -169,10 +169,12 @@ void View::Render()
     if (game->togPortal == 1){
         game->defaultPortl.draw();
     }
-
+    
+    glDisable(GL_LIGHTING);
     glBindTexture(GL_TEXTURE_2D, skyTex);
     game->sky.draw(ox,oy,oz);
     glBindTexture(GL_TEXTURE_2D, 0);
+    glEnable(GL_LIGHTING);
 
     for (unsigned int i = 0; i < game->walls.size(); i++) {
         game->walls[i].render();
@@ -199,7 +201,7 @@ void View::Render()
     }
 
     float fl = 200.0;
-    glColor3f(0,0,0);
+    glColor3f(.5,.5,.5);
     glBegin(GL_POLYGON);
     glVertex3f(fl,0,fl);
     glVertex3f(-fl,0,fl);
@@ -232,23 +234,29 @@ void View::Lighting()
     // setup the position, specular and shininess of the light
     GLfloat mat_spec[] = {1.0, 1.0, 1.0, 0.2};
     GLfloat mat_shini[]= { 5.0};
-    GLfloat ambiant[] =  {0.1484, 0.0, 0.5781};
+    GLfloat ambiant[] =  {0.3, 0.3, 0.3};
     GLfloat diff[] =  {1.0, 1.0, 1.0, 0.5};
+    GLfloat spec[] = { 1.0, 1.0, 1.0, 0.5 };
     //GLfloat light_Pos[]= {0, 8, 0, 1.0};
 
-    GLfloat light_Pos[]= {0, 10, 0, 0.9};
-    GLfloat light_Pos2[]= {
+    GLfloat light_Pos[]= {100, 100, 100, 0.9};
+    GLfloat light_Pos2[]= {-100, 100, -100, 0.9};
+    /*GLfloat light_Pos2[]= {
         game->position.x, 
         game->position.y, 
         game->position.z, 
-        0.5};
+        0.5};*/
     // apply the shinynes, specular and light position
     glMaterialfv(GL_FRONT, GL_SPECULAR, mat_spec);
     glMaterialfv(GL_FRONT, GL_SHININESS, mat_shini);
     glLightfv(GL_LIGHT0, GL_POSITION, light_Pos);
     glLightfv(GL_LIGHT1, GL_POSITION, light_Pos2);
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambiant);
+    glLightfv(GL_LIGHT1, GL_AMBIENT, ambiant);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diff);
     glLightfv(GL_LIGHT1, GL_DIFFUSE, diff);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, spec);
+    glLightfv(GL_LIGHT1, GL_SPECULAR, spec);
 
     glMatrixMode(GL_MODELVIEW);
     glEnable(GL_LIGHTING);
