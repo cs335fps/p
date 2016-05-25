@@ -30,7 +30,8 @@ zoom according to weapon selected.
 #include "lizandroP.h"
 #include "view.h"
 #include "game.h"
-unsigned int reload;
+unsigned int reload=0;
+	loadBMP rload;
 
 int nsound =2;
 
@@ -50,8 +51,6 @@ extern "C" {
 Openal::Openal()
 {
 
-	loadBMP rload;
-	reload = rload.getBMP("reload.bmp");
 }
 
 //initalize and add source of sound
@@ -181,6 +180,9 @@ void emptysound(Game *game){
 	alSourcePlay(alSource[3]);
 }
 void reloadMessage(Game *game, int w, int h){
+    if (reload == 0)
+	reload = rload.getBMP("reload.bmp");
+
     glColor3f(1.0f,1.0f,1.0f);
     glBindTexture(GL_TEXTURE_2D, reload);
     if (game->nbullets<1){
