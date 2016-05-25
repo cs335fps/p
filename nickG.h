@@ -68,6 +68,7 @@ class Wall
         int Ray(Vec origin, Vec direction, 
                 float * closest, Vec * normal = NULL);
         void SetHeight(float);
+        ~Wall();
 };
 
 class Seconds

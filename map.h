@@ -31,7 +31,7 @@ public:
     bool inBounds(Vec);
     void getLowestCost();
     Vec* aStar(Vec start, Vec end);
-
+    ~Map();
 };
 
 
