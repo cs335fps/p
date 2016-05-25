@@ -29,6 +29,7 @@ class BulletHole
         Vec origin;
         Vec normal;
         void render();
+        void render2();
         BulletHole(Vec, Vec);
 };
 

@@ -192,7 +192,10 @@ void View::Render()
     }
     
     for (unsigned int i = 0; i < game->bulletHoles.size(); i++) {
-        game->bulletHoles[i].render();
+        if (game->partyMode)
+            game->bulletHoles[i].render2();
+        else
+            game->bulletHoles[i].render();
     }
 
     float fl = 200.0;

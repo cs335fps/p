@@ -125,10 +125,10 @@ void ParseLevel(const char* fileName, Game* game,  float height)
         if (line.compare(0, cmp.length(), cmp) == 0) {
             vector<string> elems = Split(line, "\"");
             game->walls.push_back(Wall(Vec(
-                atof(elems[1].c_str()), 0, atof(elems[3].c_str())
-                ),Vec(
-                atof(elems[5].c_str()), 0, atof(elems[7].c_str())
-                ),0.1, height, Vec(1,1,1)));
+                            atof(elems[1].c_str()), 0, atof(elems[3].c_str())
+                            ),Vec(
+                                atof(elems[5].c_str()), 0, atof(elems[7].c_str())
+                                ),0.1, height, Vec(1,1,1)));
         }
     }
 
@@ -149,7 +149,7 @@ vector<string> Split(string s, string del)
     }
 
     ret.push_back(s.substr(lastPos,s.length() - lastPos));
-    
+
     return ret;
 }
 
@@ -192,6 +192,64 @@ void BulletHole::render()
                     sin(th) * rad,
                     normal.x * cos(th) * rad
                     ));
+        glVertex3fv(&x.x);
+    }
+    glEnd();
+    glEnable(GL_LIGHTING);
+}
+
+void BulletHole::render2()
+{
+    float arr[11][2] = {
+        {-4,4},
+        {-3,3},
+        {-3,1},
+        {-1,2},
+        {-1,0},
+        {0,2},
+        {1,0},
+        {1,2},
+        {3,1},
+        {3,3},
+        {4,4},
+    };
+    glDisable(GL_LIGHTING);
+    glBegin(GL_POLYGON);
+    glColor3f(0.0, 0.0, 0.0);
+    float circMax = 16;
+    Vec x;
+    float rad = 0.05;
+    float th;
+    Vec perp = Vec(-normal.z,normal.y,normal.x);
+    for (float i = 0.0; i < circMax; i+=1.0) {
+        th = i / circMax * 6.2831;
+        x = (origin + Vec(
+                    -normal.z * cos(th) * rad,
+                    sin(th) * rad * 2.0,
+                    normal.x * cos(th) * rad
+                    ));
+        x = x - perp * 0.1;
+        glVertex3fv(&x.x);
+    }
+    glEnd();
+    glBegin(GL_POLYGON);
+    for (float i = 0.0; i < circMax; i+=1.0) {
+        th = i / circMax * 6.2831;
+        x = (origin + Vec(
+                    -normal.z * cos(th) * rad,
+                    sin(th) * rad * 2.0,
+                    normal.x * cos(th) * rad
+                    ));
+        x = x + perp * 0.1;
+        glVertex3fv(&x.x);
+    }
+    glEnd();
+
+    glBegin(GL_TRIANGLE_STRIP);
+    for (float i = 0.0; i < 11.0; i+=1.0) {
+        x = origin + Vec(perp.x * 0.05 * arr[(int)i][0],
+                arr[(int)i][1] * 0.05 - 0.3,
+                perp.z * 0.05 * arr[(int)i][0]);
         glVertex3fv(&x.x);
     }
     glEnd();
@@ -305,6 +363,10 @@ void Wall::render()
         {7,3,2,6},
         {1,5,6,2}
     };  
+    static float co = 0.0;
+    co += 0.001;
+    if (co > 360.0)
+        co -= 1.0;
 
     glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
@@ -313,7 +375,9 @@ void Wall::render()
         glBegin(GL_POLYGON);
 
         if (game->partyMode)
-            glColor3f(RAND,RAND,RAND); // PARTY MODE
+            glColor3f(sin(co)/2.0+0.5,
+                    sin(co+120.0)/2.0+0.5,
+                    sin(co+240.0)/2.0+0.5); // PARTY MODE
         else
             glColor3fv(&color[0]);
 
@@ -593,6 +657,8 @@ Vec Cross(Vec a, Vec b)
     c.z = a.x * b.y - a.y * b.x;
     return c;
 }
+
+
 
 
 
