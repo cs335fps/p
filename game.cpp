@@ -59,12 +59,19 @@ void Game::Move()
     // slow down when aiming
     float speed = 0.2f - (float) aiming * 0.1f;
 
-    oz = position.z;
-    ox = position.x;
+	// do not change ox and oz if the player is not moving
+    if (nx != position.x || nz != position.z){
+        oz = position.z;
+        ox = position.x;
+    }
+    
+    // assign new position and save that position in nx and nz
     position.z -= (velocityX * cos(direction.x)
             + velocityY * -sin(direction.x)) * speed;
     position.x -= (velocityY * cos(direction.x)
             + velocityX * sin(direction.x)) * speed;
+    nz =position.z;
+    nx =position.x;
 
     for (unsigned int i = 0; i < mobs.size(); i++) {
         mobs[i]->Collide(&position);

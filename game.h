@@ -24,6 +24,7 @@ class Game
 {
 private:
     float tmpPos[3];
+    float ox, oz, nx, nz;
 public:
     Vec position;
     Vec direction;
