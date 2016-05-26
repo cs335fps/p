@@ -30,8 +30,9 @@ Game::Game()
     direction = Vec(0.0,0.0,0.0);
     respawn_mobs(this, 10);
     ParseLevel("lev1.svg", this, 3.0);
-    health = 30.0;
-    
+    health = 60.0;
+    gameCounter = 0;
+
     for (unsigned int i = 0; i < mobs.size(); i++) {
         Vec* spt = &spawnPts[i % spawnPts.size()];
         mobs[i]->spawn(spt);
@@ -49,8 +50,8 @@ void Game::Move()
     if (hitAnim > 0)
         hitAnim--;
     if(setReloadDelay > 0)
-      setReloadDelay -= 1;
-    
+        setReloadDelay -= 1;
+
     float ox, oz;
     if (zoom == 1 && depth < maxZoom) {
         depth += (maxZoom - minZoom) / 15;
@@ -99,20 +100,42 @@ void Game::Move()
         //}
         //Actually happens in view->render, because it needs the map.
         mobs[i]->move(this);
-        
-        Vec sightDir = -(*mobs[i]->getLoc() - position);
+
+        Vec sightDir = -1.0 * (*mobs[i]->getLoc() - position);
         float closestSight = sightDir.Magnitude();
         int wallHit = 0;
         int wallCount = walls.size();
         for (int j = 0; j < wallCount; j++) {
-            if (walls[j].Ray(*mobs[i]->getLoc(), direction.Norm(), &closestSight) == 1)
+            if (walls[j].Ray(*mobs[i]->getLoc(), sightDir, &closestSight) == 1)
                 wallHit = 1;
-                break;
         }
-        if (wallHit == 1) {
-            //cout << "No LOS, mob #" << i << endl;
-        } else {
-            //cout << "LOS, mob #" << i << endl;
+        if (wallHit == 0 && gameCounter%30 == 0) {
+            Bullet b;
+            b.origin = *mobs[i]->getLoc() + Vec(0,-1,0);
+            b.direction = sightDir;
+            b.end = b.origin + b.direction;
+            b.age = 30;
+            bullets.push_back(b);
+            health -= 5.0;
+            if (health <= 0.0) {
+                cout << "              __.....__\n";
+                cout << "            .'         ':,\n";
+                cout << "           /  __  _  __  \\\n";
+                cout << "           | |_)) || |_))||\n";
+                cout << "           | | \\\\ || |   ||\n";
+                cout << "           |             ||   _,\n";
+                cout << "           |             ||.-(_{}\n";
+                cout << "           |             |/    `\n";
+                cout << "           |        ,_ (\\;|/)\n";
+                cout << "         \\|       {}_)-,||`\n";
+                cout << "         \\;/,,;;;;;;;,\\|//,\n";
+                cout << "        .;;;;;;;;;;;;;;;;,\n";
+                cout << "       \\,;;;;;;;;;;;;;;;;,//\n";
+                cout << "      \\;;;;;;;;;;;;;;;;,//\n";
+                cout << "     ,\';;;;;;;;;;;;;;;;'\n";
+                cout << "    ;;;;;;;;;;;;;;'''`\n";
+                exit(0);
+            }
         }
     }
 
@@ -143,7 +166,7 @@ void Game::Move()
                     ox, 2, oz);
         }
     }
-
+    gameCounter++;
 }
 
 void Game::Shoot()
@@ -219,6 +242,7 @@ void Game::Shoot()
     bullets.push_back(b);
 
 }
+
 
 
 
