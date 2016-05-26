@@ -100,23 +100,33 @@ void ParseLevel(const char* fileName, Game* game,  float height)
     }
     string line;
     string cmp;
+    string spawnPt = "#FF00FF";
     while (getline(file, line)) {
         lines.push_back(line);
     }
     game->walls.clear();
+    game->spawnPts.clear();
     int lCount = lines.size();
     for (int i = 0; i < lCount; i++) {
         line = lines[i];
         cmp = "<line";
         if (line.compare(0, cmp.length(), cmp) == 0) {
             vector<string> elems = Split(line, "\"");
-            game->walls.push_back(Wall(Vec(
-                            atof(elems[1].c_str()), 0, 
+            if (elems[9].compare(spawnPt) == 0) {
+                //Spawn point
+                game->spawnPts.push_back(Vec(
+                            atof(elems[1].c_str()), 2, 
                             atof(elems[3].c_str())
-                            ),Vec(
-                                atof(elems[5].c_str()), 0, 
-                                atof(elems[7].c_str())
-                                ),0.1, height, Vec(1,1,1)));
+                            ));
+            } else {
+                game->walls.push_back(Wall(Vec(
+                                atof(elems[1].c_str()), 0, 
+                                atof(elems[3].c_str())
+                                ),Vec(
+                                    atof(elems[5].c_str()), 0, 
+                                    atof(elems[7].c_str())
+                                    ),0.1, height, Vec(1,1,1)));
+            }
         }
     }
 }
@@ -636,3 +646,6 @@ Vec Cross(Vec a, Vec b)
     c.z = a.x * b.y - a.y * b.x;
     return c;
 }
+
+
+

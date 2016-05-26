@@ -30,6 +30,7 @@ public:
     Vec direction;
     
     vector<Bullet> bullets;
+    vector<Vec> spawnPts;
     deque<BulletHole> bulletHoles;
     
     int moveX;

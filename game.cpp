@@ -31,6 +31,11 @@ Game::Game()
     respawn_mobs(this, 10);
     ParseLevel("lev1.svg", this, 3.0);
     health = 30.0;
+    
+    for (unsigned int i = 0; i < mobs.size(); i++) {
+        Vec* spt = &spawnPts[i % spawnPts.size()];
+        mobs[i]->spawn(spt);
+    }
 
     for (unsigned int i = 0; i < walls.size(); i++) {
         walls[i].game = this;
