@@ -20,6 +20,9 @@ Game::Game()
     guntype =0;
     hitAnim = 0;
     gundamage= 10;
+    mobNum = 0;
+    mobDist= 0.0;
+    lkey = 0;
     temperature = 25.0; // temperature in celsius
     position = Vec(0,2,0);
     direction = Vec(0.0,0.0,0.0);
@@ -162,6 +165,8 @@ void Game::Shoot()
     }
     if (mobHit >= 0) {
         wallHit = 0;
+        mobNum = mobHit;
+        mobDist= closest;
 	float distMult = 15.0 / closest;
 	if (distMult < 0.0)
 	    distMult = 0.0;

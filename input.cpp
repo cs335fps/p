@@ -60,7 +60,7 @@ int Input::CheckKeys(XEvent *e)
             game->partyMode ^= 1;
         }
         if(key == XK_l) {
-
+            game->lkey=1;
         }
 	if(key == XK_m){
            //Fire A* algorithm.

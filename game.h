@@ -43,6 +43,9 @@ public:
     int guntype;
     int hitAnim;
     int gundamage;
+    float mobDist;
+    int mobNum;
+    int lkey;
     double temperature;
 
     int partyMode;

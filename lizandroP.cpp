@@ -229,3 +229,100 @@ void GameMenu(Game *game, int w, int h)
     glEnd();
 }
 
+//updates kills by one
+//gets called after mobs death;
+void kills(Game *game)
+{
+  game->nkills = game->nkills+1;
+  
+}
+
+
+//destructor
+Openal::~Openal()
+{
+  
+}  
+
+//mykey
+void Lizandrokey(Game *game, int w, int h)
+{
+    int l = h / 1;
+
+    glPushMatrix();
+    glTranslatef(w/2,h/2,0);
+    glColor4f(0,0,0,((float)30 / 20.0));
+    glBegin(GL_LINE);
+    GLUquadric* qobj = gluNewQuadric();
+    gluQuadricOrientation(qobj,GLU_INSIDE);
+    gluDisk(qobj, (float)l/5.0*.9, l/5, 62, 1);
+    glEnd(); 
+    glPopMatrix();
+    
+    glLineWidth(1);
+    glBegin(GL_LINES);
+    glColor3f(0.0f,0.0f,0.0f);
+    glVertex2d(w / 2 - l / 20, h / 2);
+    glVertex2d(w / 2 + l / 20, h / 2);
+    glEnd();
+    glBegin(GL_LINES);
+    glVertex2d(w / 2, h / 2 - l / 20);
+    glVertex2d(w / 2, h / 2 + l / 20);
+    glEnd();
+    glBegin(GL_LINES);
+    glColor3f(0.0f,0.0f,0.0f);
+    glVertex2d(w / 2 - l / 20, h / 2+1);
+    glVertex2d(w / 2 + l / 20, h / 2+1);
+    glEnd();
+    glBegin(GL_LINES);
+    glVertex2d(w / 2+1, h / 2 - l / 20);
+    glVertex2d(w / 2+1, h / 2 + l / 20);
+    glEnd();
+    
+    int hitAnim = game->hitAnim;
+    if (hitAnim > 0) {
+    glLineWidth(1);
+    glBegin(GL_LINES);
+    glColor3f(1.0f,0.0f,0.0f);
+    glVertex2d(w / 2 - l / 20, h / 2);
+    glVertex2d(w / 2 + l / 20, h / 2);
+    glEnd();
+    glBegin(GL_LINES);
+    glVertex2d(w / 2, h / 2 - l / 20);
+    glVertex2d(w / 2, h / 2 + l / 20);
+    glEnd();
+    glBegin(GL_LINES);
+    glColor3f(0.0f,0.0f,0.0f);
+    glVertex2d(w / 2 - l / 20, h / 2+1);
+    glVertex2d(w / 2 + l / 20, h / 2+1);
+    glEnd();
+    glBegin(GL_LINES);
+    glVertex2d(w / 2+1, h / 2 - l / 20);
+    glVertex2d(w / 2+1, h / 2 + l / 20);
+    glEnd();
+    }
+    
+    glBegin(GL_LINES);
+    Rect r;
+    r.bot = h - 470;
+    r.left = 560;
+    r.center = 0;
+    ggprint8b(&r, 16, 0, "");
+    ggprint8b(&r, 16, 0, "target mob: %i", game->mobNum);
+    ggprint8b(&r, 16, 0, "Distance to target: %f", game->mobDist);
+    glEnd();
+    
+    glBegin(GL_LINES);
+    Rect b;
+    b.bot = h - 10;
+    b.left = 1024;
+    b.center = 0;
+    ggprint8b(&b, 16, 0, "");
+    
+    for(int x = 0; x < game->nbullets; x++){
+      ggprint8b(&b, 16, 0, "|=====}");
+    }
+    glEnd();
+}
+    
+

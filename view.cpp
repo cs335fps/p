@@ -223,8 +223,10 @@ void View::Render()
 void View::HUD()
 {
     SwitchTo2D();
-
-    DrawCrosshairs(game,width,height);
+    if(game->lkey == 1)
+      Lizandrokey(game,width, height);
+    else
+      DrawCrosshairs(game,width,height);
     GameMenu(game,width,height);
     reloadMessage(game,width,height);
 }

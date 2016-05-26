@@ -25,6 +25,8 @@ void reloadMessage(Game *game, int w, int h);
 void GameMenu(Game *game, int w, int h);
 void openal_sound();
 void setGun(Game *game, int n);
+void Lizandrokey(Game *game, int w, int h);
+void kills(Game *game);
 
 class Openal{
 private:
@@ -36,6 +38,7 @@ public:
 	Openal();
 	int initopenal();
 	void clean_al();
+	~Openal();
 
 };
 #endif
