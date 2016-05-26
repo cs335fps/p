@@ -30,6 +30,7 @@ public:
 
     Vec position;
     Vec direction;
+    int playerHP;
     
     vector<Bullet> bullets;
     vector<Vec> spawnPts;
@@ -45,6 +46,7 @@ public:
     int nkills;
     int guntype;
     int hitAnim;
+    int dmgAnim; 
     int gundamage;
     float mobDist;
     int mobNum;

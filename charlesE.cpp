@@ -21,7 +21,7 @@ Mob::Mob(int mobID, Vec* spawnpoint)
 {
     this->hp = 30; 
     this->id = mobID;
-    body.redraw(1.0, 10, 10);
+    body.redraw(1.5, 10, 10);
     this->spawn(spawnpoint);
     this->texture = 0;
     this->moved = (int)(r(0,120));
@@ -768,6 +768,15 @@ void Map::displayMap()
         }
         cout << endl;
     }
+}
+void Map::renderMap(Game* g)
+{
+/*    static int si = 0;
+    glBegin(GL_LINES);
+    Rect r;
+    r.bot = h - 20
+    r.center = 0;
+    r.left = 60;*/
 }
 Map::~Map()
 {

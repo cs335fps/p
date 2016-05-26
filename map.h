@@ -22,6 +22,7 @@ class Map
 private: 
     const static int size = 200;
     Node* squares[size][size];
+    char* printMap;
     Node current;
 public:
 //    vector<Node> solution;
@@ -29,6 +30,7 @@ public:
     Map(Game*);
     void cleanNodes();
     void displayMap();
+    void renderMap(Game* g);
     bool inBounds(Vec);
     void getLowestCost(Vec, Vec);
     Vec* aStar(Vec start, Vec end);
