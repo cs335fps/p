@@ -94,10 +94,12 @@ void Game::Move()
             walls[j].Collide(mobs[i]->getLoc(), 2.0, &temp);
             *velocity = Reflect(*velocity, temp);
         }
-       	if (mobs[i]->Collide(&position)) {
+       	if (mobs[i]->Collide(&position) == 1) {
             this->playerHP -= 5;
 	    mobs[i]->damage(10, this);
-	    this->dmgAnim = 20;   
+	    this->dmgAnim = 20;
+	    cout << "Raptor " << i << " damaged player 5 points. " << endl;
+	    cout << "Player has " << playerHP << " health remaining." << endl;
         }	   
         //for (unsigned int j = 0; j < mobs.size(); j++) {
         //    mobs[j]->Collide(mobs[i]->getLoc());

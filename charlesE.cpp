@@ -21,7 +21,7 @@ Mob::Mob(int mobID, Vec* spawnpoint)
 {
     this->hp = 30; 
     this->id = mobID;
-    body.redraw(1.0, 10, 10);
+    body.redraw(1.5, 10, 10);
     this->spawn(spawnpoint);
     this->texture = 0;
     this->moved = (int)(r(0,120));
