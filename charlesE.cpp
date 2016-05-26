@@ -386,7 +386,7 @@ void startAstar(Game* g)
             ){
             if(!(*m)->hasMap){	
                 (*m)->map2d = new Map(g);
-               // (*m)->hasMap = true;
+                (*m)->hasMap = true;
             }
         }
 	g->mobs[0]->hasMap = true;
@@ -407,7 +407,7 @@ void startAstar(Game* g)
             (*m)->hasMap = false;
         }
     }
-    exit(0); // used for testing.
+    //exit(0); // used for testing.
 }
 void chadKey(Game* g, View* v)
 {
@@ -685,7 +685,7 @@ Vec* Map::aStar(Vec start, Vec end)
     static int toggle = 1;
     while(this->current.parent[0] != 0 && this->current.parent[1] != 0) 
     {
-        //squares[(int)current.x][(int)current.z]->c = "+";
+        squares[(int)current.x][(int)current.z]->c = '+';
 	if((int)current.x == (int) end.x &&
 	   (int)current.z == (int) end.z) {
             squares[(int)current.x][(int)current.z]->c = '@';
@@ -703,7 +703,7 @@ Vec* Map::aStar(Vec start, Vec end)
     }
     cout << "Node " << current.x << ", " << current.z << endl;
     if(toggle == 1){
-      //this->displayMap();
+      this->displayMap();
     }
     else {
         toggle = 0;
