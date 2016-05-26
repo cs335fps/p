@@ -70,10 +70,10 @@ int Openal::initopenal()
 	alListenerf(AL_GAIN, 1.0f);
 
 	//load sound file into buffer 
-	alBuffer0 = alutCreateBufferFromFile("./sblast.wav");
-	alBuffer1 = alutCreateBufferFromFile("./50.wav");
-	alBuffer2 = alutCreateBufferFromFile("./ninemm.wav");
-	alBuffer3 = alutCreateBufferFromFile("./test.wav");
+	alBuffer0 = alutCreateBufferFromFile("./sounds/sblast.wav");
+	alBuffer1 = alutCreateBufferFromFile("./sounds/50.wav");
+	alBuffer2 = alutCreateBufferFromFile("./sounds/ninemm.wav");
+	alBuffer3 = alutCreateBufferFromFile("./sounds/test.wav");
 	alGenSources(1, &alSource[0]);
 	alGenSources(1, &alSource[1]);
 	alGenSources(1, &alSource[2]);
@@ -340,33 +340,35 @@ int leaderboard(Game *game)
         cout<<"__________________________________________\n";
 
 
-                string line;
-                string content[10];
-                ifstream scoretxt ("score.txt");
-                if (scoretxt.is_open()){
-                	
-                for (int i=0;i<10;i++){
-                 scoretxt >> content[i];
-                        cout << content[i] << endl;
-		}
+	string line;
+	string content[10];
+	ifstream scoretxt ("score.txt");
+	if (scoretxt.is_open()){
 		
-                cout << game->currscore <<"   " << atoi(content[2].c_str())  <<endl;
-                if(game->currscore >= atoi(content[2].c_str()))
-                        cout<<"congrats you are ranked #1 in the leaderboard!\n";
-                else if(game->currscore >= atoi(content[4].c_str()))
-                        cout<<"congrats you are ranked #2 in the leaderboard!\n";
-                else if(game->currscore >= atoi(content[6].c_str()))
-                        cout<<"congrats you are ranked #3 in the leaderboard!\n";
-                else if(game->currscore >= atoi(content[8].c_str()))
-                        cout<<"congrats you are ranked #4 in the leaderboard!\n";
-                else if(game->currscore >= atoi(content[10].c_str()))
-                        cout<<"congrats you are ranked #5 in the leaderboard!\n";
-                else
-                        cout<<"sorry your score was to low to place on the board\n";
-                scoretxt.close();
-                }
+	for (int i=0, cnt=0;i<10;i++){
+	  scoretxt >> content[i];
+	  cnt++;
+	  if(cnt%2 ==0)
+	    printf("%10s %7s\n", content[i-1].data(), content[i].data());
+	}
+	
+	cout << "your kills: " << game->currscore <<"   " << strtod(content[1].c_str(), NULL)  << endl;
+	if(game->currscore >= atoi(content[1].c_str()))
+		cout<<"congrats you are ranked #1 in the leaderboard!\n";
+	else if(game->currscore >= atoi(content[3].c_str()))
+		cout<<"congrats you are ranked #2 in the leaderboard!\n";
+	else if(game->currscore >= atoi(content[5].c_str()))
+		cout<<"congrats you are ranked #3 in the leaderboard!\n";
+	else if(game->currscore >= atoi(content[7].c_str()))
+		cout<<"congrats you are ranked #4 in the leaderboard!\n";
+	else if(game->currscore >= atoi(content[9].c_str()))
+		cout<<"congrats you are ranked #5 in the leaderboard!\n";
+	else
+		cout<<"sorry your score was to low to place on the board\n";
+	scoretxt.close();
+	}
 
-                return 0;
+	return 0;
 
 }
                                               
