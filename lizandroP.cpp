@@ -377,5 +377,18 @@ int leaderboard(Game *game)
 	return 0;
 
 }
+
+void entername()
+{
+  char name[20];
+  cout <<"Enter your name\n";
+  cin >> name;
+ 
+  if (name==NULL) {
+    cout <<"Invalid input, Please enter name again.\n";
+    cin >> name;
+  }
+   
+}
           
 
