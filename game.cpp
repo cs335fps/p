@@ -31,6 +31,12 @@ Game::Game()
     direction = Vec(0.0,0.0,0.0);
     respawn_mobs(this, 10);
     ParseLevel("lev1.svg", this, 3.0);
+    health = 30.0;
+    
+    for (unsigned int i = 0; i < mobs.size(); i++) {
+        Vec* spt = &spawnPts[i % spawnPts.size()];
+        mobs[i]->spawn(spt);
+    }
 
     for (unsigned int i = 0; i < walls.size(); i++) {
         walls[i].game = this;
@@ -98,6 +104,21 @@ void Game::Move()
         //}
         //Actually happens in view->render, because it needs the map.
         mobs[i]->move(this);
+        
+        Vec sightDir = -(*mobs[i]->getLoc() - position);
+        float closestSight = sightDir.Magnitude();
+        int wallHit = 0;
+        int wallCount = walls.size();
+        for (int j = 0; j < wallCount; j++) {
+            if (walls[j].Ray(*mobs[i]->getLoc(), direction.Norm(), &closestSight) == 1)
+                wallHit = 1;
+                break;
+        }
+        if (wallHit == 1) {
+            //cout << "No LOS, mob #" << i << endl;
+        } else {
+            //cout << "LOS, mob #" << i << endl;
+        }
     }
     if (mobs.size() == 0 ) {
 	cout << " ####################################" << endl;

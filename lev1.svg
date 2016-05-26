@@ -71,4 +71,13 @@
 <line x1="-40.000" y1="15.000" x2="-35.000" y2="15.000" stroke="#7C7C7C" stroke-width="0.100" />
 <line x1="-35.000" y1="-30.000" x2="-55.000" y2="-30.000" stroke="#7C7C7C" stroke-width="0.100" />
 <line x1="-35.000" y1="-45.000" x2="-35.000" y2="-30.000" stroke="#7C7C7C" stroke-width="0.100" />
+<line x1="-50.000" y1="-45.000" x2="-50.000" y2="-40.000" stroke="#FF00FF" stroke-width="0.100" />
+<line x1="-40.000" y1="5.000" x2="-40.000" y2="10.000" stroke="#FF00FF" stroke-width="0.100" />
+<line x1="-55.000" y1="35.000" x2="-50.000" y2="35.000" stroke="#FF00FF" stroke-width="0.100" />
+<line x1="35.000" y1="40.000" x2="40.000" y2="40.000" stroke="#FF00FF" stroke-width="0.100" />
+<line x1="-10.000" y1="45.000" x2="-5.000" y2="45.000" stroke="#FF00FF" stroke-width="0.100" />
+<line x1="45.000" y1="5.000" x2="45.000" y2="10.000" stroke="#FF00FF" stroke-width="0.100" />
+<line x1="10.000" y1="-40.000" x2="15.000" y2="-40.000" stroke="#FF00FF" stroke-width="0.100" />
+<line x1="-25.000" y1="50.000" x2="-25.000" y2="55.000" stroke="#FF00FF" stroke-width="0.100" />
+<line x1="-15.000" y1="-25.000" x2="-10.000" y2="-25.000" stroke="#FF00FF" stroke-width="0.100" />
 </svg>

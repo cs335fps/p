@@ -31,6 +31,7 @@ public:
     int playerHP;
     
     vector<Bullet> bullets;
+    vector<Vec> spawnPts;
     deque<BulletHole> bulletHoles;
     
     int moveX;
@@ -51,6 +52,7 @@ public:
     int currscore;
     int setReloadDelay;
     double temperature;
+    int health;
 
     int partyMode;
     unsigned int skyTex;

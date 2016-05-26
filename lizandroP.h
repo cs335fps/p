@@ -29,6 +29,7 @@ void setGun(Game *game, int n);
 void Lizandrokey(Game *game, int w, int h);
 void kills(Game *game);
 int leaderboard(Game *game);
+void entername();
 
 
 class Openal{
