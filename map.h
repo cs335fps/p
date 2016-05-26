@@ -27,6 +27,7 @@ public:
 //    vector<Node> solution;
     Map();
     Map(Game*);
+    void cleanNodes();
     void displayMap();
     bool inBounds(Vec);
     void getLowestCost(Vec, Vec);
