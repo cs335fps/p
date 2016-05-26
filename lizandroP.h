@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#include <string>
 #include </usr/include/AL/alut.h>
 
 
@@ -28,6 +29,7 @@ void setGun(Game *game, int n);
 void Lizandrokey(Game *game, int w, int h);
 void kills(Game *game);
 int leaderboard(Game *game);
+
 
 class Openal{
 private:

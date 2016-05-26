@@ -24,6 +24,7 @@ Game::Game()
     mobDist= 0.0;
     lkey = 0;
     currscore =0;
+    setReloadDelay =0;
     temperature = 25.0; // temperature in celsius
     position = Vec(0,2,0);
     direction = Vec(0.0,0.0,0.0);
@@ -41,7 +42,9 @@ void Game::Move()
 {
     if (hitAnim > 0)
         hitAnim--;
-
+    if(setReloadDelay > 0)
+      setReloadDelay -= 1;
+    
     float ox, oz;
     if (zoom == 1 && depth < maxZoom) {
         depth += (maxZoom - minZoom) / 15;

@@ -115,7 +115,7 @@ void Input::CheckMouse(XEvent *e)
         }
         return;
     }
-    if (e->type == ButtonPress) {
+    if (e->type == ButtonPress && game->setReloadDelay == 0) {
         if (e->xbutton.button==1) {
             //Left button was pressed
             if (game->nbullets <1) {
