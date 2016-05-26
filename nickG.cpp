@@ -1,21 +1,9 @@
 // Nicholas Gardner
 // April 2016 - May 2016
-//
-// ### Seconds class ###
-// Returns # of seconds from start call as double
-//
-// ### Vec class ###
-// 3D vector class with as many operators as I can think of
-//
-// ### Wall class ###
-// Draws and collides with walls
-//
-//
+
 #include "nickG.h"
 
-
-// ######################## General Functions ######################
-// #################################################################
+// ################ General Functions ##############
 
 Vec Reflect(Vec dir, Vec norm)
 {
@@ -28,7 +16,7 @@ int hash(int *in, int n)
     int seed = 0;//533000389;
     for (int i = 0; i < n; i++) {
         seed ^= in[i];
-        for(int j = 0; j < 8; j++) {
+        for (int j = 0; j < 8; j++) {
             if (seed & 1)
                 seed = (seed >> 1) ^ 0xedb88320;
             else
@@ -63,13 +51,11 @@ int RaySphere(Vec rayOrigin, Vec rayDirection,
     *closest = d1;
 
     return 1;
-
 }
 
 void DrawCrosshairs(Game *game, int w, int h)
 {
     int l = h / 1;
-
 
     int hitAnim = game->hitAnim;
     if (hitAnim > 0) {
@@ -125,13 +111,14 @@ void ParseLevel(const char* fileName, Game* game,  float height)
         if (line.compare(0, cmp.length(), cmp) == 0) {
             vector<string> elems = Split(line, "\"");
             game->walls.push_back(Wall(Vec(
-                            atof(elems[1].c_str()), 0, atof(elems[3].c_str())
+                            atof(elems[1].c_str()), 0, 
+                            atof(elems[3].c_str())
                             ),Vec(
-                                atof(elems[5].c_str()), 0, atof(elems[7].c_str())
+                                atof(elems[5].c_str()), 0, 
+                                atof(elems[7].c_str())
                                 ),0.1, height, Vec(1,1,1)));
         }
     }
-
 }
 
 vector<string> Split(string s, string del)
@@ -153,9 +140,7 @@ vector<string> Split(string s, string del)
     return ret;
 }
 
-
-// ######################## Bullet Class ###########################
-// #################################################################
+// ################ Bullet Class ###################
 void Bullet::render()
 {
     glEnable (GL_BLEND);
@@ -256,9 +241,7 @@ void BulletHole::render2()
     glEnable(GL_LIGHTING);
 }
 
-
-// ######################## Wall class #############################
-// #################################################################
+// ################ Wall class #####################
 Wall::Wall()
 {
 
@@ -323,8 +306,7 @@ void Wall::Set(Vec a, Vec b, float w, float h, Vec col)
         {1, -1, 1, 1},
         {1, 1, 1, -1},
         {-1, 1, -1, -1},
-        {-1, -1, -1, 1}
-    };
+        {-1, -1, -1, 1} };
     v[0] = a;
     v[1] = b;
     height = h;
@@ -344,6 +326,7 @@ void Wall::Set(Vec a, Vec b, float w, float h, Vec col)
         c[i+4] = c[i] + Vec(0,height,0);
     }
 }
+
 void Wall::SetHeight(float h)
 {
     height = h;
@@ -352,6 +335,7 @@ void Wall::SetHeight(float h)
     }
 
 }
+
 void Wall::render()
 {
 
@@ -451,21 +435,18 @@ int Wall::Collide(Vec *pos)
     return Collide(pos, pDia);
 }
 
-// ######################## Seconds class ##########################
-// #################################################################
+// ################ Seconds class ##################
 Seconds::Seconds()
 {
     Start();
 }
 
-// Set start reference time.
 void Seconds::Start()
 {
     clock_gettime(CLOCK_REALTIME, &startTime);
 }
 
 // Variation on Gordons mytime from asteroids game.
-// Returns the number of seconds since the class was initialized
 double Seconds::Get()
 {
     clock_gettime(CLOCK_REALTIME, &curTime);
@@ -473,8 +454,7 @@ double Seconds::Get()
         (double)(curTime.tv_nsec - startTime.tv_nsec) / 1e9;
 }
 
-// ######################### Vec class #############################
-// #################################################################
+// ################# Vec class #####################
 Vec::Vec()
 {
     x = y = z = 0.0f;
@@ -657,14 +637,3 @@ Vec Cross(Vec a, Vec b)
     c.z = a.x * b.y - a.y * b.x;
     return c;
 }
-
-
-
-
-
-
-
-
-
-
-
