@@ -391,12 +391,11 @@ void startAstar(Game* g)
                 (*m)->hasMap = true;
             }
         }
-	g->mobs[0]->hasMap = true;
+        g->mobs[0]->hasMap = true;
         for(int i = 0; i < 10; i++){
 	    g->mobs[0]->map2d->aStar(
                 *(g->mobs[0]->getLoc()), g->position
             );
-
             g->mobs[0]->map2d->displayMap();
 	    cout << endl;
 	}
@@ -560,15 +559,15 @@ void Map::getLowestCost(Vec start, Vec end)
    // temp.x = start.x;
    // temp.z = start.z;
     for (int i = 15; i < 80; i++) {
-	if( i < 0 )
+        if( i < 0 )
 	    i = 0;
-	if(i >= 100) 
+        if(i >= 100) 
 	    i = 100;
         for (int j = 15; j < 85; j++) {
 	    if(j < 0)
-		j = 0;
+                j = 0;
 	    if(j > 100)
-		j = 100;
+                j = 100;
 	    if(i == current.x && j == current.z)
 		continue;
 /*	    cout << "I: " << i 
