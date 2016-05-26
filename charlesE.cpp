@@ -117,15 +117,17 @@ void Mob::move(Game* g)
     if(hasMap)
         tmp = this->map2d->aStar(this->location, g->position);
     //check if no solution; if so, jump and teleport.
-    if(!hasMap){
-        tmp->x = g->position.x - this->location.x;
-        this->location.y = 2.0;
+    else {
+        tmp->x = g->position.x - this->location.x; 
+        tmp->z =  g->position.z - this->location.z;
+	this->location.y = 2.0;
         this->velocity.y = 0.5;
-        tmp->z =  g->position.x - this->location.z;
-     }
-    else{
-        this->velocity.x = 3 * tmp->x;//should be about 3-5.
-        this->velocity.z = 3 * tmp->z;
+        this->velocity.x = tmp->x;
+	this->velocity.z = tmp->z;
+    }
+    if(hasMap && tmp->x == 0 && tmp->z == 0){ // we are stuck, teleport
+        this->velocity.x = 3 * (tmp->x);//should be about 3-5.
+        this->velocity.z = 3 * (tmp->z);
 	this->location.x = this->location.x + (tmp->x / 3.0);
         this->location.z = this->location.z + (tmp->z / 3.0);
    
@@ -388,10 +390,14 @@ void startAstar(Game* g)
             }
         }
 	g->mobs[0]->hasMap = true;
-        g->mobs[0]->map2d->displayMap();
-        g->mobs[0]->map2d->aStar(
+        for(int i = 0; i < 10; i++){
+	    g->mobs[0]->map2d->aStar(
                 *(g->mobs[0]->getLoc()), g->position
-                );
+            );
+
+            g->mobs[0]->map2d->displayMap();
+	    cout << endl;
+	}
     }
     else {
         toggle = 0;
@@ -401,7 +407,7 @@ void startAstar(Game* g)
             (*m)->hasMap = false;
         }
     }
-//    exit(0); // used for testing.
+    exit(0); // used for testing.
 }
 void chadKey(Game* g, View* v)
 {
@@ -510,25 +516,28 @@ Node::Node()
 
 Map::Map(Game* g)
 {
-    for(int i = 0; i < 200; i++)
-        for(int j = 0; j < 200; j++){
+    for(int i = 0; i < 100; i++)
+        for(int j = 0; j < 100; j++){
             squares[i][j] = new Node();
             squares[i][j]->x = i;
             squares[i][j]->z = j;
         }
     static vector<Vec> vv;
     for(vwi w = g->walls.begin(); w != g->walls.end(); w++){
-        vv = w->GetPoints(); 
+        vv = w->GetPoints(2); 
         for(
                 vector<Vec>::iterator vvi = vv.begin();
                 vvi != vv.end(); 
                 vvi++
            ){
-            squares[(int) vvi->x + 100][(int) vvi->z + 100]->obstacle = true;
+            squares[(int) (vvi->x/2) + 50][(int) (vvi->z/2) + 50]->obstacle = true;
             //cout << "Obstacle: " 
             //     << (int) vvi->x << " " << (int) vvi->z << endl;
         }
     }
+    this->current = *(new Node());
+    this->current.x = 0;
+    this->current.z = 0;
 }
 
 bool Map::inBounds(Vec v)
@@ -547,14 +556,18 @@ void Map::getLowestCost(Vec start, Vec end)
     Vec temp;
     temp.x = start.x;
     temp.z = start.z;
-    for (int i = 35; i < 155; i++) {
-	if( i < 0 || i >= 200) 
-	    continue;
-        for (int j = 55; j < 155; j++) {
-	    if(j < 0 || j > 200)
-		continue;
+    for (int i = 15; i < 80; i++) {
+	if( i < 0 )
+	    i = 0;
+	if(i >= 100) 
+	    i = 100;
+        for (int j = 15; j < 85; j++) {
+	    if(j < 0)
+		j = 0;
+	    if(j > 100)
+		j = 100;
             if(
-               !this->squares[i][j]->obstacle&&
+               !this->squares[i][j]->obstacle &&
                !this->squares[i][j]->visited && 
                this->squares[i][j]->cost < lowCost
             ) {
@@ -570,49 +583,68 @@ Vec* Map::aStar(Vec start, Vec end)
 {
     // Dijkstra's derived from my CS 312 Lab 6. -- Charles Enright
     // May contain code derived from Gordon.
-    double root2 = sqrt(2);
-    Vec nextPath;
-    squares[int(start.x + 100)][(int)(start.z + 100)]->cost = 0.0;
-    start.x = (int) start.x+100;
-    start.z = (int) start.z+100;
-    end.x = (int) end.x+100;
-    end.z = (int) end.z+100;
-    int offset[8][2] = {
+    static double root2 = sqrt(2);
+    static Vec* nextPath = new Vec();
+    cout << "Input start: " << start.x << ", " << start.z << "; "<<end.x
+	<< ", " << end.z << endl;
+    nextPath->x = (int)(end.x - start.x);
+    nextPath->z = (int)(end.z - start.z);
+    squares[(int)(start.x/2 + 50)][(int)(start.z/2 + 50)]->cost = 0.0;
+    squares[(int)(start.x/2 + 50)][(int)(start.z/2+50)]->c = '8';
+    displayMap();
+    return NULL;
+    start.x = (int) start.x/2+50;
+    start.z = (int) start.z/2+50;
+    
+    end.x = (int) end.x/2+50;
+    end.z = (int) end.z/2+50;
+    cout << "Raw input converted to " << start.x << ", " << start.z
+	<< "; " << end.x << ", " << end.z << endl;
+    static int offset[8][2] = {
         {-1, 0}, {1, 0},
         {0, -1}, {0, 1},
         {-1, -1}, {-1, 1},
         {1, -1}, {1, 1}
     };
-    int sentinal = 2000;
+    int sentinal = 6000;
     int iter = 0;
     Vec temp;
-    temp.x = start.x;
-    temp.z = start.z;
+    //start new search
+    if(current.x == 0 && current.z == 0) {
+        temp.x = start.x;
+        temp.z = start.z;
+    } //else resume last search
+    else {
+        temp.x = current.x;
+	temp.z = current.z;
+    }
     do {
-        if(iter > sentinal){
-            cout << "Hit sentinel. Aborting aStar.";
-            break;
+        if(iter > sentinal) {
+            cout << "Hit sentinel.";
+            return nextPath;
         }
-        else{
+        else {
+	    cout << "-";
             iter++;
-
         }
         int x, y;
         getLowestCost(temp, end);
         temp.x = current.x;
         temp.z = current.z;	
-        for (int i = 0; i < 8; i++) {	
-            x = this->current.x;
-            y = this->current.z;
+	cout << x << " " << y;
+	for (int i = 0; i < 8; i++) {	
+            x = this->current.x + offset[i][0];
+            y = this->current.z + offset[i][1];
             if (inBounds(Vec(x, 0, y)) && 
                     !squares[x][y]->visited
                ) {
+		cout << "1";
                 double cost;
                 squares[x][y]->peeked = true;
 
                 //if diagonal, cost is root 2; else cost = 1;
                 if(offset[i][0] == offset[i][1]
-                        || offset[i][0] == -1 * offset[i][1]
+                   || offset[i][0] == -1 * offset[i][1]
                   ){
                     cost = squares[x][y]->cost + root2;
                 } 
@@ -625,25 +657,45 @@ Vec* Map::aStar(Vec start, Vec end)
                 dist = d0*d0+d1*d1;
                 cost += dist;
                 if (squares[x][y]->cost > cost) {
+		    cout << "+";
                     squares[x][y]->cost = cost;
                     squares[x][y]->parent[0] = x;
                     squares[x][y]->parent[1] = y;
                     squares[x][y]->c = '*';
+		    cout << "Visit node " << x << ", " << y << endl;
                 } 
             }
+	    else {
+                cout << ",";
+	    }
         }
         squares[x][y]->visited = true;
         usleep(1);
     } while (this->current.x != end.x && this->current.z != end.z);
+    cout << "Found solution.";
     //find next node.
     static int toggle = 1;
-    while(this->current.parent[0] != 0 && this->current.parent[1] != 0) {
-        if(current.parent[0] == start.x && current.parent[1] == start.z)
-            return new Vec(start.x - current.x, 0, start.z - current.z);
+    while(this->current.parent[0] != 0 && this->current.parent[1] != 0) 
+    {
+        cout << "+";
+	if((int)current.x == (int) end.x &&
+	   (int)current.z == (int) end.z) {
+            squares[(int)current.x][(int)current.z]->c = '@';
+	}	
+	else if(current.parent[0] == start.x && current.parent[1] == start.z){
+	    squares[(int)current.x][(int)current.z]->c = '9';
+            nextPath = new Vec(2*(start.x - current.x), 0, 2*(start.z - current.z));
+            cout << "Output is " << nextPath->x << ", " << nextPath->z << endl;
+	    return nextPath;
+	}
+	else {
+            squares[current.x][current.z]->c = '*';
+	}
         current = *squares[current.parent[0]][current.parent[1]];
     }
+    cout << "Node " << current.x << ", " << current.z << endl;
     if(toggle == 1){
-      this->displayMap();
+      //this->displayMap();
     }
     else {
         toggle = 0;
@@ -652,27 +704,27 @@ Vec* Map::aStar(Vec start, Vec end)
 }
 void Map::displayMap()
 {
-    for(int i = 35; i < 155; i++){
-        for(int j = 45; j < 165; j++){
+    for(int i = 0; i < 100; i++){
+        for(int j = 0; j < 100; j++){
             if(this->squares[i][j]->obstacle){
-                if(this->squares[i][j]->peeked)
-                    cout << "\033[1;34m#\033[0m";
+                if(this->squares[i][j]->c != '\0')
+	            cout << "\033[1;31m" << this->squares[i][j]->c << "\033[0m ";
+		else if(this->squares[i][j]->peeked)
+                    cout << "\033[1;34m#\033[0m ";
                 else
-                    cout << "\033[1;33m#\033[0m";
+                    cout << "\033[1;33m#\033[0m ";
             }
             else if (this->squares[i][j]->visited) {
-                cout << "\033[1;";
                 if(this->squares[i][j]->c != '\0')
-                    cout << "31m" << this->squares[i][j]->c;
+                    cout << "\033[1;31m" << this->squares[i][j]->c << "\033[0m ";
                 else
-                    cout << "o";
-                cout << "\033[0m";
+                    cout << "o ";
             }
             else if(this->squares[i][j]->peeked)
-                cout << "\033[1;34mo";
+                cout << "\033[1;34mo " << "\033[0m";
             else
-                cout << ".";
-            cout << "\033[0m";
+                cout << ". ";
+
         }
         cout << endl;
     }
