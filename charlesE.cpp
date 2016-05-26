@@ -506,11 +506,11 @@ View::~View()
 Node::Node()
 {
     this->visited = false;
-    this->cost = 2047;
+    this->cost = 9e5;
     this->peeked = false;
     parent[0] = 0;
     parent[1] = 0;
-    c = '.';
+    c = '\0';
     obstacle = false;
 }
 
@@ -530,6 +530,7 @@ Map::Map(Game* g)
                 vvi != vv.end(); 
                 vvi++
            ){
+            squares[(int) (vvi->x/2) + 50][(int) (vvi->z/2) + 50]->cost = 99;
             squares[(int) (vvi->x/2) + 50][(int) (vvi->z/2) + 50]->obstacle = true;
             //cout << "Obstacle: " 
             //     << (int) vvi->x << " " << (int) vvi->z << endl;
@@ -542,7 +543,7 @@ Map::Map(Game* g)
 
 bool Map::inBounds(Vec v)
 {
-    return(v.x >= 0 && v.x <= 200 && v.z <= 0 && v.z >= 200);
+    return(v.x >= 0 && v.x <= 100 && v.z >= 0 && v.z <= 100);
 }
 /*
  * # # #
@@ -552,10 +553,10 @@ bool Map::inBounds(Vec v)
 
 void Map::getLowestCost(Vec start, Vec end)
 {
-    double lowCost = 9e6;
-    Vec temp;
-    temp.x = start.x;
-    temp.z = start.z;
+    double lowCost = 9e5;
+   // Vec temp;
+   // temp.x = start.x;
+   // temp.z = start.z;
     for (int i = 15; i < 80; i++) {
 	if( i < 0 )
 	    i = 0;
@@ -566,11 +567,18 @@ void Map::getLowestCost(Vec start, Vec end)
 		j = 0;
 	    if(j > 100)
 		j = 100;
-            if(
+	    if(i == current.x && j == current.z)
+		continue;
+/*	    cout << "I: " << i 
+		<< " J: " << j << " ob: " << this->squares[i][j]->obstacle
+		<< " v: " << this->squares[i][j]->visited
+		<< " cost: " << this->squares[i][j]->cost << endl;
+  */          if(
                !this->squares[i][j]->obstacle &&
                !this->squares[i][j]->visited && 
                this->squares[i][j]->cost < lowCost
             ) {
+
                 lowCost = squares[i][j]->cost;
                 this->current.x = i;
                 this->current.z = j;
@@ -591,13 +599,12 @@ Vec* Map::aStar(Vec start, Vec end)
     nextPath->z = (int)(end.z - start.z);
     squares[(int)(start.x/2 + 50)][(int)(start.z/2 + 50)]->cost = 0.0;
     squares[(int)(start.x/2 + 50)][(int)(start.z/2+50)]->c = '8';
-    displayMap();
-    return NULL;
     start.x = (int) start.x/2+50;
     start.z = (int) start.z/2+50;
     
     end.x = (int) end.x/2+50;
     end.z = (int) end.z/2+50;
+    squares[(int)(end.x)][(int)end.z]->c = '+';
     cout << "Raw input converted to " << start.x << ", " << start.z
 	<< "; " << end.x << ", " << end.z << endl;
     static int offset[8][2] = {
@@ -606,18 +613,15 @@ Vec* Map::aStar(Vec start, Vec end)
         {-1, -1}, {-1, 1},
         {1, -1}, {1, 1}
     };
-    int sentinal = 6000;
+    int sentinal = 400;
     int iter = 0;
-    Vec temp;
     //start new search
-    if(current.x == 0 && current.z == 0) {
-        temp.x = start.x;
-        temp.z = start.z;
-    } //else resume last search
-    else {
-        temp.x = current.x;
-	temp.z = current.z;
-    }
+    //if(current.x == 0 && current.z == 0) {
+    //} //else resume last search
+    //else {
+  //     temp.x = current.x;
+  //     temp.z = current.z;
+  //   }
     do {
         if(iter > sentinal) {
             cout << "Hit sentinel.";
@@ -628,14 +632,16 @@ Vec* Map::aStar(Vec start, Vec end)
             iter++;
         }
         int x, y;
-        getLowestCost(temp, end);
-        temp.x = current.x;
-        temp.z = current.z;	
+
+        x = current.x;
+        y = current.z;	
+        getLowestCost(Vec(x, 0, y), end);
 	cout << x << " " << y;
 	for (int i = 0; i < 8; i++) {	
             x = this->current.x + offset[i][0];
             y = this->current.z + offset[i][1];
-            if (inBounds(Vec(x, 0, y)) && 
+	    
+            if (inBounds(Vec(x, 0, y)) &&
                     !squares[x][y]->visited
                ) {
 		cout << "1";
@@ -646,30 +652,32 @@ Vec* Map::aStar(Vec start, Vec end)
                 if(offset[i][0] == offset[i][1]
                    || offset[i][0] == -1 * offset[i][1]
                   ){
-                    cost = squares[x][y]->cost + root2;
+                    cost = squares[current.x][current.z]->cost + root2;
                 } 
                 else {
-                    cost = squares[x][y]->cost + 1.0;
+                    cost = squares[current.x][current.z]->cost + 1.0;
                 }
                 double d0, d1, dist;
                 d0 = (double) x - end.x;
                 d1 = (double) y - end.z;
                 dist = d0*d0+d1*d1;
                 cost += dist;
+		cout << "$" << cost << " ";
                 if (squares[x][y]->cost > cost) {
-		    cout << "+";
+		    //cout << "+";
+		    //exit(1);
                     squares[x][y]->cost = cost;
-                    squares[x][y]->parent[0] = x;
-                    squares[x][y]->parent[1] = y;
-                    squares[x][y]->c = '*';
-		    cout << "Visit node " << x << ", " << y << endl;
+                    squares[x][y]->parent[0] = current.x;
+                    squares[x][y]->parent[1] = current.z;
+                    //squares[x][y]->c = '*';
+		    cout << "Visit node " << x << "; " << y << endl;
                 } 
             }
 	    else {
-                cout << ",";
+                cout << "_";
 	    }
         }
-        squares[x][y]->visited = true;
+        squares[current.x][current.z]->visited = true;
         usleep(1);
     } while (this->current.x != end.x && this->current.z != end.z);
     cout << "Found solution.";
@@ -677,7 +685,7 @@ Vec* Map::aStar(Vec start, Vec end)
     static int toggle = 1;
     while(this->current.parent[0] != 0 && this->current.parent[1] != 0) 
     {
-        cout << "+";
+        //squares[(int)current.x][(int)current.z]->c = "+";
 	if((int)current.x == (int) end.x &&
 	   (int)current.z == (int) end.z) {
             squares[(int)current.x][(int)current.z]->c = '@';
@@ -708,22 +716,24 @@ void Map::displayMap()
         for(int j = 0; j < 100; j++){
             if(this->squares[i][j]->obstacle){
                 if(this->squares[i][j]->c != '\0')
-	            cout << "\033[1;31m" << this->squares[i][j]->c << "\033[0m ";
+	            cout << "\033[1;31m" << this->squares[i][j]->c << "\033[0m";
 		else if(this->squares[i][j]->peeked)
-                    cout << "\033[1;34m#\033[0m ";
+                    cout << "\033[1;34m#\033[0m";
                 else
-                    cout << "\033[1;33m#\033[0m ";
+                    cout << "\033[1;33m#\033[0m";
             }
             else if (this->squares[i][j]->visited) {
                 if(this->squares[i][j]->c != '\0')
-                    cout << "\033[1;31m" << this->squares[i][j]->c << "\033[0m ";
+                    cout << "\033[1;31m" << this->squares[i][j]->c << "\033[0m";
                 else
-                    cout << "o ";
+                    cout << "o";
             }
             else if(this->squares[i][j]->peeked)
-                cout << "\033[1;34mo " << "\033[0m";
-            else
-                cout << ". ";
+                cout << "\033[1;34mo" << "\033[0m";
+            else if(this->squares[i][j]->c != '\0')
+		cout << this->squares[i][j]->c;
+	    else
+                cout << ".";
 
         }
         cout << endl;
