@@ -168,13 +168,14 @@ void setGun(Game *game, int n)
 }
 
 void reloadAmmo(Game *game)
-{
+{       /*
 	if (game->guntype == 2) {
 		usleep(250000);
 	}
 	else if (game->guntype == 1) {
 		usleep(2500000);
-	}
+	}*/
+	game->setReloadDelay = 60;
 	game->nbullets = game->maxbullets;
 }
 
@@ -351,25 +352,30 @@ int leaderboard(Game *game)
 	  if(cnt%2 ==0)
 	    printf("%10s %7s\n", content[i-1].data(), content[i].data());
 	}
-	
-	cout << "your kills: " << game->currscore <<"   " << strtod(content[1].c_str(), NULL)  << endl;
-	if(game->currscore >= atoi(content[1].c_str()))
-		cout<<"congrats you are ranked #1 in the leaderboard!\n";
-	else if(game->currscore >= atoi(content[3].c_str()))
-		cout<<"congrats you are ranked #2 in the leaderboard!\n";
-	else if(game->currscore >= atoi(content[5].c_str()))
-		cout<<"congrats you are ranked #3 in the leaderboard!\n";
-	else if(game->currscore >= atoi(content[7].c_str()))
-		cout<<"congrats you are ranked #4 in the leaderboard!\n";
-	else if(game->currscore >= atoi(content[9].c_str()))
-		cout<<"congrats you are ranked #5 in the leaderboard!\n";
-	else
-		cout<<"sorry your score was to low to place on the board\n";
+	  
+	  cout << "your kills: " << game->currscore <<"   " << strtod(content[1].c_str(), NULL)  << endl;
+	  if(game->currscore >= atoi(content[1].c_str())){
+		  cout<<"congrats you are ranked #1 in the leaderboard!\n";
+	  }
+	  else if(game->currscore >= atoi(content[3].c_str())){
+		  cout<<"congrats you are ranked #2 in the leaderboard!\n";
+	  }
+	  else if(game->currscore >= atoi(content[5].c_str())){
+		  cout<<"congrats you are ranked #3 in the leaderboard!\n";
+	  }
+	  else if(game->currscore >= atoi(content[7].c_str())){
+		  cout<<"congrats you are ranked #4 in the leaderboard!\n";
+	  }
+	  else if(game->currscore >= atoi(content[9].c_str())){
+		  cout<<"congrats you are ranked #5 in the leaderboard!\n";
+	  }
+	  else
+		  cout<<"sorry your score was to low to place on the board\n";
 	scoretxt.close();
 	}
 
 	return 0;
 
 }
-                                              
+          
 

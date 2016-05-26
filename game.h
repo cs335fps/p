@@ -47,6 +47,7 @@ public:
     int mobNum;
     int lkey;
     int currscore;
+    int setReloadDelay;
     double temperature;
 
     int partyMode;
