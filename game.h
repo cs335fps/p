@@ -49,6 +49,7 @@ public:
     int currscore;
     int setReloadDelay;
     double temperature;
+    int health;
 
     int partyMode;
     unsigned int skyTex;
