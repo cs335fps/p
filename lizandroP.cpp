@@ -34,7 +34,7 @@ unsigned int reload=0;
 	loadBMP rload;
 
 int nsound =2;
-
+char currname[20];
 	//sounds buffers
 ALuint alBuffer0;
 ALuint alBuffer1;
@@ -310,8 +310,8 @@ void Lizandrokey(Game *game, int w, int h)
     
     glBegin(GL_LINES);
     Rect r;
-    r.bot = h - 470;
-    r.left = 560;
+    r.bot = (h / 2)-100;
+    r.left = w/2;
     r.center = 0;
     ggprint8b(&r, 16, 0, "");
     ggprint8b(&r, 16, 0, "target mob: %i", game->mobNum);
@@ -321,7 +321,7 @@ void Lizandrokey(Game *game, int w, int h)
     glBegin(GL_LINES);
     Rect b;
     b.bot = h - 10;
-    b.left = 1024;
+    b.left = w - 60;
     b.center = 0;
     ggprint8b(&b, 16, 0, "");
     
@@ -356,6 +356,7 @@ int leaderboard(Game *game)
 	  cout << "your kills: " << game->currscore <<"   " << strtod(content[1].c_str(), NULL)  << endl;
 	  if(game->currscore >= atoi(content[1].c_str())){
 		  cout<<"congrats you are ranked #1 in the leaderboard!\n";
+		  //content[1] == game->currscore
 	  }
 	  else if(game->currscore >= atoi(content[3].c_str())){
 		  cout<<"congrats you are ranked #2 in the leaderboard!\n";
@@ -368,12 +369,13 @@ int leaderboard(Game *game)
 	  }
 	  else if(game->currscore >= atoi(content[9].c_str())){
 		  cout<<"congrats you are ranked #5 in the leaderboard!\n";
+		  //content[9] == game->currscore
 	  }
 	  else
 		  cout<<"sorry your score was to low to place on the board\n";
 	scoretxt.close();
 	}
-
+	
 	return 0;
 
 }
@@ -388,7 +390,6 @@ void entername()
     cout <<"Invalid input, Please enter name again.\n";
     cin >> name;
   }
-   
+   //currname = name;
 }
           
-
