@@ -40,7 +40,7 @@ double celsiusToFahrenheit(double);
 double fahrToCels(double);
 class Mob
 {
-private:
+protected:
     int id;
     int moved;
     unsigned int texture;

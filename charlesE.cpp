@@ -39,9 +39,9 @@ void Mob::spawn(Vec* spawnpoint)
 
     //body.draw(location.x, location.y, location.z);
     body.drawObj(location.x, location.y, location.z);
-    velocity.z = r(-0.05, 0.05);
-    velocity.x = r(-0.05, 0.05);
-    velocity.y = r(-0.05, 0.05);
+    velocity.z = r(-4.05, 4.05);
+    velocity.x = r(.05, 4.05);
+    velocity.y = r(-4.05, 4.05);
 }
 
 void Mob::death(Game* g)
@@ -128,8 +128,8 @@ void Mob::move(Game* g)
     }
     //check if no solution; if so, jump and teleport.
     if (hasMap && (tmp == NULL || ( tmp->x == 0 && tmp->z == 0))) { // we are stuck, teleport
-        this->location.x = g->position.x - this->location.x;
-        this->location.z = g->position.x - this->location.z;
+        this->location.x += (g->position.x - this->location.x)/3;
+        this->location.z += (g->position.x - this->location.z)/3;
     }
     else if (hasMap) { // have a vector to follow
         this->velocity.x = 3 * (tmp->x);//should be about 3-5.
@@ -150,7 +150,7 @@ void Mob::move(Game* g)
     else if (velocity.y < -26.075)
         velocity.y = -26.075;
     if(location.y > 2) // gravity.
-        velocity.y -= 0.6102;
+        velocity.y -= 444.6102;
     else if (location.y < 2){
         velocity.y = 0.0;
         location.y = 2;
@@ -450,10 +450,10 @@ void chadKey(Game* g, View* v)
             //(*m)->hasMap = false;
         }
         for (
-                vwi w = g->walls.begin();
-                w != g->walls.end();
-                w++
-           ) {
+            vwi w = g->walls.begin();
+            w != g->walls.end();
+            w++
+        ) {
             w->SetHeight(3);
         }
         g->temperature = fahrToCels(g->temperature);	
@@ -517,15 +517,29 @@ Node::Node()
     c = '\0';
     obstacle = false;
 }
-
+void Map::cleanNodes(){
+    for (int i = 0; i < 100; i++)
+        for (int j = 0; j < 100; j++) {
+            squares[i][j]->visited = false;
+	    squares[i][j]->cost = 9e5;
+	    squares[i][j]->peeked = false;
+	    squares[i][j]->parent[0] = 0;
+	    squares[i][j]->parent[1] = 1;
+	    squares[i][j]->c = '\0';
+            squares[i][j]->x = i;
+            squares[i][j]->z = j;
+	    //Don't reset obstacles; map doesn't change.
+        }
+    this->current = *(new Node());
+    this->current.x = 0;
+    this->current.z = 0;
+}
 Map::Map(Game* g)
 {
     for (int i = 0; i < 100; i++)
-        for (int j = 0; j < 100; j++) {
-            squares[i][j] = new Node();
-            squares[i][j]->x = i;
-            squares[i][j]->z = j;
-        }
+	for (int j = 0; j < 100; j++)
+	    squares[i][j] = new Node();
+    this->cleanNodes();
     static vector<Vec> vv;
     for (vwi w = g->walls.begin(); w != g->walls.end(); w++) {
         vv = w->GetPoints(2); 
@@ -540,9 +554,6 @@ Map::Map(Game* g)
             //     << (int) vvi->x << " " << (int) vvi->z << endl;
         }
     }
-    this->current = *(new Node());
-    this->current.x = 0;
-    this->current.z = 0;
 }
 
 bool Map::inBounds(Vec v)
@@ -601,6 +612,7 @@ Vec* Map::aStar(Vec start, Vec end)
     // May contain code derived from Gordon.
     static double root2 = sqrt(2);
     static Vec* nextPath = new Vec();
+    this->cleanNodes();
     cout << "Input start: " << start.x << ", " << start.z << "; "<<end.x
          << ", " << end.z << endl;
     nextPath->x = (int)(end.x - start.x);
