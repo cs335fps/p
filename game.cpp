@@ -24,6 +24,7 @@ Game::Game()
     mobDist= 0.0;
     lkey = 0;
     currscore =0;
+    playerHP = 30;
     setReloadDelay =0;
     temperature = 25.0; // temperature in celsius
     position = Vec(0,2,0);
@@ -81,20 +82,29 @@ void Game::Move()
     nx =position.x;
 
     for (unsigned int i = 0; i < mobs.size(); i++) {
-        mobs[i]->Collide(&position);
         for (unsigned int j = 0; j < walls.size(); j++) {
             Vec temp;
             Vec* velocity = mobs[i]->getVel();
             walls[j].Collide(mobs[i]->getLoc(), 2.0, &temp);
             *velocity = Reflect(*velocity, temp);
-        }   
+        }
+       	if (mobs[i]->Collide(&position)) {
+            this->playerHP -= 5;
+	    mobs[i]->damage(10, this);
+	    this->dmgAnim = 20;   
+        }	   
         //for (unsigned int j = 0; j < mobs.size(); j++) {
         //    mobs[j]->Collide(mobs[i]->getLoc());
         //}
         //Actually happens in view->render, because it needs the map.
         mobs[i]->move(this);
     }
-
+    if (mobs.size() == 0 ) {
+	cout << " ####################################" << endl;
+        cout << " ######## Victory! ##################" << endl; 
+	cout << " ####################################" << endl;
+    	exit(0);	 
+    }
     for (unsigned int i = 0; i < walls.size(); i++) {
         walls[i].Collide(&position);
     }
@@ -122,6 +132,13 @@ void Game::Move()
                     ox, 2, oz);
         }
     }
+    if (this->playerHP <= 0) {
+	cout << " ####################################" << endl;
+        cout << " ##########  Game over! #############" << endl;
+	cout << " ####################################" << endl;
+	exit(0);
+    }
+
 
 }
 
@@ -164,7 +181,8 @@ void Game::Shoot()
     int mobCount = mobs.size();
     for (int i = 0; i < mobCount; i++) {
         if (RaySphere(origin, direction,
-                    *(mobs[i]->getLoc()), 1.0, &closest) == 1)
+           *(mobs[i]->getLoc()), 1.0, &closest) == 1
+        )
             mobHit = i;
     }
     if (mobHit >= 0) {

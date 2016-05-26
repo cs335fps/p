@@ -769,6 +769,15 @@ void Map::displayMap()
         cout << endl;
     }
 }
+void Map::renderMap(Game* g)
+{
+/*    static int si = 0;
+    glBegin(GL_LINES);
+    Rect r;
+    r.bot = h - 20
+    r.center = 0;
+    r.left = 60;*/
+}
 Map::~Map()
 {
     //automatic allocate/deallocate

@@ -28,6 +28,7 @@ private:
 public:
     Vec position;
     Vec direction;
+    int playerHP;
     
     vector<Bullet> bullets;
     deque<BulletHole> bulletHoles;
@@ -42,6 +43,7 @@ public:
     int nkills;
     int guntype;
     int hitAnim;
+    int dmgAnim; 
     int gundamage;
     float mobDist;
     int mobNum;
