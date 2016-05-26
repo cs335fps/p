@@ -140,26 +140,26 @@ void setGun(Game *game, int n)
 {
 
 	//sets settings for Handgun
-	if(n == 0){
-		game->guntype =0;
-        game->nbullets =10;
-        game->maxbullets =10;
-        game->gundamage = 10;
-        nsound = 2;
+	if (n == 0) {
+	    game->guntype =0;
+            game->nbullets =10;
+            game->maxbullets =10;
+            game->gundamage = 10;
+            nsound = 2;
 	}
 
 	//sets settings for Snipper
-	if(n == 1){
-		game->guntype = 1;
-        game->nbullets = 5;
-        game->maxbullets = 5;
-        game->gundamage = 30;
-        nsound = 1;
+	if (n == 1) {
+	    game->guntype = 1;
+            game->nbullets = 5;
+            game->maxbullets = 5;
+            game->gundamage = 30;
+            nsound = 1;
 	}
 
 	//sets settings for shotgun
-	if(n == 2){
-		game->guntype=2;
+	if (n == 2) {
+	    game->guntype=2;
 	    game->nbullets=12;
 	    game->maxbullets=12;
 	    game->gundamage = 15;
@@ -167,19 +167,24 @@ void setGun(Game *game, int n)
 	}
 }
 
-void reloadAmmo(Game *game){
-	if(game->guntype == 2){
+void reloadAmmo(Game *game)
+{
+	if (game->guntype == 2) {
 		usleep(250000);
 	}
-	else if (game->guntype == 1){
+	else if (game->guntype == 1) {
 		usleep(2500000);
 	}
 	game->nbullets = game->maxbullets;
 }
-void emptysound(Game *game){	
+
+void emptysound(Game *game)
+{	
 	alSourcePlay(alSource[3]);
 }
-void reloadMessage(Game *game, int w, int h){
+
+void reloadMessage(Game *game, int w, int h)
+{
     if (reload == 0)
 	reload = rload.getBMP("reload.bmp");
 
@@ -339,10 +344,12 @@ int leaderboard(Game *game)
                 string content[10];
                 ifstream scoretxt ("score.txt");
                 if (scoretxt.is_open()){
+                	
                 for (int i=0;i<10;i++){
                  scoretxt >> content[i];
                         cout << content[i] << endl;
-}
+		}
+		
                 cout << game->currscore <<"   " << atoi(content[2].c_str())  <<endl;
                 if(game->currscore >= atoi(content[2].c_str()))
                         cout<<"congrats you are ranked #1 in the leaderboard!\n";
