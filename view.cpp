@@ -16,7 +16,7 @@ View::View(Game *g, int w, int h)
     skyTex = lbmp.getBMP("sky.bmp");
     game->defaultPortl.assignTexA(lbmp.getBMP("portalA_tex.bmp"));
     game->defaultPortl.assignTexB(lbmp.getBMP("portalB_tex.bmp"));
-    for(unsigned int i = 0; i < game->mobs.size(); i++){
+    for (unsigned int i = 0; i < game->mobs.size(); i++) {
         game->mobs[i]->setTex(mobTex);
     }
 }
@@ -109,7 +109,7 @@ void View::ShowCursor(const int onoff)
     Cursor cursor;
     //make a blank cursor
     blank = XCreateBitmapFromData (dpy, win, data, 1, 1);
-    if (blank == None){
+    if (blank == None) {
         std::cout << "error: out of memory." << std::endl;
         throw 0;
     }
@@ -154,11 +154,11 @@ void View::Render()
             );
 
     Lighting();
-    //	if (level1.isTouching(game->position.x,
-    //       game->position.y, game->position.z, 2.3)){
-    //     	game->position.x = ox;
-    //     	game->position.y = oy;
-    //     	game->position.z = oz;
+    //if (level1.isTouching(game->position.x,
+    //     game->position.y, game->position.z, 2.3)) {
+    //     game->position.x = ox;
+    //     game->position.y = oy;
+    //     game->position.z = oz;
     //    }else{
     ox = game->position.x;
     oy = game->position.y;
@@ -166,7 +166,7 @@ void View::Render()
     //    }
 
     glPushMatrix();
-    if (game->togPortal == 1){
+    if (game->togPortal == 1) {
         game->defaultPortl.draw();
     }
     
@@ -180,11 +180,11 @@ void View::Render()
         game->walls[i].render();
     }
 
-    for(unsigned int i = 0; i < game->mobs.size(); i++){
+    for (unsigned int i = 0; i < game->mobs.size(); i++) {
         // These textures should be set in the mob draw
         // function where it knows what itself is.
-	if(game->mobs[i]->getTex() == 0)
-	    game->mobs[i]->setTex(this->mobTex);
+    if (game->mobs[i]->getTex() == 0)
+        game->mobs[i]->setTex(this->mobTex);
         game->mobs[i]->render();
         //glBindTexture(GL_TEXTURE_2D, 0);
     }
@@ -223,7 +223,7 @@ void View::Render()
 void View::HUD()
 {
     SwitchTo2D();
-    if(game->lkey == 1)
+    if (game->lkey == 1)
       Lizandrokey(game,width, height);
     else
       DrawCrosshairs(game,width,height);
@@ -288,17 +288,17 @@ void View::SwitchTo3D()
     //
     glDepthMask(GL_TRUE);
     // This Will Clear The Background Color To Black
-    glClearColor(0.549f, 0.549f, 0.90588f, 0.0f);		
-    glClearDepth(1.0);				// Enables Clearing Of The Depth Buffer
-    glDepthFunc(GL_LESS);			        // The Type Of Depth Test To Do
-    glEnable(GL_DEPTH_TEST);		        // Enables Depth Testing
-    glShadeModel(GL_SMOOTH);			// Enables Smooth Color Shading
+    glClearColor(0.549f, 0.549f, 0.90588f, 0.0f); 
+    glClearDepth(1.0);              // Enables Clearing Of The Depth Buffer
+    glDepthFunc(GL_LESS);           // The Type Of Depth Test To Do
+    glEnable(GL_DEPTH_TEST);        // Enables Depth Testing
+    glShadeModel(GL_SMOOTH);        // Enables Smooth Color Shading
 
     glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();				// Reset The Projection Matrix
+    glLoadIdentity();               // Reset The Projection Matrix
 
     // Calculate The Aspect Ratio Of The Window
-    //gluPerspective(45.0f,(GLfloat)xres/(GLfloat)yres,0.1f,900.0f);	
+    //gluPerspective(45.0f,(GLfloat)xres/(GLfloat)yres,0.1f,900.0f);
     glFrustum(-0.1/height*width, 0.1/height*width,
             -0.1, 0.1, depth, 200.0);
 

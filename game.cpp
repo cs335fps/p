@@ -62,12 +62,12 @@ void Game::Move()
     // slow down when aiming
     float speed = 0.2f - (float) aiming * 0.1f;
 
-	// do not change ox and oz if the player is not moving
-    if (nx != position.x || nz != position.z){
+    // do not change ox and oz if the player is not moving
+    if (nx != position.x || nz != position.z) {
         oz = position.z;
         ox = position.x;
     }
-    
+
     // assign new position and save that position in nx and nz
     position.z -= (velocityX * cos(direction.x)
             + velocityY * -sin(direction.x)) * speed;
@@ -78,16 +78,16 @@ void Game::Move()
 
     for (unsigned int i = 0; i < mobs.size(); i++) {
         mobs[i]->Collide(&position);
-        for(unsigned int j = 0; j < walls.size(); j++){
-	    Vec temp;
-	    Vec* velocity = mobs[i]->getVel();
+        for (unsigned int j = 0; j < walls.size(); j++) {
+            Vec temp;
+            Vec* velocity = mobs[i]->getVel();
             walls[j].Collide(mobs[i]->getLoc(), 2.0, &temp);
-	    *velocity = Reflect(*velocity, temp);
-	}	
-	//for(unsigned int j = 0; j < mobs.size(); j++){
+            *velocity = Reflect(*velocity, temp);
+        }   
+        //for (unsigned int j = 0; j < mobs.size(); j++) {
         //    mobs[j]->Collide(mobs[i]->getLoc());
         //}
-	//Actually happens in view->render, because it needs the map.
+        //Actually happens in view->render, because it needs the map.
         mobs[i]->move(this);
     }
 
@@ -104,7 +104,7 @@ void Game::Move()
     }
 
     // handle portals and portal placement
-    if (togPortal == 1){
+    if (togPortal == 1) {
         defaultPortl.reLocateOBJ(position.x,
                 position.y,
                 position.z,
@@ -153,7 +153,7 @@ void Game::Shoot()
     cout << "no hit" << endl;
     }
     //cout << wallHit << endl;
-    if(wallHit != 0)
+    if (wallHit != 0)
     return;
      */
     int mobHit = -1; // Using 'hit' to pick which mob we shot now
@@ -167,18 +167,18 @@ void Game::Shoot()
         wallHit = 0;
         mobNum = mobHit;
         mobDist= closest;
-	float distMult = 15.0 / closest;
-	if (distMult < 0.0)
-	    distMult = 0.0;
-	if (distMult > 1.0)
-	    distMult = 1.0;
+        float distMult = 15.0 / closest;
+        if (distMult < 0.0)
+            distMult = 0.0;
+        if (distMult > 1.0)
+            distMult = 1.0;
         // !--- This cout can get removed after actual Mob damage works
-	int totDam = (int)((float)gundamage * distMult);
-	mobs[mobHit]->damage(totDam, this);
-	if (totDam > 0)
-	    hitAnim = 20;
+        int totDam = (int)((float)gundamage * distMult);
+        mobs[mobHit]->damage(totDam, this);
+        if (totDam > 0)
+            hitAnim = 20;
     }
-    
+
     if (wallHit == 1) {
         Vec loc = origin + direction.Norm() * (closest - 0.01);
         bulletHoles.push_back(BulletHole(loc,hitNormal));
@@ -194,6 +194,7 @@ void Game::Shoot()
     bullets.push_back(b);
 
 }
+
 
 
 

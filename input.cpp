@@ -13,7 +13,7 @@ Input::Input(Game *g, View *v, Openal *o)
 
 int Input::CheckInput()
 {
-    while(XPending(dpy)) {
+    while (XPending(dpy)) {
         XEvent e;
         XNextEvent(dpy, &e);
         CheckMouse(&e);
@@ -46,43 +46,43 @@ int Input::CheckKeys(XEvent *e)
         if (key == XK_d) {
             game->moveY = -1;
         }
-        if(key == XK_r) {
+        if (key == XK_r) {
             //Fire Roy's key
             game->togPortal ^=1;
         }
-        if(key == XK_f) {
-	    //Fire Roy's key
-	    if(game->togPortal == 1)
+        if (key == XK_f) {
+            //Fire Roy's key
+            if (game->togPortal == 1)
                 game->setPortal ^=1;
-	}
-        if(key == XK_n) {
+        }
+        if (key == XK_n) {
             //Fire Nick's key
             game->partyMode ^= 1;
         }
-        if(key == XK_l) {
+        if (key == XK_l) {
             game->lkey=1;
         }
-	if(key == XK_m){
-           //Fire A* algorithm.
-	   startAstar(this->game);
-	}
-	if(key == XK_c) {
-	    //Fire Chad's key
-	    //cout << "c key pressed.";
-	    chadKey(this->game, this->view);
-	    //respawn_mobs(this->game, 10);
-	}
-        if(key == XK_h) {
+        if (key == XK_m) {
+            //Fire A* algorithm.
+            startAstar(this->game);
+        }
+        if (key == XK_c) {
+            //Fire Chad's key
+            //cout << "c key pressed.";
+            chadKey(this->game, this->view);
+            //respawn_mobs(this->game, 10);
+        }
+        if (key == XK_h) {
             setGun(game,0);
         }
-        if(key == XK_y) {
+        if (key == XK_y) {
             setGun(game,1);
         }
-        if(key == XK_u) {
+        if (key == XK_u) {
             setGun(game,2);
         }
-        if(key == XK_space) {
-           reloadAmmo(game);
+        if (key == XK_space) {
+            reloadAmmo(game);
         }
     }else if (e->type == KeyRelease) {
         int key = XLookupKeysym(&e->xkey, 0);
@@ -117,7 +117,7 @@ void Input::CheckMouse(XEvent *e)
     if (e->type == ButtonPress) {
         if (e->xbutton.button==1) {
             //Left button was pressed
-            if(game->nbullets <1){
+            if (game->nbullets <1) {
                 emptysound(game);
                 return;
             }
@@ -128,7 +128,7 @@ void Input::CheckMouse(XEvent *e)
         }
         if (e->xbutton.button==3) {
             //Right button was pressed
-            if(game->guntype==1)
+            if (game->guntype==1)
                 game->zoom =1.5;
             else
                 game->zoom = 1;
@@ -160,5 +160,6 @@ void Input::CheckMouse(XEvent *e)
     if (dx != 0 || dy != 0)
         view->CenterCursor();
 }
+
 
 
