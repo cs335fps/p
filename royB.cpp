@@ -57,7 +57,7 @@ void worldEngine::bitreeAdd(vec *fce)
      if (root == NULL)
           root = node;
      else{
-          while (trav != NULL){
+          while (trav != NULL) {
                prev = trav;
                if (node->xMIN > trav->xMAX)
                     trav = trav->right;
@@ -71,16 +71,16 @@ void worldEngine::bitreeAdd(vec *fce)
            
           // if the face is inbetween an existing face in the x coord
           // add node to the current faces z tree
-          if (trav != NULL){
+          if (trav != NULL) {
           
                bitreeAddY(trav, node, fce);
           }else{
                // add face to the right branch
-               if (node->xMIN > prev->xMAX){
+               if (node->xMIN > prev->xMAX) {
                     prev->right = node;
                }else{
                     // add face to the left branch
-                    if (node->xMAX < prev->xMIN){
+                    if (node->xMAX < prev->xMIN) {
                          prev->left = node;
                     }else{
                          // add face down the z tree
@@ -119,12 +119,12 @@ void worldEngine::bitreeAddY(bitree *Yroot, bitree *node, vec *fce)
      prev = trav;
 
      // create a new root node if needed
-     if (trav == NULL){
+     if (trav == NULL) {
           Yroot->yroot = node;
           return;
      }else{
           // goto the end of the tree
-          while (trav != NULL){
+          while (trav != NULL) {
                prev = trav;
                if (node->zMIN > trav->zMAX)
                     trav = trav->right;
@@ -150,7 +150,7 @@ vector<vec*> worldEngine::search(GLfloat point[])
      trav = root;
      prev = trav;
 
-     while (trav != NULL){
+     while (trav != NULL) {
           prev = trav;
           if (point[0] > trav->xMAX)
                trav = trav->right;
@@ -162,11 +162,11 @@ vector<vec*> worldEngine::search(GLfloat point[])
           }
      }
      // check to see if the point is within a faces x min/max
-     if (trav != NULL){
+     if (trav != NULL) {
           ret.push_back(trav->fce);
           trav = trav->yroot;
           
-          while (trav != NULL){
+          while (trav != NULL) {
                prev = trav;
                if (point[2] > trav->zMAX)
                     trav = trav->right;
@@ -181,7 +181,7 @@ vector<vec*> worldEngine::search(GLfloat point[])
           // if nowhere near any x face find the closest y face
           ret.push_back(prev->fce);
           trav = prev->yroot;
-          while (trav != NULL){
+          while (trav != NULL) {
                prev = trav;
                if (point[2] > trav->zMAX)
                     trav = trav->right;
@@ -198,7 +198,7 @@ vector<vec*> worldEngine::search(GLfloat point[])
             trav = prev;
      ret.push_back(trav->fce);
 
-     while (trav != NULL){
+     while (trav != NULL) {
           if (point[2] >= trav->zMIN && point[2] <= trav->zMAX)
                ret.push_back(trav->fce);
           trav = trav->left;
@@ -209,7 +209,7 @@ vector<vec*> worldEngine::search(GLfloat point[])
 // //////////////////////////////////////////////////////////////////////////||
 void worldEngine::destroyTree(bitree *node)
 {
-    if (node != NULL){
+    if (node != NULL) {
      // for the x coordinates
      // goto the end of the binary tree
      destroyTree(node->left);
@@ -229,7 +229,7 @@ bool worldEngine::rayplane(float nv[3], float sv[3], float dv[3], vec fce)
 
     a = dv[0]*nv[0] + dv[1]*nv[1] + dv[2]*nv[2];
 
-    if (a == 0){
+    if (a == 0) {
      return false;
     }
     t = (fce.v1[0]*nv[1] + fce.v1[1]*nv[1] + 
@@ -334,10 +334,10 @@ void worldEngine::load(const char filename[200])
     ifstream objFile (filename);
 
     // If obj file is open, continue
-    if (objFile)
-    {
-     while(!objFile.eof())
-     {
+    if (objFile) {
+
+     while(!objFile.eof()) {
+
          objFile.getline(line,199);//getline(objFile, line);
 
          switch (line[0]) {
@@ -370,7 +370,7 @@ void worldEngine::load(const char filename[200])
 
           case 'f':
               line[0] = ' ';
-              if (texBuffer.size() >0){
+              if (texBuffer.size() >0) {
                sscanf(line,"%i/%i %i/%i %i/%i",
                         &vertNum[0],&uvNum[0],
                         &vertNum[1],&uvNum[1],
@@ -438,7 +438,7 @@ void worldEngine::load(const char filename[200])
                calculateNormal(coord1, coord2, coord3);
                
 
-               for (int i = 0; i < 3; i++){
+               for (int i = 0; i < 3; i++) {
                    normals.push_back( norm[0]);
                    normals.push_back( norm[1]);
                    normals.push_back( norm[2]);
@@ -520,7 +520,7 @@ bool worldEngine::isTouching(float center[], float r, float *pos)
     float dist1=0, dist2=0, dist3=0,dist4=0;
     float npt1[3];
 
-    if (solid == true){
+    if (solid == true) {
      // find the closest triangle
      // calculate new mesh locations
      npt1[0] = center[0] - x;
@@ -529,7 +529,7 @@ bool worldEngine::isTouching(float center[], float r, float *pos)
 
      //faces = search(npt1);
 
-     for (unsigned int i=0; i<collideFaces.size(); i++){
+     for (unsigned int i=0; i<collideFaces.size(); i++) {
          dist1 = baricen(
                    collideFaces[i]->v1,
                    collideFaces[i]->v2,
@@ -547,7 +547,7 @@ bool worldEngine::isTouching(float center[], float r, float *pos)
                    collideFaces[i]->v2, 
                    collideFaces[i]->v3);
 
-         if (abs(dist1-dist2-dist3-dist4) < 0.001+r){
+         if (abs(dist1-dist2-dist3-dist4) < 0.001+r) {
          /*
              npt1[1]=0;
              float AP[3] ={npt1[0]-collideFaces[i]->v1[0],
@@ -596,7 +596,7 @@ bool worldEngine::isTouchingRvec(float center[], float r, float *ret)
     float ptNorm[3], ptdir[3];
     float dist1=0, dist2=0;
 
-    if (solid == true){
+    if (solid == true) {
      // find the closest triangle
      faces = search(center);
      ptNorm[0] = (faces[0]->v2[1]*faces[0]->v3[2]) - 
@@ -611,11 +611,11 @@ bool worldEngine::isTouchingRvec(float center[], float r, float *ret)
      ptdir[2] = -1*ptNorm[2];
 
      if (rayplane(ptNorm, center, ptdir, *faces[0]) ||
-          rayplane(ptdir, center, ptNorm, *faces[0])){
+          rayplane(ptdir, center, ptNorm, *faces[0])) {
          if (dist1 > r || dist2 > r)
           return false;
          else{
-          if (dist1>0){
+          if (dist1>0) {
               ret[0] =  center[0] - ptNorm[0]*(r-dist1);
               ret[1] =  center[1] - ptNorm[1]*(r-dist1);
               ret[2] =  center[2] - ptNorm[2]*(r-dist1);
@@ -787,7 +787,7 @@ GLuint loadBMP::getBMP(const char *path)
           data_A[i*4] = data[i*3];
           data_A[i*4+1] = data[i*3+1];
           data_A[i*4+2] = data[i*3+2];
-          if (data[i*3]== 0 and data[i*3+1]==0 and data[i*3+2]==0){
+          if (data[i*3]== 0 and data[i*3+1]==0 and data[i*3+2]==0) {
                data_A[i*4+3] = 0;
           }else
                data_A[i*4+3] = 250;
@@ -898,7 +898,7 @@ void portal::reLocateOBJ(float *point, float *newLoc)
         
         // if the point is touching or within the first sphere
         // then relocate the point to the other sphere 
-        if (portA.isTouching(point) == true){
+        if (portA.isTouching(point) == true) {
                 // calculate entrence angle using refrence vector <1,0,0>
                 playerDir[0] = point[0] - portB.getx();
                 playerDir[1] = point[1] - portB.gety();
@@ -923,7 +923,7 @@ void portal::reLocateOBJ(float *point, float *newLoc)
         }
 
         // same as above but for oposite sphere
-        if (portB.isTouching(point) == true){
+        if (portB.isTouching(point) == true) {
                 // calculate entrence angle
                 playerDir[0] = point[0] - portB.getx();
                 playerDir[1] = point[1] - portB.gety();
@@ -990,7 +990,7 @@ void portal::loc(float px, float py, float pz,
         pz -= vz;
 
         // choose which portal to place
-        switch (placed % 2){
+        switch (placed % 2) {
                 case 0:
                         portLocA[0] = px;
                         portLocA[1] = 2;
