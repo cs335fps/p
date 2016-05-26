@@ -28,6 +28,7 @@ Mob::Mob(int mobID, Vec* spawnpoint)
     // Must wait until we have walls to draw map.
     // Walls are in the game object.
     this->hasMap = false;
+    this->dino = 1;
 }
 
 void Mob::spawn(Vec* spawnpoint)
@@ -36,7 +37,6 @@ void Mob::spawn(Vec* spawnpoint)
     location.z = spawnpoint->z;
     location.x = spawnpoint->x;
     location.y = 2; // y is up and down.
-
     //body.draw(location.x, location.y, location.z);
     body.drawObj(location.x, location.y, location.z);
     velocity.z = r(-4.05, 4.05);
@@ -122,9 +122,9 @@ void Mob::move(Game* g)
         tmp->x = g->position.x - this->location.x; 
         tmp->z =  g->position.z - this->location.z;
 	this->location.y = 2.0;
-        this->velocity.y = 0.5;
-        this->velocity.x = tmp->x;
-	this->velocity.z = tmp->z;
+        this->velocity.y = 0.0;
+        this->velocity.x = 5*tmp->x;
+	this->velocity.z = 5*tmp->z;
     }
     //check if no solution; if so, jump and teleport.
     if (hasMap && (tmp == NULL || ( tmp->x == 0 && tmp->z == 0))) { // we are stuck, teleport
@@ -149,17 +149,18 @@ void Mob::move(Game* g)
         velocity.y = 26.075;
     else if (velocity.y < -26.075)
         velocity.y = -26.075;
-    if(location.y > 2) // gravity.
-        velocity.y -= 444.6102;
+    else if (velocity.y < 2.1)
+	velocity.y = 0;
+    if (location.y > 2) // gravity.
+        velocity.y -= 6.6102;
     else if (location.y < 2){
-        velocity.y = 0.0;
-        location.y = 2;
+        velocity.y = 2;
+        location.y = 1.5;
     }
     else
         velocity.y = 0;
-    if (location.y < 1) {
-        velocity.y = 0;
-        location.y = 1;
+    if (location.y < 1.5) {
+        velocity.y = 2;
     }
     if (velocity.x > 24.075)
         velocity.x = 24.075;
@@ -183,7 +184,10 @@ void Mob::render()
     //cout << "Now rendering mob " << this->id;
     //this->move(g);
     glBindTexture(GL_TEXTURE_2D, texture);
-    body.drawObj(location.x, location.y, location.z);
+    if (this->dino == 1)
+        body.drawObj(location.x, location.y, location.z);
+    else
+	body.draw(location.x, location.y, location.z);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 /*
@@ -197,7 +201,7 @@ void Mob::render()
    */
 int Mob::Collide(Vec* p)
 {
-    if(body.isTouching(p->x, p->y, p->z)){
+    if (body.isTouching(p->x, p->y, p->z)) {
         Vec distance;
         distance.x = location.x - p->x;
         distance.y = location.y - p->y;
@@ -220,8 +224,8 @@ float r(float min, float max)
 {
     static float r_m = static_cast<float> (RAND_MAX);
     return (
-            static_cast<float> (rand()) / (r_m / (max-min)) + min
-           );
+        static_cast<float> (rand()) / (r_m / (max-min)) + min
+    );
 }
 /*
    void Enemy::move()
@@ -426,11 +430,12 @@ void chadKey(Game* g, View* v)
             m != g->mobs.end(); 
             m++
          ) {
-              (*m)->setVelY(4.055);
-              if(!(*m)->hasMap){	
+              (*m)->setVelY(6.055);
+              (*m)->dino = 0;
+	      if(!(*m)->hasMap){	
               //(*m)->map2d = new Map(g);
               //(*m)->hasMap = true;
-            }
+              }
             //cout <<"now in chadkey";
         }
         for (
@@ -444,8 +449,9 @@ void chadKey(Game* g, View* v)
     }
     else {
         toggle = 0;
-        for(vmi m = g->mobs.begin(); m != g->mobs.end(); m++){
+        for (vmi m = g->mobs.begin(); m != g->mobs.end(); m++) {
             (*m)->setVelY(-4.055);
+	    (*m)->dino = 1;
             (*m)->setLocY((*m)->getLoc()->y - 0.05);
             //(*m)->hasMap = false;
         }
@@ -465,7 +471,7 @@ void chadKey(Game* g, View* v)
 void respawn_mobs(Game* g, int num = 10)
 {
     int s = g->mobs.size();
-    for(int i = 0; i < num; i++)
+    for (int i = 0; i < num; i++)
         g->mobs.push_back(new Mob(s+i, new Vec(r(-20, 20), 2, r(-20, 20))));
 }
 
@@ -476,7 +482,7 @@ Game::~Game()
         i->death(this);
     }*/
     int m = this->mobs.size();
-    for(int i = 0; i < m; i++){
+    for (int i = 0; i < m; i++) {
         this->mobs[i]->death(this);
     }
     /*for(int i = 0; !this->walls.empty();this->walls.pop_back()){
@@ -573,9 +579,9 @@ void Map::getLowestCost(Vec start, Vec end)
    // temp.x = start.x;
    // temp.z = start.z;
     for (int i = 15; i < 80; i++) {
-        if( i < 0 )
+        if (i < 0 )
 	    i = 0;
-        if(i >= 100) 
+        if (i >= 100) 
 	    i = 100;
         for (int j = 15; j < 85; j++) {
 	    if (j < 0)
@@ -667,7 +673,7 @@ Vec* Map::aStar(Vec start, Vec end)
             y = this->current.z + offset[i][1];
 	    
             if (inBounds(Vec(x, 0, y)) &&
-                    !squares[x][y]->visited
+                !squares[x][y]->visited
                ) {
 		//cout << "1";
                 double cost;
@@ -708,8 +714,7 @@ Vec* Map::aStar(Vec start, Vec end)
     cout << "Found solution.";
     //find next node.
     static int toggle = 1;
-    while (this->current.parent[0] != 0 && this->current.parent[1] != 0) 
-    {
+    while (this->current.parent[0] != 0 && this->current.parent[1] != 0) {
         squares[(int)current.x][(int)current.z]->c = '+';
 	if ((int)current.x == (int) end.x &&
 	   (int)current.z == (int) end.z) {
@@ -727,7 +732,7 @@ Vec* Map::aStar(Vec start, Vec end)
         current = *squares[current.parent[0]][current.parent[1]];
     }
     cout << "Node " << current.x << ", " << current.z << endl;
-    if (toggle == 1){
+    if (toggle == 1) {
       this->displayMap();
     }
     else {

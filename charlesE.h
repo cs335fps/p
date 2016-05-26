@@ -51,7 +51,8 @@ protected:
     Vec maxSpeed;
     solidSphere body;
 public: 
-    bool hasMap;
+    bool hasMap; 
+    int dino;
     Map* map2d;
     Mob();
     Mob(int, Vec*);
