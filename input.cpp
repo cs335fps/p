@@ -32,6 +32,7 @@ int Input::CheckKeys(XEvent *e)
 
         if (key == XK_Escape) {
             openal->clean_al();
+	    leaderboard(game);
             return 1;
         }
         if (key == XK_w) {
@@ -60,7 +61,7 @@ int Input::CheckKeys(XEvent *e)
             game->partyMode ^= 1;
         }
         if (key == XK_l) {
-            game->lkey=1;
+            game->lkey^=1;
         }
         if (key == XK_m) {
             //Fire A* algorithm.

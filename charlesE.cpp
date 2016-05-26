@@ -4,6 +4,7 @@
 
 #include "solidSphere.h"
 #include "charlesE.h"
+#include "lizandroP.h"
 #define vmi vector<Mob*>::iterator
 #define vwi vector<Wall>::iterator
 class Wall;
@@ -51,6 +52,7 @@ void Mob::death(Game* g)
             //causes an undefined behavior warning.
             Mob* temp = *m; 
             g->mobs.erase(m);
+            kills(g);
             delete temp;
             return; 
         }

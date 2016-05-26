@@ -1,0 +1,4 @@
+lizandro 900
+roy 1000
+charles 9000
+nick 70000

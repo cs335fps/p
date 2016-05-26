@@ -23,6 +23,7 @@ Game::Game()
     mobNum = 0;
     mobDist= 0.0;
     lkey = 0;
+    currscore =0;
     temperature = 25.0; // temperature in celsius
     position = Vec(0,2,0);
     direction = Vec(0.0,0.0,0.0);

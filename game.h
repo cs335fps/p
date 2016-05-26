@@ -46,6 +46,7 @@ public:
     float mobDist;
     int mobNum;
     int lkey;
+    int currscore;
     double temperature;
 
     int partyMode;
