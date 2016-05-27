@@ -49,8 +49,9 @@ protected:
     Vec location;
     Vec velocity;
     Vec maxSpeed;
-    solidSphere body;
 public: 
+    solidSphere body;
+
     bool hasMap; 
     int dino;
     Map* map2d;
