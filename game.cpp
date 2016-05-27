@@ -112,7 +112,7 @@ void Game::Move()
         //Actually happens in view->render, because it needs the map.
         mobs[i]->move(this);
         
-        if (mobs[i]->getTick() > gameCounter)
+        if (mobs[i]->getTick() > gameCounter || mobs[i]->dino == 0)
             continue;
             
         mobs[i]->setTick(gameCounter + (15 * RAND) + 30);
