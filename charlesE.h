@@ -44,7 +44,7 @@ protected:
     int id;
     int moved;
     unsigned int texture;
-
+    unsigned int shotTick;
     float hp;
     Vec location;
     Vec velocity;
@@ -68,6 +68,9 @@ public:
     Vec* getVel() { return &velocity; }
     void setLocY(float y = 1);
     void setVelY(float y = 0);
+    void setTick(unsigned int tic = 0) { this->shotTick = tic; }
+    unsigned int getTick() { return this->shotTick; }
+    void incTick() { this->shotTick++; }
     unsigned int getTex() { return texture; }
     void setTex(unsigned int t); 
     bool operator==(int b);
