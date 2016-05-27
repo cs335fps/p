@@ -19,7 +19,7 @@
     #include "solidSphere.h"
 #endif
 #ifndef _GAME_H_
-//	#include <cstdlib>
+//    #include <cstdlib>
 #endif
 #ifndef OPENAL_H
 //    #include <unistd>
@@ -87,21 +87,21 @@ class Enemy: public Mob
 class cWall: public Mob
 {
     private:
-	Vec start;
-	Vec end;
-	float height;
-	float width;
-	Vec corners[8];
-	Vec endpoints[2];
-	Vec color;
+    Vec start;
+    Vec end;
+    float height;
+    float width;
+    Vec corners[8];
+    Vec endpoints[2];
+    Vec color;
 
     public:
-	cWall();
-	cWall(int, Vec*);
-	cWall(Vec, Vec, float, float);
-	void Set(Vec, Vec, float, float);
-	void Draw();
-	int Collide(Vec*, float);
+    cWall();
+    cWall(int, Vec*);
+    cWall(Vec, Vec, float, float);
+    void Set(Vec, Vec, float, float);
+    void Draw();
+    int Collide(Vec*, float);
 };
 
 

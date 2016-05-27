@@ -105,7 +105,7 @@ void Game::Move()
             this->dmgAnim = 20;
             cout << "Raptor " << i << " damaged player 5 points. " << endl;
             cout << "Player has " << playerHP << " health remaining." << endl;
-        }	   
+        }       
         //for (unsigned int j = 0; j < mobs.size(); j++) {
         //    mobs[j]->Collide(mobs[i]->getLoc());
         //}
@@ -182,7 +182,7 @@ void Game::Move()
         cout << " ####################################" << endl;
         cout << " ######## Victory! ##################" << endl; 
         cout << " ####################################" << endl;
-        exit(0);	 
+        exit(0);     
     }
     */
     for (unsigned int i = 0; i < walls.size(); i++) {
