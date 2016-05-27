@@ -236,7 +236,6 @@ void View::HUD()
         glVertex2f(width, 0);
         glEnd( );
     }
-    
     DrawHealth(game, width, height);
     DrawAmmo(game, width, height);
     

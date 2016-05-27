@@ -1,4 +1,5 @@
-lizandro 900
-roy 1000
-charles 9000
-nick 70000
+lizandro 5
+roy 4
+charles 3
+nick 2
+user 1

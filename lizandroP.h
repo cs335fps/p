@@ -21,6 +21,8 @@
 
 class Game;
 void emptysound(Game *game);
+void raptorsound();
+void bitesound();
 void reloadAmmo(Game *game);
 void reloadMessage(Game *game, int w, int h);
 void GameMenu(Game *game, int w, int h);

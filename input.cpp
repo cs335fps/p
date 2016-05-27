@@ -63,6 +63,7 @@ int Input::CheckKeys(XEvent *e)
              }
              if (key == XK_l) {
                  game->lkey^=1;
+                 raptorsound();
              }
              if (key == XK_m) {
                  //Fire A* algorithm.

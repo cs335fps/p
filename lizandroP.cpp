@@ -30,19 +30,23 @@ zoom according to weapon selected.
 #include "lizandroP.h"
 #include "view.h"
 #include "game.h"
+
 unsigned int reload=0;
-	loadBMP rload;
+loadBMP rload;
 
 int nsound =2;
 char currname[20];
-	//sounds buffers
+
+//sounds buffers
 ALuint alBuffer0;
 ALuint alBuffer1;
 ALuint alBuffer2;
 ALuint alBuffer3;
+ALuint alBuffer4;
+ALuint alBuffer5;
 
 //sound source 
-ALuint alSource[3];
+ALuint alSource[5];
 extern "C" {
 #include "fonts.h"
 }
@@ -74,10 +78,15 @@ int Openal::initopenal()
 	alBuffer1 = alutCreateBufferFromFile("./sounds/50.wav");
 	alBuffer2 = alutCreateBufferFromFile("./sounds/ninemm.wav");
 	alBuffer3 = alutCreateBufferFromFile("./sounds/test.wav");
+    alBuffer4 = alutCreateBufferFromFile("./raptor.wav");
+    alBuffer5 = alutCreateBufferFromFile("./bite.wav");
+
 	alGenSources(1, &alSource[0]);
 	alGenSources(1, &alSource[1]);
 	alGenSources(1, &alSource[2]);
 	alGenSources(1, &alSource[3]);
+    alGenSources(1, &alSource[4]);
+    alGenSources(1, &alSource[5]);
 	
 	//setting for first sound 
 	alSourcei(alSource[0], AL_BUFFER, alBuffer0);
@@ -103,6 +112,18 @@ int Openal::initopenal()
 	alSourcef(alSource[3], AL_PITCH, 1.0f);
 	alSourcei(alSource[3], AL_LOOPING, AL_FALSE);
 
+    //setting for fourth sound
+    alSourcei(alSource[4], AL_BUFFER, alBuffer4);
+    alSourcef(alSource[4], AL_GAIN, 1.0f);
+    alSourcef(alSource[4], AL_PITCH, 1.0f);
+    alSourcei(alSource[4], AL_LOOPING, AL_FALSE);
+
+     //setting for fourth sound
+    alSourcei(alSource[5], AL_BUFFER, alBuffer5);
+    alSourcef(alSource[5], AL_GAIN, 1.0f);
+    alSourcef(alSource[5], AL_PITCH, 1.0f);
+    alSourcei(alSource[5], AL_LOOPING, AL_FALSE);
+
 	if (alGetError() != AL_NO_ERROR) {
 		printf("ERROR: setting source\n");
 		return 0;
@@ -124,11 +145,18 @@ void Openal::clean_al()
 	alDeleteSources(1, &alSource[0]);
 	alDeleteSources(1, &alSource[1]);
 	alDeleteSources(1, &alSource[2]);
+    alDeleteSources(1, &alSource[3]);
+    alDeleteSources(1, &alSource[4]);
+    alDeleteSources(1, &alSource[5]);
+
 
 	//clear buffer
 	alDeleteBuffers(1, &alBuffer0);
 	alDeleteBuffers(1, &alBuffer1);
 	alDeleteBuffers(1, &alBuffer2);
+    alDeleteBuffers(1, &alBuffer3);
+    alDeleteBuffers(1, &alBuffer4);
+    alDeleteBuffers(1, &alBuffer5);
 
 	ALCcontext *Context = alcGetCurrentContext();
 	ALCdevice *Device = alcGetContextsDevice(Context);
@@ -168,20 +196,30 @@ void setGun(Game *game, int n)
 }
 
 void reloadAmmo(Game *game)
-{       /*
+{       
 	if (game->guntype == 2) {
-		usleep(250000);
+		game->setReloadDelay = 60;
 	}
 	else if (game->guntype == 1) {
-		usleep(2500000);
-	}*/
-	game->setReloadDelay = 60;
+		game->setReloadDelay = 160;
+	}
+
 	game->nbullets = game->maxbullets;
 }
 
 void emptysound(Game *game)
 {	
 	alSourcePlay(alSource[3]);
+}
+
+void raptorsound()
+{   
+    alSourcePlay(alSource[4]);
+}
+
+void bitesound()
+{   
+    alSourcePlay(alSource[5]);
 }
 
 void reloadMessage(Game *game, int w, int h)
@@ -231,6 +269,7 @@ void GameMenu(Game *game, int w, int h)
     ggprint8b(&r, 16, 0, "U - ShotGun");
     ggprint8b(&r, 16, 0, "Nround: %i / %i", game->nbullets, game->maxbullets);
     ggprint8b(&r, 16, 0, "Kills: %i", game->nkills);
+    ggprint8b(&r, 16, 0, "Kills: %c", currname);
     // ggprint8b(&r, 16, 0, "Score: Sounds");
     glEnd();
 }
@@ -318,17 +357,6 @@ void Lizandrokey(Game *game, int w, int h)
     ggprint8b(&r, 16, 0, "Distance to target: %f", game->mobDist);
     glEnd();
     
-    glBegin(GL_LINES);
-    Rect b;
-    b.bot = h - 10;
-    b.left = w - 60;
-    b.center = 0;
-    ggprint8b(&b, 16, 0, "");
-    
-    for(int x = 0; x < game->nbullets; x++){
-      ggprint8b(&b, 16, 0, "|=====}");
-    }
-    glEnd();
 }
 
 #include <fstream>
@@ -356,20 +384,24 @@ int leaderboard(Game *game)
 	  cout << "your kills: " << game->currscore <<"   " << strtod(content[1].c_str(), NULL)  << endl;
 	  if(game->currscore >= atoi(content[1].c_str())){
 		  cout<<"congrats you are ranked #1 in the leaderboard!\n";
-		  //content[1] == game->currscore
+		  content[0] == currname;
 	  }
 	  else if(game->currscore >= atoi(content[3].c_str())){
 		  cout<<"congrats you are ranked #2 in the leaderboard!\n";
-	  }
+	      content[2] == currname;
+      }
 	  else if(game->currscore >= atoi(content[5].c_str())){
 		  cout<<"congrats you are ranked #3 in the leaderboard!\n";
-	  }
+	      content[4] == currname;
+      }
 	  else if(game->currscore >= atoi(content[7].c_str())){
 		  cout<<"congrats you are ranked #4 in the leaderboard!\n";
-	  }
+	      content[6] == currname;
+      }
 	  else if(game->currscore >= atoi(content[9].c_str())){
 		  cout<<"congrats you are ranked #5 in the leaderboard!\n";
-		  //content[9] == game->currscore
+		  content[8] = currname;
+          cout << content[8]<<"test output\n";
 	  }
 	  else
 		  cout<<"sorry your score was to low to place on the board\n";
@@ -390,6 +422,11 @@ void entername()
     cout <<"Invalid input, Please enter name again.\n";
     cin >> name;
   }
-   //currname = name;
+  strncpy(currname, name, 20);
 }
-          
+ 
+void updatescore()
+{
+
+}
+
