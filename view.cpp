@@ -234,6 +234,7 @@ void View::HUD()
     }
     
     DrawHealth(game, width, height);
+    DrawAmmo(game, width, height);
     
     if (game->lkey == 1)
         Lizandrokey(game,width, height);

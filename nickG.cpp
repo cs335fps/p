@@ -32,6 +32,39 @@ void DrawHealth(Game* game, int w, int h)
     glEnd( );
 }
 
+void AmmoBox(int x1,int y1,int x2,int y2, int o)
+{
+    glColor4f(.9,.9,.9,1);
+    glBegin(GL_POLYGON);
+    glVertex2f(x1 + o,y1 + o);
+    glVertex2f(x1 + o,y2);
+    glVertex2f(x2 - o,y2);
+    glVertex2f(x2 - o,y1 + o);
+    glEnd( );
+}
+
+void DrawAmmo(Game* game, int w, int h)
+{
+    int o = h / 140;
+    glColor4f(0,0,0,1);
+    glBegin(GL_POLYGON);
+    glVertex2f(w * 38 / 40, h * 3 / 4 + o);
+    glVertex2f(w * 38 / 40, h / 4);
+    glVertex2f(w * 39 / 40, h / 4);
+    glVertex2f(w * 39 / 40, h * 3 / 4 + o);
+    glEnd( );
+    if (game->setReloadDelay > 0)
+        return;
+    int x1 = w * 38 / 40;
+    int x2 = w * 39 / 40;
+    int y = h / 4;
+    int yh = h / 2;
+    int max = game->maxbullets;
+    for (int i = 0; i < game->nbullets; i++) {
+        AmmoBox(x1, y + yh * i / max,x2, y + yh * (i+1) / max, o);
+    }
+}
+
 int hash(int *in, int n)
 {
     int seed = 0;//533000389;

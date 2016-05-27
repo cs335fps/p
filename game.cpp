@@ -33,7 +33,6 @@ Game::Game()
     direction = Vec(0.0,0.0,0.0);
     respawn_mobs(this, 10);
     ParseLevel("lev1.svg", this, 3.0);
-    health = 60.0;
     gameCounter = 0;
 
     for (unsigned int i = 0; i < mobs.size(); i++) {
