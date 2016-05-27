@@ -16,6 +16,8 @@ View::View(Game *g, int w, int h)
     skyTex = lbmp.getBMP("sky.bmp");
     game->defaultPortl.assignTexA(lbmp.getBMP("portalA_tex.bmp"));
     game->defaultPortl.assignTexB(lbmp.getBMP("portalB_tex.bmp"));
+    Win = lbmp.getBMP("Win.bmp");
+    Lose = lbmp.getBMP("Lose.bmp");
     for (unsigned int i = 0; i < game->mobs.size(); i++) {
         game->mobs[i]->setTex(mobTex);
     }
@@ -244,6 +246,15 @@ void View::HUD()
         DrawCrosshairs(game,width,height);
     GameMenu(game,width,height);
     reloadMessage(game,width,height);
+    
+    // display that the user won or lost
+    if (game->mobs.size() == 0 || game->playerHP == 0) {
+          if (game->playerHP == 0) {
+               game->renderGameOver(width, height, Lose);
+          }else{
+               game->renderGameOver(width, height, Win);
+          }
+    }
 }
 
 void View::Lighting()

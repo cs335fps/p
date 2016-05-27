@@ -38,7 +38,7 @@ private:
     Game *game;
     float ox,oy,oz;
     int wOverride, hOverride;    
-    unsigned int mobTex, skyTex;
+    unsigned int mobTex, skyTex, Win, Lose;
 
 public:
     View(Game *g, int w = 0, int h = 0);

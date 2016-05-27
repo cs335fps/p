@@ -34,6 +34,8 @@ Game::Game()
     respawn_mobs(this, 10);
     ParseLevel("lev1.svg", this, 3.0);
     gameCounter = 0;
+    displayGameOverOrWon = -5;
+    togGamOverDisplay = false;
 
     for (unsigned int i = 0; i < mobs.size(); i++) {
         Vec* spt = &spawnPts[i % spawnPts.size()];
@@ -143,32 +145,46 @@ void Game::Move()
                 dmgAnim = 20;
             }
             if (playerHP <= 0) {
-                cout << "              __.....__\n";
-                cout << "            .'         ':,\n";
-                cout << "           /  __  _  __  \\\n";
-                cout << "           | |_)) || |_))||\n";
-                cout << "           | | \\\\ || |   ||\n";
-                cout << "           |             ||   _,\n";
-                cout << "           |             ||.-(_{}\n";
-                cout << "           |             |/    `\n";
-                cout << "           |        ,_ (\\;|/)\n";
-                cout << "         \\|       {}_)-,||`\n";
-                cout << "         \\;/,,;;;;;;;,\\|//,\n";
-                cout << "        .;;;;;;;;;;;;;;;;,\n";
-                cout << "       \\,;;;;;;;;;;;;;;;;,//\n";
-                cout << "      \\;;;;;;;;;;;;;;;;,//\n";
-                cout << "     ,\';;;;;;;;;;;;;;;;'\n";
-                cout << "    ;;;;;;;;;;;;;;'''`\n";
-                exit(0);
+                playerHP = 0;
+                // set displayGameOverOrWon only once
+                if (togGamOverDisplay == false) {
+                    togGamOverDisplay = true;
+                    displayGameOverOrWon = 10;
+                }
+                // use to display the mesage on screen that the player 
+                // wone or lost the game
+                if(displayGameOverOrWon == 0) {
+                     cout << "              __.....__\n";
+                     cout << "            .'         ':,\n";
+                     cout << "           /  __  _  __  \\\n";
+                     cout << "           | |_)) || |_))||\n";
+                     cout << "           | | \\\\ || |   ||\n";
+                     cout << "           |             ||   _,\n";
+                     cout << "           |             ||.-(_{}\n";
+                     cout << "           |             |/    `\n";
+                     cout << "           |        ,_ (\\;|/)\n";
+                     cout << "         \\|       {}_)-,||`\n";
+                     cout << "         \\;/,,;;;;;;;,\\|//,\n";
+                     cout << "        .;;;;;;;;;;;;;;;;,\n";
+                     cout << "       \\,;;;;;;;;;;;;;;;;,//\n";
+                     cout << "      \\;;;;;;;;;;;;;;;;,//\n";
+                     cout << "     ,\';;;;;;;;;;;;;;;;'\n";
+                     cout << "    ;;;;;;;;;;;;;;'''`\n";
+                
+                    exit(0);
+                }
+                displayGameOverOrWon -= 1;
             }
         }
     }
+    /*
     if (mobs.size() == 0 ) {
         cout << " ####################################" << endl;
         cout << " ######## Victory! ##################" << endl; 
         cout << " ####################################" << endl;
         exit(0);	 
     }
+    */
     for (unsigned int i = 0; i < walls.size(); i++) {
         walls[i].Collide(&position);
     }
@@ -196,13 +212,14 @@ void Game::Move()
                     ox, 2, oz);
         }
     }
-    
+    /*
     if (this->playerHP <= 0) {
         cout << " ####################################" << endl;
         cout << " ##########  Game over! #############" << endl;
         cout << " ####################################" << endl;
         exit(0);
     }
+    */
     if (dmgAnim > 0)
         dmgAnim--;
     gameCounter++;
@@ -282,7 +299,26 @@ void Game::Shoot()
     bullets.push_back(b);
 
 }
+void Game::renderGameOver(float xres, float yres, unsigned int Tex)
+{
+     glBindTexture(GL_TEXTURE_2D, Tex);
 
+     glBegin(GL_QUADS);
+     glTexCoord2f(1.0f, 1.0f);
+     glVertex2f(xres, yres);
+
+     glTexCoord2f(1.0f, 0.0f);
+     glVertex2f( xres, 0.0f);
+
+     glTexCoord2f(0.0f, 0.0f);
+     glVertex2f( 0.0f, 0.0f);
+
+     glTexCoord2f(0.0f, 1.0f);
+     glVertex2f( 0.0f, yres);
+
+     glBindTexture(GL_TEXTURE_2D, 0);
+     glEnd();
+}
 
 
 

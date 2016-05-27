@@ -51,7 +51,7 @@ public:
     int gundamage;
     float mobDist;
     int mobNum;
-    int lkey;
+    int lkey, displayGameOverOrWon;
     int currscore;
     int setReloadDelay;
     double temperature;
@@ -63,6 +63,7 @@ public:
     float minZoom;
     int zoom, togPortal, setPortal;
     float depth;
+    bool togGamOverDisplay;
     
     vector<Mob*> mobs;
     vector<Wall> walls;
@@ -74,6 +75,7 @@ public:
     void Move();
     
     void Shoot();
+    void renderGameOver(float xres, float yres, unsigned int Tex);
     ~Game();    
 };
 
