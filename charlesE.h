@@ -51,7 +51,7 @@ protected:
     Vec maxSpeed;
 public: 
     solidSphere body;
-
+    Vec lastFace;
     bool hasMap; 
     int dino;
     Map* map2d;
