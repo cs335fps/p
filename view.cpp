@@ -223,10 +223,20 @@ void View::Render()
 void View::HUD()
 {
     SwitchTo2D();
+    if (game->dmgAnim > 0) {
+        glColor4f(1,0,0,((float)game->dmgAnim / 20.0) * 0.5);
+        glBegin(GL_POLYGON);
+        glVertex2f(0, 0);
+        glVertex2f(0, height);
+        glVertex2f(width, height);
+        glVertex2f(width, 0);
+        glEnd( );
+    }
+    
     if (game->lkey == 1)
-      Lizandrokey(game,width, height);
+        Lizandrokey(game,width, height);
     else
-      DrawCrosshairs(game,width,height);
+        DrawCrosshairs(game,width,height);
     GameMenu(game,width,height);
     reloadMessage(game,width,height);
 }

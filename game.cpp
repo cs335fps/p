@@ -19,6 +19,7 @@ Game::Game()
     nkills=0;
     guntype =0;
     hitAnim = 0;
+    dmgAnim = 0;
     gundamage= 10;
     mobNum = 0;
     mobDist= 0.0;
@@ -95,12 +96,12 @@ void Game::Move()
             walls[j].Collide(mobs[i]->getLoc(), 2.0, &temp);
             *velocity = Reflect(*velocity, temp);
         }
-       	if (mobs[i]->Collide(&position) == 1) {
+        if (mobs[i]->Collide(&position) == 1) {
             this->playerHP -= 5;
-	    mobs[i]->damage(10, this);
-	    this->dmgAnim = 20;
-	    cout << "Raptor " << i << " damaged player 5 points. " << endl;
-	    cout << "Player has " << playerHP << " health remaining." << endl;
+            mobs[i]->damage(10, this);
+            this->dmgAnim = 20;
+            cout << "Raptor " << i << " damaged player 5 points. " << endl;
+            cout << "Player has " << playerHP << " health remaining." << endl;
         }	   
         //for (unsigned int j = 0; j < mobs.size(); j++) {
         //    mobs[j]->Collide(mobs[i]->getLoc());
@@ -118,12 +119,23 @@ void Game::Move()
         }
         if (wallHit == 0 && gameCounter%30 == 0) {
             Bullet b;
+            float mobErr = 0.2;
+            Vec err = Vec((2.0 * RAND - 0.1) * mobErr,
+                    (2.0 * RAND - 0.1) * mobErr,
+                    (2.0 * RAND - 0.1) * mobErr);
+            sightDir.Normalize();
+            sightDir = sightDir + err;
+            sightDir = sightDir * closestSight;
             b.origin = *mobs[i]->getLoc() + Vec(0,-1,0);
             b.direction = sightDir;
             b.end = b.origin + b.direction;
             b.age = 30;
             bullets.push_back(b);
-            health -= 5.0;
+            float tmp = 9e9;
+            if (RaySphere(b.origin, b.direction, position, 1, &tmp)) {
+                health -= 5.0;
+                dmgAnim = 20;
+            }
             if (health <= 0.0) {
                 cout << "              __.....__\n";
                 cout << "            .'         ':,\n";
@@ -146,10 +158,10 @@ void Game::Move()
         }
     }
     if (mobs.size() == 0 ) {
-	cout << " ####################################" << endl;
+        cout << " ####################################" << endl;
         cout << " ######## Victory! ##################" << endl; 
-	cout << " ####################################" << endl;
-    	exit(0);	 
+        cout << " ####################################" << endl;
+        exit(0);	 
     }
     for (unsigned int i = 0; i < walls.size(); i++) {
         walls[i].Collide(&position);
@@ -178,15 +190,16 @@ void Game::Move()
                     ox, 2, oz);
         }
     }
-    gameCounter++;
+    
     if (this->playerHP <= 0) {
-	cout << " ####################################" << endl;
+        cout << " ####################################" << endl;
         cout << " ##########  Game over! #############" << endl;
-	cout << " ####################################" << endl;
-	exit(0);
+        cout << " ####################################" << endl;
+        exit(0);
     }
-
-
+    if (dmgAnim > 0)
+        dmgAnim--;
+    gameCounter++;
 }
 
 void Game::Shoot()
@@ -228,8 +241,8 @@ void Game::Shoot()
     int mobCount = mobs.size();
     for (int i = 0; i < mobCount; i++) {
         if (RaySphere(origin, direction,
-           *(mobs[i]->getLoc()), 1.0, &closest) == 1
-        )
+                    *(mobs[i]->getLoc()), 1.0, &closest) == 1
+           )
             mobHit = i;
     }
     if (mobHit >= 0) {
@@ -263,6 +276,7 @@ void Game::Shoot()
     bullets.push_back(b);
 
 }
+
 
 
 
