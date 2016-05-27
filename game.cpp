@@ -25,8 +25,8 @@ Game::Game()
     mobDist= 0.0;
     lkey = 0;
     currscore =0;
-    playerHP = 30;
-    maxHP = 30;
+    playerHP = 60;
+    maxHP = 60;
     setReloadDelay =0;
     temperature = 25.0; // temperature in celsius
     position = Vec(0,2,0);
@@ -38,6 +38,7 @@ Game::Game()
     for (unsigned int i = 0; i < mobs.size(); i++) {
         Vec* spt = &spawnPts[i % spawnPts.size()];
         mobs[i]->spawn(spt);
+        mobs[i]->setTick();
     }
 
     for (unsigned int i = 0; i < walls.size(); i++) {
@@ -108,6 +109,11 @@ void Game::Move()
         //}
         //Actually happens in view->render, because it needs the map.
         mobs[i]->move(this);
+        
+        if (mobs[i]->getTick() > gameCounter)
+            continue;
+            
+        mobs[i]->setTick(gameCounter + (15 * RAND) + 30);
 
         Vec sightDir = -1.0 * (*mobs[i]->getLoc() - position);
         float closestSight = sightDir.Magnitude();
@@ -117,7 +123,7 @@ void Game::Move()
             if (walls[j].Ray(*mobs[i]->getLoc(), sightDir, &closestSight) == 1)
                 wallHit = 1;
         }
-        if (wallHit == 0 && gameCounter%30 == 0) {
+        if (wallHit == 0) {
             Bullet b;
             float mobErr = 0.2;
             Vec err = Vec((2.0 * RAND - 0.1) * mobErr,

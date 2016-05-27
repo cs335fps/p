@@ -26,7 +26,7 @@ private:
     float tmpPos[3];
     float ox, oz, nx, nz;
 public:
-    unsigned long int gameCounter;
+    unsigned int gameCounter;
 
     Vec position;
     Vec direction;
