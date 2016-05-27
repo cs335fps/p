@@ -26,6 +26,7 @@ Game::Game()
     lkey = 0;
     currscore =0;
     playerHP = 30;
+    maxHP = 30;
     setReloadDelay =0;
     temperature = 25.0; // temperature in celsius
     position = Vec(0,2,0);
@@ -133,10 +134,10 @@ void Game::Move()
             bullets.push_back(b);
             float tmp = 9e9;
             if (RaySphere(b.origin, b.direction, position, 1, &tmp)) {
-                health -= 5.0;
+                playerHP -= 5;
                 dmgAnim = 20;
             }
-            if (health <= 0.0) {
+            if (playerHP <= 0) {
                 cout << "              __.....__\n";
                 cout << "            .'         ':,\n";
                 cout << "           /  __  _  __  \\\n";

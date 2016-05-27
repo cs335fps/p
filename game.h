@@ -31,6 +31,7 @@ public:
     Vec position;
     Vec direction;
     int playerHP;
+    int maxHP;
     
     vector<Bullet> bullets;
     vector<Vec> spawnPts;

@@ -11,6 +11,27 @@ Vec Reflect(Vec dir, Vec norm)
 
 }
 
+void DrawHealth(Game* game, int w, int h)
+{
+    float o = h / 140;
+    float pct = (float)game->playerHP / (float)game->maxHP;
+    pct *= w / 3;
+    glColor4f(0,0,0,1);
+    glBegin(GL_POLYGON);
+    glVertex2f(w / 3, h - h / 20);
+    glVertex2f(w / 3, h - h * 2 / 20);
+    glVertex2f(w * 2 / 3, h - h * 2 / 20);
+    glVertex2f(w * 2 / 3, h - h / 20);
+    glEnd( );
+    glColor4f(0.1,0.6,0.1,1);
+    glBegin(GL_POLYGON);
+    glVertex2f(w / 3 + o, h - h / 20 - o);
+    glVertex2f(w / 3 + o, h - h * 2 / 20 + o);
+    glVertex2f(w / 3 - o + pct, h - h * 2 / 20 + o);
+    glVertex2f(w / 3 - o + pct, h - h / 20 - o);
+    glEnd( );
+}
+
 int hash(int *in, int n)
 {
     int seed = 0;//533000389;
@@ -646,6 +667,7 @@ Vec Cross(Vec a, Vec b)
     c.z = a.x * b.y - a.y * b.x;
     return c;
 }
+
 
 
 

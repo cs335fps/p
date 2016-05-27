@@ -17,7 +17,7 @@ int RaySphere(Vec rayOrigin, Vec rayDirection,
         Vec sphereOrigin, float sphereRadius, float *closest);
 class Game;
 void DrawCrosshairs(Game *game, int w, int h);
-
+void DrawHealth(Game* game, int w, int h);
 void ParseLevel(const char* fileName, Game* game, float);
 vector<string> Split(string, string);
 

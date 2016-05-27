@@ -233,6 +233,8 @@ void View::HUD()
         glEnd( );
     }
     
+    DrawHealth(game, width, height);
+    
     if (game->lkey == 1)
         Lizandrokey(game,width, height);
     else
