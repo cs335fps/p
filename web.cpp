@@ -6,19 +6,26 @@
 #include "web.h"
 using namespace std;
 
-int Web::Score(char* name, int score, int shots, int hits, int ticks)
+int Web::Score(char* name, 
+    int score, 
+    int shots, 
+    int hits, 
+    int ticks, 
+    int streak)
 {
     char buf[5][16];
     sprintf(buf[0],"%d",score);
     sprintf(buf[1],"%d",shots);
     sprintf(buf[2],"%d",hits);
     sprintf(buf[3],"%d",ticks);
+    sprintf(buf[4],"%d",streak);
     string host = "www.cs.csubak.edu";
     string page = "~ngardner/fps/score.php?name=" + string(name) + 
         "&kills=" + string(buf[0]) + 
         "&shots=" + string(buf[1]) + 
         "&hits=" + string(buf[2]) + 
-        "&ticks=" + string(buf[3]);
+        "&ticks=" + string(buf[3]) +
+        "&streak=" + string(buf[4]);
     HttpConnect(host.c_str(), page.c_str());
     return 0;
 }

@@ -61,6 +61,7 @@ public:
     int shots, hits;
     double temperature;
     int noScoreReport;
+    int killStreak, maxKillStreak;
 
     int partyMode;
     unsigned int skyTex;

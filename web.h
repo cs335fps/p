@@ -21,7 +21,12 @@ class Web
     char *build_get_query(const char *host, const char *page);
     int HttpConnect(const char*,const char*);
     public:
-    int Score(char* name, int score, int shots, int hits, int ticks);
+    int Score(char* name, 
+        int score, 
+        int shots, 
+        int hits,
+        int ticks, 
+        int streak);
 
 };
 

@@ -36,6 +36,8 @@ void Game::Init()
     gameRunning = 0;
     srand(time(NULL));
     velocityX = velocityY = 0.0f;
+    killStreak = 0;
+    maxKillStreak = 0;
     moveX = moveY = 0;
     aiming = 0;
     depth = .15f;
@@ -133,6 +135,7 @@ void Game::Move()
             this->playerHP -= 5;
             mobs[i]->damage(10, this);
             this->dmgAnim = 20;
+            killStreak = 0;
             cout << "Raptor " << i << " damaged player 5 points. " << endl;
             cout << "Player has " << playerHP << " health remaining." << endl;
         }	   
@@ -200,6 +203,7 @@ void Game::Move()
             if (RaySphere(b.origin, b.direction, position, 1, &tmp)) {
                 playerHP -= 5;
                 dmgAnim = 20;
+                killStreak = 0;
             }
             if (playerHP <= 0) {
                 playerHP = 0;
@@ -219,7 +223,12 @@ void Game::Move()
                     // Make sure the game over screen comes up before
                     // we block with this web request.
                     Web w;
-                    w.Score(name, nkills, shots, hits, gameCounter);
+                    w.Score(name, 
+                        nkills, 
+                        shots, 
+                        hits, 
+                        gameCounter, 
+                        maxKillStreak);
                 }
                 displayGameOverOrWon -= 1;
             }

@@ -64,8 +64,12 @@ void Mob::death(Game* g)
 void Mob::damage(int health, Game* g)
 {
     this->hp -= health;
-    if (this->hp <= 0)
+    if (this->hp <= 0) {
         this->death(g); 
+        g->killStreak++;
+        if (g->killStreak > g->maxKillStreak)
+            g->maxKillStreak = g->killStreak;
+    }
 }
 
 void Mob::move()
