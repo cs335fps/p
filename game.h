@@ -26,6 +26,7 @@ private:
     float tmpPos[3];
     float ox, oz, nx, nz;
 public:
+    int gameRunning;
     unsigned int gameCounter;
 
     Vec position;
@@ -36,7 +37,7 @@ public:
     vector<Bullet> bullets;
     vector<Vec> spawnPts;
     deque<BulletHole> bulletHoles;
-    
+    void Init();
     int moveX;
     int moveY;
     float velocityX;
@@ -64,7 +65,7 @@ public:
     int zoom, togPortal, setPortal;
     float depth;
     bool togGamOverDisplay;
-    
+    void SpawnNewMob();
     vector<Mob*> mobs;
     vector<Wall> walls;
     portal defaultPortl;

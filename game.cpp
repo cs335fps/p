@@ -3,6 +3,37 @@
 
 Game::Game()
 {
+   
+
+    ParseLevel("lev1.svg", this, 3.0);
+    for (unsigned int i = 0; i < walls.size(); i++) {
+        walls[i].game = this;
+    }
+    
+    Init();
+
+    //level1.load("Level1.obj");
+    floor.load("floor.obj");
+}
+
+void Game::Init()
+{
+    // RESET
+    int m = this->mobs.size();
+    for (int i = 0; i < m; i++) {
+        this->mobs[i]->death(this);
+    }
+    bullets.clear();
+    bulletHoles.clear();
+
+
+
+    //SET
+    temperature = 25.0; // temperature in celsius
+    displayGameOverOrWon = -5;
+    togGamOverDisplay = false;
+    gameCounter = 0;
+    gameRunning = 0;
     srand(time(NULL));
     velocityX = velocityY = 0.0f;
     moveX = moveY = 0;
@@ -28,30 +59,23 @@ Game::Game()
     playerHP = 60;
     maxHP = 60;
     setReloadDelay =0;
-    temperature = 25.0; // temperature in celsius
     position = Vec(0,2,0);
     direction = Vec(0.0,0.0,0.0);
     respawn_mobs(this, 10);
-    ParseLevel("lev1.svg", this, 3.0);
-    gameCounter = 0;
-    displayGameOverOrWon = -5;
-    togGamOverDisplay = false;
-
     for (unsigned int i = 0; i < mobs.size(); i++) {
         Vec* spt = &spawnPts[i % spawnPts.size()];
         mobs[i]->spawn(spt);
         mobs[i]->setTick();
     }
 
-    for (unsigned int i = 0; i < walls.size(); i++) {
-        walls[i].game = this;
-    }
-    //level1.load("Level1.obj");
-    floor.load("floor.obj");
+
 }
 
 void Game::Move()
 {
+    if (gameRunning == 0)
+        return;
+
     if (hitAnim > 0)
         hitAnim--;
     if(setReloadDelay > 0)
@@ -91,8 +115,12 @@ void Game::Move()
             + velocityX * sin(direction.x)) * speed;
     nz =position.z;
     nx =position.x;
-
-    for (unsigned int i = 0; i < mobs.size(); i++) {
+    int nMobs = mobs.size();
+    while (nMobs < 5) {
+        SpawnNewMob();
+        nMobs = mobs.size();
+    }
+    for (int i = 0; i < nMobs; i++) {
         for (unsigned int j = 0; j < walls.size(); j++) {
             Vec temp;
             Vec* velocity = mobs[i]->getVel();
@@ -181,37 +209,12 @@ void Game::Move()
                 // use to display the mesage on screen that the player 
                 // wone or lost the game
                 if(displayGameOverOrWon == 0) {
-                    cout << "              __.....__\n";
-                    cout << "            .'         ':,\n";
-                    cout << "           /  __  _  __  \\\n";
-                    cout << "           | |_)) || |_))||\n";
-                    cout << "           | | \\\\ || |   ||\n";
-                    cout << "           |             ||   _,\n";
-                    cout << "           |             ||.-(_{}\n";
-                    cout << "           |             |/    `\n";
-                    cout << "           |        ,_ (\\;|/)\n";
-                    cout << "         \\|       {}_)-,||`\n";
-                    cout << "         \\;/,,;;;;;;;,\\|//,\n";
-                    cout << "        .;;;;;;;;;;;;;;;;,\n";
-                    cout << "       \\,;;;;;;;;;;;;;;;;,//\n";
-                    cout << "      \\;;;;;;;;;;;;;;;;,//\n";
-                    cout << "     ,\';;;;;;;;;;;;;;;;'\n";
-                    cout << "    ;;;;;;;;;;;;;;'''`\n";
-
-                    exit(0);
+                    Init();
                 }
                 displayGameOverOrWon -= 1;
             }
         }
     }
-    /*
-       if (mobs.size() == 0 ) {
-       cout << " ####################################" << endl;
-       cout << " ######## Victory! ##################" << endl; 
-       cout << " ####################################" << endl;
-       exit(0);	 
-       }
-     */
     for (unsigned int i = 0; i < walls.size(); i++) {
         walls[i].Collide(&position);
     }
@@ -239,17 +242,35 @@ void Game::Move()
                     ox, 2, oz);
         }
     }
-    /*
-       if (this->playerHP <= 0) {
-       cout << " ####################################" << endl;
-       cout << " ##########  Game over! #############" << endl;
-       cout << " ####################################" << endl;
-       exit(0);
-       }
-     */
     if (dmgAnim > 0)
         dmgAnim--;
     gameCounter++;
+}
+
+void Game::SpawnNewMob()
+{
+    // Spawn mob at a random point away from player and other mobs
+    int rnd;
+    int counter = 20;
+    int prox = 1;
+    double thresh = 20.0;
+    while (prox == 1 && counter-- > 0) {
+        prox = 0;
+        rnd = RAND * ((float)spawnPts.size() + .9999);
+        if ((spawnPts[rnd] - position).Magnitude() < thresh) {
+            prox = 1;
+            continue;
+        }
+        for (unsigned int i = 0; i < mobs.size(); i++) {
+            if ((spawnPts[rnd] - *mobs[i]->getLoc()).Magnitude() < thresh) {
+                prox = 1;
+                break;
+            }
+        }
+    }
+
+    respawn_mobs(this, 1);
+    mobs[mobs.size()-1]->spawn(&spawnPts[rnd]);
 }
 
 void Game::Shoot()
@@ -346,6 +367,9 @@ void Game::renderGameOver(float xres, float yres, unsigned int Tex)
     glBindTexture(GL_TEXTURE_2D, 0);
     glEnd();
 }
+
+
+
 
 
 

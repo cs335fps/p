@@ -28,6 +28,9 @@ int Input::CheckKeys(XEvent *e)
 {
     if (e->type == KeyPress) {
         int key = XLookupKeysym(&e->xkey, 0);
+        if (game->gameRunning == 0) {
+            game->gameRunning = 1;
+        }
 
         if (key == XK_Escape) {
             openal->clean_al();
@@ -120,6 +123,10 @@ void Input::CheckMouse(XEvent *e)
             return;
         }
         if (e->type == ButtonPress && game->setReloadDelay == 0) {
+            if (game->gameRunning == 0) {
+                game->gameRunning = 1;
+                return;
+            }
             if (e->xbutton.button==1) {
                 //Left button was pressed
                 if (game->nbullets <1) {
@@ -146,8 +153,9 @@ void Input::CheckMouse(XEvent *e)
         // Ignore first 5 move inputs
         // First few are garbage.
         static int start = 0;
-        if (start < 5) {
+        if (start < 5 || game->gameRunning == 0) {
             start++;
+            view->CenterCursor();
             return;
         }
 
@@ -166,6 +174,9 @@ void Input::CheckMouse(XEvent *e)
             view->CenterCursor();
     }
 }
+
+
+
 
 
 
