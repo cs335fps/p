@@ -77,14 +77,17 @@ int Input::CheckKeys(XEvent *e)
                 chadKey(this->game, this->view);
                 //respawn_mobs(this->game, 10);
             }
-            if (key == XK_h) {
+            if (key == XK_1) {
                 setGun(game,0);
+                game->maxZoom = .2f;
             }
-            if (key == XK_y) {
+            if (key == XK_2) {
                 setGun(game,1);
+                game->maxZoom = .55f;
             }
-            if (key == XK_u) {
+            if (key == XK_3) {
                 setGun(game,2);
+                game->maxZoom = .25f;
             }
             if (key == XK_space) {
                 reloadAmmo(game);

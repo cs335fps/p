@@ -18,6 +18,8 @@ View::View(Game *g, int w, int h)
     game->defaultPortl.assignTexB(lbmp.getBMP("portalB_tex.bmp"));
     Win = lbmp.getBMP("Win.bmp");
     Lose = lbmp.getBMP("Lose.bmp");
+    keys = lbmp.getBMP("keys.bmp");
+
     for (unsigned int i = 0; i < game->mobs.size(); i++) {
         game->mobs[i]->setTex(mobTex);
     }
@@ -171,7 +173,7 @@ void View::Render()
     if (game->togPortal == 1) {
         game->defaultPortl.draw();
     }
-    
+
     glDisable(GL_LIGHTING);
     glBindTexture(GL_TEXTURE_2D, skyTex);
     game->sky.draw(ox,oy,oz);
@@ -183,8 +185,8 @@ void View::Render()
     }
 
     for (unsigned int i = 0; i < game->mobs.size(); i++) {
-    if (game->mobs[i]->getTex() == 0)
-        game->mobs[i]->setTex(this->mobTex);
+        if (game->mobs[i]->getTex() == 0)
+            game->mobs[i]->setTex(this->mobTex);
 
         game->mobs[i]->render();
         //glBindTexture(GL_TEXTURE_2D, 0);
@@ -193,7 +195,7 @@ void View::Render()
     for (unsigned int i = 0; i < game->bullets.size(); i++) {
         game->bullets[i].render();
     }
-    
+
     for (unsigned int i = 0; i < game->bulletHoles.size(); i++) {
         if (game->partyMode)
             game->bulletHoles[i].render2();
@@ -235,21 +237,43 @@ void View::HUD()
     }
     DrawHealth(game, width, height);
     DrawAmmo(game, width, height);
-    
+
     if (game->lkey == 1)
         Lizandrokey(game,width, height);
     else
         DrawCrosshairs(game,width,height);
     GameMenu(game,width,height);
     reloadMessage(game,width,height);
-    
-    // display that the user won or lost
-    if (game->mobs.size() == 0 || game->playerHP == 0) {
-          if (game->playerHP == 0) {
-               game->renderGameOver(width, height, Lose);
-          }else{
-               game->renderGameOver(width, height, Win);
-          }
+
+    float imgw = width * 0.8;
+    float imgh = width * 0.4;
+    float iox = (width - imgw) / 2.0;
+    float ioy = (height - imgh) / 2.0;
+    if (game->gameRunning == 0) {
+        glBindTexture(GL_TEXTURE_2D, keys);
+        glBegin(GL_QUADS);
+        glTexCoord2f(1.0f, 1.0f);
+        glVertex2f(imgw + iox, imgh + ioy);
+
+        glTexCoord2f(1.0f, 0.0f);
+        glVertex2f( imgw + iox, ioy);
+
+        glTexCoord2f(0.0f, 0.0f);
+        glVertex2f( iox, ioy);
+
+        glTexCoord2f(0.0f, 1.0f);
+        glVertex2f( iox, imgh + ioy);
+
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glEnd();
+
+        // display that the user won or lost
+    } else if (game->mobs.size() == 0 || game->playerHP == 0) {
+        if (game->playerHP == 0) {
+            game->renderGameOver(width, height, Lose);
+        }else{
+            game->renderGameOver(width, height, Win);
+        }
     }
 }
 
@@ -266,10 +290,10 @@ void View::Lighting()
     GLfloat light_Pos[]= {100, 100, 100, 0.9};
     GLfloat light_Pos2[]= {-100, 100, -100, 0.9};
     /*GLfloat light_Pos2[]= {
-        game->position.x, 
-        game->position.y, 
-        game->position.z, 
-        0.5};*/
+      game->position.x, 
+      game->position.y, 
+      game->position.z, 
+      0.5};*/
     // apply the shinynes, specular and light position
     glMaterialfv(GL_FRONT, GL_SPECULAR, mat_spec);
     glMaterialfv(GL_FRONT, GL_SHININESS, mat_shini);
@@ -346,4 +370,5 @@ void View::SwitchTo2D()
     is3D = 0;
 
 }
+
 

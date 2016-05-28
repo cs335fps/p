@@ -40,7 +40,7 @@ void Game::Init()
     aiming = 0;
     depth = .15f;
     zoom = 0;
-    maxZoom = .55f;
+    maxZoom = .2f;
     minZoom = .15f;
     togPortal =0;
     setPortal =0;

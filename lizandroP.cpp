@@ -264,12 +264,12 @@ void GameMenu(Game *game, int w, int h)
     ggprint8b(&r, 16, 0, "Toggles - N: Nick, L: Lizandro, C: Charles, R: Roy");
     ggprint8b(&r, 16, 0, "Spacebar - Reload");
     ggprint8b(&r, 16, 0, "Left click - Shoot");
-    ggprint8b(&r, 16, 0, "Y - Sniper");
-    ggprint8b(&r, 16, 0, "H - 9mm");
-    ggprint8b(&r, 16, 0, "U - ShotGun");
+    ggprint8b(&r, 16, 0, "1 - 9mm");
+    ggprint8b(&r, 16, 0, "2 - Sniper");
+    ggprint8b(&r, 16, 0, "3 - ShotGun");
     ggprint8b(&r, 16, 0, "Nround: %i / %i", game->nbullets, game->maxbullets);
     ggprint8b(&r, 16, 0, "Kills: %i", game->nkills);
-    ggprint8b(&r, 16, 0, "Kills: %c", currname);
+    ggprint8b(&r, 16, 0, "Player: %s", game->name);
     // ggprint8b(&r, 16, 0, "Score: Sounds");
     glEnd();
 }
@@ -412,9 +412,9 @@ int leaderboard(Game *game)
 
 }
 
-void entername()
+void entername(Game* game)
 {
-  char name[20];
+  char name[32];
   cout <<"Enter your name\n";
   cin >> name;
  
@@ -422,7 +422,7 @@ void entername()
     cout <<"Invalid input, Please enter name again.\n";
     cin >> name;
   }
-  strncpy(currname, name, 20);
+  strcpy(game->name, name);
 }
  
 void updatescore()

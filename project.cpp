@@ -10,7 +10,7 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    entername();
+    
     int overrideWidth = 0;
     int overrideHeight = 0;
 
@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
     Seconds sec; // Start timer
     Game game;
     Openal openal;
-
+    entername(&game);
     View view(&game, overrideWidth, overrideHeight);
 
     Input input(&game, &view, &openal);

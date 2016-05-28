@@ -34,6 +34,8 @@ public:
     int playerHP;
     int maxHP;
     
+    char name[32];
+    
     vector<Bullet> bullets;
     vector<Vec> spawnPts;
     deque<BulletHole> bulletHoles;
