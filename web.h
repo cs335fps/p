@@ -12,8 +12,6 @@
 
 //added to make close() work
 #include <unistd.h>
-#define HOST "www.cs.csubak.edu"
-#define PAGE "/ngardner/fps?name=test"
 #define PORT 80
 #define USERAGENT "HTMLGET 1.0"
 class Web

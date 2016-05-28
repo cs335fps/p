@@ -74,6 +74,7 @@ int Input::CheckKeys(XEvent *e)
             if (key == XK_c) {
                 //Fire Chad's key
                 //cout << "c key pressed.";
+                game->noScoreReport = 1;
                 chadKey(this->game, this->view);
                 //respawn_mobs(this->game, 10);
             }

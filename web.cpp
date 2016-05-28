@@ -8,18 +8,18 @@ using namespace std;
 
 int Web::Score(char* name, int score, int shots, int hits, int ticks)
 {
-    char buf[4][16];
+    char buf[5][16];
     sprintf(buf[0],"%d",score);
     sprintf(buf[1],"%d",shots);
     sprintf(buf[2],"%d",hits);
     sprintf(buf[3],"%d",ticks);
     string host = "www.cs.csubak.edu";
-    string page = "~ngardner/fps/?name=" + string(name) + 
-        "&score=" + string(buf[0]) + 
-        "&s=" + string(buf[1]) + 
-        "&h=" + string(buf[2]) + 
-        "&t=" + string(buf[3]);
-    int port = HttpConnect(host.c_str(), page.c_str());
+    string page = "~ngardner/fps/score.php?name=" + string(name) + 
+        "&kills=" + string(buf[0]) + 
+        "&shots=" + string(buf[1]) + 
+        "&hits=" + string(buf[2]) + 
+        "&ticks=" + string(buf[3]);
+    HttpConnect(host.c_str(), page.c_str());
     return 0;
 }
 
@@ -34,7 +34,6 @@ int Web::HttpConnect(const char *host, const char *page)
     char buf[BUFSIZ+1];
     sock = create_tcp_socket();
     ip = get_ip(host);
-    //fprintf(stderr, "IP is %s\n", ip);
     remote = (struct sockaddr_in *)malloc(sizeof(struct sockaddr_in *));
     remote->sin_family = AF_INET;
     tmpres = inet_pton(AF_INET, ip, (void *)(&(remote->sin_addr.s_addr)));

@@ -4,7 +4,7 @@
 Game::Game()
 {
    
-
+    noScoreReport = 0;
     ParseLevel("lev1.svg", this, 3.0);
     for (unsigned int i = 0; i < walls.size(); i++) {
         walls[i].game = this;
@@ -208,13 +208,18 @@ void Game::Move()
                 if (togGamOverDisplay == false) {
                     togGamOverDisplay = true;
                     displayGameOverOrWon = 10;
+                    
                 }
-                Web w;
-                w.Score(name, nkills, shots, hits, gameCounter);
+                
                 // use to display the mesage on screen that the player 
                 // wone or lost the game
                 if(displayGameOverOrWon == 0) {
                     Init();
+                } else if (displayGameOverOrWon == 9 && !noScoreReport) {
+                    // Make sure the game over screen comes up before
+                    // we block with this web request.
+                    Web w;
+                    w.Score(name, nkills, shots, hits, gameCounter);
                 }
                 displayGameOverOrWon -= 1;
             }

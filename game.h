@@ -60,6 +60,7 @@ public:
     int setReloadDelay;
     int shots, hits;
     double temperature;
+    int noScoreReport;
 
     int partyMode;
     unsigned int skyTex;
