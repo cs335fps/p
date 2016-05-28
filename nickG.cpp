@@ -27,8 +27,10 @@ void DrawHealth(Game* game, int w, int h)
         glColor4f(0.1,0.6,0.1,1);
     else if(game->playerHP <= 30 && game->playerHP  > 10)
         glColor4f(0.6,0.6,0.,1);
-    else if(game->playerHP <= 10)
+    else if(game->playerHP <= 10 && game->playerHP  > 0)
         glColor4f(0.6,0.0,0.0,1);
+    else if(game->playerHP <= 0)
+        return;
     glBegin(GL_POLYGON);
     glVertex2f(w / 3 + o, h - h / 20 - o);
     glVertex2f(w / 3 + o, h - h * 2 / 20 + o);

@@ -111,10 +111,37 @@ void Game::Move()
         //}
         //Actually happens in view->render, because it needs the map.
         mobs[i]->move(this);
-        
+
+        float ang = atan2(mobs[i]->getVel()->x,
+                mobs[i]->getVel()->z);
+        ang = ang / 3.14159 * 180.0 + 90.0;
+        float lastAng = mobs[i]->lastFace.x;
+        float diff = ang - lastAng;
+        if (diff > 180.0 || diff < -180.0)
+            diff *= -1.0;
+        float delta = 5.0;
+        if (diff > 0.1) {
+            if (diff < delta)
+                lastAng = ang;
+            else
+                lastAng += delta;
+        } else if (diff < -0.1) {
+            if (diff > delta)
+                lastAng = ang;
+            else
+                lastAng -= delta;
+        } else {
+            lastAng = ang;
+        }
+        lastAng = fmod(lastAng,360.0);
+        if (lastAng < 0.0)
+            lastAng+=360.0;
+
+        mobs[i]->body.rot(0,0,lastAng,0);
+        mobs[i]->lastFace.x = lastAng;
         if (mobs[i]->getTick() > gameCounter || mobs[i]->dino == 0)
             continue;
-            
+
         mobs[i]->setTick(gameCounter + (15 * RAND) + 30);
 
         Vec sightDir = -1.0 * (*mobs[i]->getLoc() - position);
@@ -154,23 +181,23 @@ void Game::Move()
                 // use to display the mesage on screen that the player 
                 // wone or lost the game
                 if(displayGameOverOrWon == 0) {
-                     cout << "              __.....__\n";
-                     cout << "            .'         ':,\n";
-                     cout << "           /  __  _  __  \\\n";
-                     cout << "           | |_)) || |_))||\n";
-                     cout << "           | | \\\\ || |   ||\n";
-                     cout << "           |             ||   _,\n";
-                     cout << "           |             ||.-(_{}\n";
-                     cout << "           |             |/    `\n";
-                     cout << "           |        ,_ (\\;|/)\n";
-                     cout << "         \\|       {}_)-,||`\n";
-                     cout << "         \\;/,,;;;;;;;,\\|//,\n";
-                     cout << "        .;;;;;;;;;;;;;;;;,\n";
-                     cout << "       \\,;;;;;;;;;;;;;;;;,//\n";
-                     cout << "      \\;;;;;;;;;;;;;;;;,//\n";
-                     cout << "     ,\';;;;;;;;;;;;;;;;'\n";
-                     cout << "    ;;;;;;;;;;;;;;'''`\n";
-                
+                    cout << "              __.....__\n";
+                    cout << "            .'         ':,\n";
+                    cout << "           /  __  _  __  \\\n";
+                    cout << "           | |_)) || |_))||\n";
+                    cout << "           | | \\\\ || |   ||\n";
+                    cout << "           |             ||   _,\n";
+                    cout << "           |             ||.-(_{}\n";
+                    cout << "           |             |/    `\n";
+                    cout << "           |        ,_ (\\;|/)\n";
+                    cout << "         \\|       {}_)-,||`\n";
+                    cout << "         \\;/,,;;;;;;;,\\|//,\n";
+                    cout << "        .;;;;;;;;;;;;;;;;,\n";
+                    cout << "       \\,;;;;;;;;;;;;;;;;,//\n";
+                    cout << "      \\;;;;;;;;;;;;;;;;,//\n";
+                    cout << "     ,\';;;;;;;;;;;;;;;;'\n";
+                    cout << "    ;;;;;;;;;;;;;;'''`\n";
+
                     exit(0);
                 }
                 displayGameOverOrWon -= 1;
@@ -178,13 +205,13 @@ void Game::Move()
         }
     }
     /*
-    if (mobs.size() == 0 ) {
-        cout << " ####################################" << endl;
-        cout << " ######## Victory! ##################" << endl; 
-        cout << " ####################################" << endl;
-        exit(0);	 
-    }
-    */
+       if (mobs.size() == 0 ) {
+       cout << " ####################################" << endl;
+       cout << " ######## Victory! ##################" << endl; 
+       cout << " ####################################" << endl;
+       exit(0);	 
+       }
+     */
     for (unsigned int i = 0; i < walls.size(); i++) {
         walls[i].Collide(&position);
     }
@@ -213,13 +240,13 @@ void Game::Move()
         }
     }
     /*
-    if (this->playerHP <= 0) {
-        cout << " ####################################" << endl;
-        cout << " ##########  Game over! #############" << endl;
-        cout << " ####################################" << endl;
-        exit(0);
-    }
-    */
+       if (this->playerHP <= 0) {
+       cout << " ####################################" << endl;
+       cout << " ##########  Game over! #############" << endl;
+       cout << " ####################################" << endl;
+       exit(0);
+       }
+     */
     if (dmgAnim > 0)
         dmgAnim--;
     gameCounter++;
@@ -301,24 +328,25 @@ void Game::Shoot()
 }
 void Game::renderGameOver(float xres, float yres, unsigned int Tex)
 {
-     glBindTexture(GL_TEXTURE_2D, Tex);
+    glBindTexture(GL_TEXTURE_2D, Tex);
 
-     glBegin(GL_QUADS);
-     glTexCoord2f(1.0f, 1.0f);
-     glVertex2f(xres, yres);
+    glBegin(GL_QUADS);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex2f(xres, yres);
 
-     glTexCoord2f(1.0f, 0.0f);
-     glVertex2f( xres, 0.0f);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex2f( xres, 0.0f);
 
-     glTexCoord2f(0.0f, 0.0f);
-     glVertex2f( 0.0f, 0.0f);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex2f( 0.0f, 0.0f);
 
-     glTexCoord2f(0.0f, 1.0f);
-     glVertex2f( 0.0f, yres);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex2f( 0.0f, yres);
 
-     glBindTexture(GL_TEXTURE_2D, 0);
-     glEnd();
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glEnd();
 }
+
 
 
 

@@ -185,10 +185,7 @@ void View::Render()
     for (unsigned int i = 0; i < game->mobs.size(); i++) {
     if (game->mobs[i]->getTex() == 0)
         game->mobs[i]->setTex(this->mobTex);
-        float ang = atan2(game->mobs[i]->getVel()->x,
-                            game->mobs[i]->getVel()->z);
-        ang = ang / 3.14159 * 180.0 + 90.0;
-        game->mobs[i]->body.rot(0,0,ang,0);
+
         game->mobs[i]->render();
         //glBindTexture(GL_TEXTURE_2D, 0);
     }
