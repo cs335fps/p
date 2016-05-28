@@ -1,5 +1,5 @@
 lizandro 5
 roy 4
 charles 3
-nick 2
-user 1
+lizn23 2
+test 1

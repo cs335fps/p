@@ -35,7 +35,6 @@ unsigned int reload=0;
 loadBMP rload;
 
 int nsound =2;
-char currname[20];
 
 //sounds buffers
 ALuint alBuffer0;
@@ -76,10 +75,10 @@ int Openal::initopenal()
 	//load sound file into buffer 
 	alBuffer0 = alutCreateBufferFromFile("./sounds/sblast.wav");
 	alBuffer1 = alutCreateBufferFromFile("./sounds/50.wav");
-	alBuffer2 = alutCreateBufferFromFile("./sounds/ninemm.wav");
+	alBuffer2 = alutCreateBufferFromFile("./sounds/gunshot.wav");
 	alBuffer3 = alutCreateBufferFromFile("./sounds/test.wav");
-    alBuffer4 = alutCreateBufferFromFile("./raptor.wav");
-    alBuffer5 = alutCreateBufferFromFile("./bite.wav");
+    alBuffer4 = alutCreateBufferFromFile("./sounds/raptor.wav");
+    alBuffer5 = alutCreateBufferFromFile("./sounds/bite.wav");
 
 	alGenSources(1, &alSource[0]);
 	alGenSources(1, &alSource[1]);
@@ -369,46 +368,73 @@ int leaderboard(Game *game)
         cout<<"__________________________________________\n";
 
 
-	string line;
-	string content[10];
-	ifstream scoretxt ("score.txt");
-	if (scoretxt.is_open()){
-		
-	for (int i=0, cnt=0;i<10;i++){
-	  scoretxt >> content[i];
-	  cnt++;
-	  if(cnt%2 ==0)
-	    printf("%10s %7s\n", content[i-1].data(), content[i].data());
-	}
-	  
-	  cout << "your kills: " << game->currscore <<"   " << strtod(content[1].c_str(), NULL)  << endl;
-	  if(game->currscore >= atoi(content[1].c_str())){
-		  cout<<"congrats you are ranked #1 in the leaderboard!\n";
-		  content[0] == currname;
-	  }
-	  else if(game->currscore >= atoi(content[3].c_str())){
-		  cout<<"congrats you are ranked #2 in the leaderboard!\n";
-	      content[2] == currname;
+    string line;
+    string content[10];
+    ifstream scoretxt ("score.txt");
+    if (scoretxt.is_open()){
+        
+    for (int i=0;i<10;i++){
+      scoretxt >> content[i];
+    }
+      stringstream n;
+      cout << "your kills: " << game->currscore <<"   " << strtod(content[1].c_str(), NULL)  << endl;
+      if(game->currscore >= atoi(content[1].c_str())){
+          cout<<"congrats you are ranked #1 in the leaderboard!\n";
+          content[0] = game->name;
+          n << game->nkills;
+          content[1] = n.str();
       }
-	  else if(game->currscore >= atoi(content[5].c_str())){
-		  cout<<"congrats you are ranked #3 in the leaderboard!\n";
-	      content[4] == currname;
+      else if(game->currscore >= atoi(content[3].c_str())){
+          cout<<"congrats you are ranked #2 in the leaderboard!\n";
+          content[2] = game->name;
+           n << game->nkills;
+          content[3] = n.str();
       }
-	  else if(game->currscore >= atoi(content[7].c_str())){
-		  cout<<"congrats you are ranked #4 in the leaderboard!\n";
-	      content[6] == currname;
+      else if(game->currscore >= atoi(content[5].c_str())){
+          cout<<"congrats you are ranked #3 in the leaderboard!\n";
+          content[4] = game->name;
+           n << game->nkills;
+          content[5] = n.str();
       }
-	  else if(game->currscore >= atoi(content[9].c_str())){
-		  cout<<"congrats you are ranked #5 in the leaderboard!\n";
-		  content[8] = currname;
+      else if(game->currscore >= atoi(content[7].c_str())){
+          cout<<"congrats you are ranked #4 in the leaderboard!\n";
+          content[6] = game->name;
+           n << game->nkills;
+          content[7] = n.str();
+      }
+      else if(game->currscore >= atoi(content[9].c_str())){
+          cout<<"congrats you are ranked #5 in the leaderboard!\n";
+          content[8] = game->name;
+           n << game->nkills;
+          content[9] = n.str();
           cout << content[8]<<"test output\n";
-	  }
-	  else
-		  cout<<"sorry your score was to low to place on the board\n";
-	scoretxt.close();
-	}
-	
-	return 0;
+      }
+      else
+          cout<<"sorry your score was to low to place on the board\n";
+    
+        for (int i=0, cnt=0;i<10;i++){
+      cnt++;
+      if(cnt%2 ==0)
+        printf("%10s %7s\n", content[i-1].data(), content[i].data());
+    }
+    
+
+    }
+    scoretxt.close();
+
+    ofstream scoretxtout ("score.txt");
+    if (scoretxtout.is_open()) {
+        for (int i=0, cnt=0;i<10;i++) {
+            cnt++;
+
+            if (cnt % 2 == 0)
+                scoretxtout << content[i-1].data()<<" " << content[i].data() << endl; 
+        }
+        
+    }
+
+    scoretxtout.close();    
+    return 0;
 
 }
 
@@ -424,9 +450,3 @@ void entername(Game* game)
   }
   strcpy(game->name, name);
 }
- 
-void updatescore()
-{
-
-}
-
