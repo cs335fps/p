@@ -55,6 +55,8 @@ void Game::Init()
     mobNum = 0;
     mobDist= 0.0;
     lkey = 0;
+    shots = 0;
+    hits = 0;
     currscore =0;
     playerHP = 60;
     maxHP = 60;
@@ -201,11 +203,14 @@ void Game::Move()
             }
             if (playerHP <= 0) {
                 playerHP = 0;
+                
                 // set displayGameOverOrWon only once
                 if (togGamOverDisplay == false) {
                     togGamOverDisplay = true;
                     displayGameOverOrWon = 10;
                 }
+                Web w;
+                w.Score(name, nkills, shots, hits, gameCounter);
                 // use to display the mesage on screen that the player 
                 // wone or lost the game
                 if(displayGameOverOrWon == 0) {
@@ -275,6 +280,7 @@ void Game::SpawnNewMob()
 
 void Game::Shoot()
 {
+    shots++;
     float rotx = direction.x;
     float roty = direction.y - PI / 2.0;
     float trailLen = 5.0;
@@ -327,6 +333,7 @@ void Game::Shoot()
             distMult = 1.0;
         // !--- This cout can get removed after actual Mob damage works
         int totDam = (int)((float)gundamage * distMult);
+        hits++;
         mobs[mobHit]->damage(totDam, this);
         if (totDam > 0)
             hitAnim = 20;

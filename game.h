@@ -7,6 +7,7 @@
 #include "portal.h"
 #include <vector>
 #include <deque>
+#include "web.h"
 #ifndef _mob_h_
 	#include <stdlib.h>
 #endif
@@ -57,6 +58,7 @@ public:
     int lkey, displayGameOverOrWon;
     int currscore;
     int setReloadDelay;
+    int shots, hits;
     double temperature;
 
     int partyMode;
