@@ -14,7 +14,7 @@ Vec Reflect(Vec dir, Vec norm)
 void PrintText(string s, float x, float y,
     float h, unsigned int img, int align)
 {
-    float w = h;
+    float w = h * 0.8;
     int len = s.length();
     float tWidth = w * (float)len * .9;
     float offs = 0.0;
