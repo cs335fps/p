@@ -18,7 +18,7 @@ int RaySphere(Vec rayOrigin, Vec rayDirection,
 class Game;
 void PrintChar(float x, float y,float w,float h,char c,unsigned int img);
 void PrintText(string s, float x, float y, 
-    float h, unsigned int img, int align = 0);
+    float h, unsigned int img, int align = 0, GLfloat *col = NULL);
 void DrawCrosshairs(Game *game, int w, int h);
 void DrawHealth(Game* game, int w, int h);
 void DrawAmmo(Game* game, int w, int h);

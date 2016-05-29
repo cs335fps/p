@@ -12,21 +12,33 @@ Vec Reflect(Vec dir, Vec norm)
 }
 
 void PrintText(string s, float x, float y,
-    float h, unsigned int img, int align)
+    float h, unsigned int img, int align, GLfloat *col)
 {
     float w = h * 0.8;
     int len = s.length();
-    float tWidth = w * (float)len * .9;
+    float tWidth = w * (float)len * .9 + w * 0.1;
     float offs = 0.0;
     if (align == 1)
         offs = tWidth / 2.0;
     else if (align == 2)
         offs = tWidth;
+    
+    if (col != NULL) {
+    glBindTexture(GL_TEXTURE_2D, 0);
+        glBegin(GL_QUADS);
+        glColor4fv(col);
+        glVertex2f(x - offs,y);
+        glVertex2f(x - offs,y+h);
+        glVertex2f(x+tWidth - offs,y+h);
+        glVertex2f(x+tWidth - offs,y);
+        glEnd();
+    }
+    glColor4f(1,1,1,1);
     for (int i = 0; i < len; i++) {
         char c = s[i];
         if (c > 96 && c < 123)
             c -= 32;
-        PrintChar(x + w * i * .9 - offs, y, w, h, c, img);
+        PrintChar(x + w * i * 0.9 - offs, y, w, h, c, img);
     }
 }
 

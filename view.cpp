@@ -284,15 +284,18 @@ void View::HUD()
         // display that the user won or lost
     } else if (game->mobs.size() == 0 || game->playerHP == 0) {
         if (game->playerHP == 0) {
-            game->renderGameOver(width, height, Lose);
+            //game->renderGameOver(width, height, Lose);
         }else{
             game->renderGameOver(width, height, Win);
         }
         if (game->servMessage.size() > 1) {
+            GLfloat col[] = {0,0,0,.75};
             for (unsigned int i = 0; i < game->servMessage.size(); i++) {
+                PrintText("GAME OVER!", width / 2,
+                    height * 0.8, height * 0.15, sheet, 1, col);
                 PrintText(game->servMessage[i], width / 2,
-                    height * 0.8 - (double)0.1 * i * height, 
-                    height * 0.075, sheet, 1);
+                    height * 0.8 - (double)0.1 * (i+1) * height, 
+                    height * 0.075, sheet, 1, col);
             }
             return;
         }
