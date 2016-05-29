@@ -449,16 +449,20 @@ void Wall::SetHeight(float h)
 
 }
 
-void Wall::render()
+void Wall::render(unsigned int wallTex)
 {
-
+    static float t[4][2] = {
+        {1.0,1.0},
+        {1.0,0.0},
+        {0.0,0.0},
+        {0.0,1.0}};
     static int s[][4] = { // sides
         {0,1,2,3},
         {5,4,7,6},
         {5,1,0,4},
-        {4,0,3,7},
         {7,3,2,6},
-        {1,5,6,2} };  
+        {4,0,3,7},
+        {6,2,1,5} };  
     static float co = 0.0;
     co += 0.001;
     if (co > 360.0)
@@ -466,8 +470,7 @@ void Wall::render()
 
     glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
-
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 4; i++) {
         glBegin(GL_POLYGON);
 
         if (game->partyMode)
@@ -479,11 +482,22 @@ void Wall::render()
 
         glNormal3fv(&Normal(c[s[i][2]],c[s[i][1]],c[s[i][0]])[0]);
         for (int j = 0; j < 4; j++) {
-
             glVertex3fv(&c[s[i][j]][0]);
         }
         glEnd();
     }
+   glBindTexture(GL_TEXTURE_2D, wallTex);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    for (int i = 4; i < 6; i++) {
+        glBegin(GL_POLYGON);
+        for (int j = 0; j < 4; j++) {
+            glTexCoord2f(t[j][0] * length / 4.0,t[j][1] * height / 4.0);
+            glVertex3fv(&c[s[i][j]][0]);
+        }
+        glEnd();
+    }
+    glBindTexture(GL_TEXTURE_2D, 0);
     glDisable(GL_COLOR_MATERIAL);
 }
 

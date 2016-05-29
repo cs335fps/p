@@ -1,5 +1,5 @@
-dfgdfg 16
-Nick 11
-sdsdf 3
-Nick 1
-dfdfg 0
+dfgdfg 17
+sdsdf 12
+sdfsdf 10
+dfgdfg 8
+sdfsdf 7

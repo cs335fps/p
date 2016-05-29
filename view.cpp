@@ -20,6 +20,8 @@ View::View(Game *g, int w, int h)
     Lose = lbmp.getBMP("Lose.bmp");
     keys = lbmp.getBMP("keys.bmp");
     sheet = lbmp.getBMP("sheet.bmp");
+    wallTex = lbmp.getBMP("wall1.bmp");
+    floorTex = lbmp.getBMP("floor1.bmp");
 
     for (unsigned int i = 0; i < game->mobs.size(); i++) {
         game->mobs[i]->setTex(mobTex);
@@ -182,7 +184,7 @@ void View::Render()
     glEnable(GL_LIGHTING);
 
     for (unsigned int i = 0; i < game->walls.size(); i++) {
-        game->walls[i].render();
+        game->walls[i].render(wallTex);
     }
 
     for (unsigned int i = 0; i < game->mobs.size(); i++) {
@@ -206,13 +208,22 @@ void View::Render()
 
     float fl = 200.0;
     glColor3f(.5,.5,.5);
+    glDisable(GL_BLEND);
+    glBindTexture(GL_TEXTURE_2D, floorTex);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glBegin(GL_POLYGON);
+    glTexCoord2f(fl/4.0,fl/4.0);
     glVertex3f(fl,0,fl);
+    glTexCoord2f(-fl/4.0,fl/4.0);
     glVertex3f(-fl,0,fl);
+    glTexCoord2f(-fl/4.0,-fl/4.0);
     glVertex3f(-fl,0,-fl);
+    glTexCoord2f(fl/4.0,-fl/4.0);
     glVertex3f(fl,0,-fl);
     glEnd();
-
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glEnable(GL_BLEND);
     glPopMatrix();
     HUD();
     //drawFloor();
@@ -387,5 +398,6 @@ void View::SwitchTo2D()
     is3D = 0;
 
 }
+
 
 
