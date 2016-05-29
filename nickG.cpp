@@ -11,6 +11,48 @@ Vec Reflect(Vec dir, Vec norm)
 
 }
 
+void PrintText(string s, float x, float y,
+    float h, unsigned int img, int align)
+{
+    float w = h;
+    int len = s.length();
+    float tWidth = w * (float)len * .9;
+    float offs = 0.0;
+    if (align == 1)
+        offs = tWidth / 2.0;
+    else if (align == 2)
+        offs = tWidth;
+    for (int i = 0; i < len; i++) {
+        char c = s[i];
+        if (c > 96 && c < 123)
+            c -= 32;
+        PrintChar(x + w * i * .9 - offs, y, w, h, c, img);
+    }
+}
+
+void PrintChar(float x, float y,float w,float h,char c,unsigned int img)
+{
+    int i = c -  32;
+    int sx = i % 8;
+    int sy = 7 - (i / 8);
+    glBindTexture(GL_TEXTURE_2D, img);
+    glBegin(GL_QUADS);
+    glTexCoord2f(1.0 / 8.0 * (float)(sx + 1), 1.0 / 8.0 * (float)(sy + 1));
+    glVertex2f(x+w, y+h);
+
+    glTexCoord2f(1.0 / 8.0 * (float)(sx + 1), 1.0 / 8.0 * (float)(sy + 0));
+    glVertex2f(x+w, y);
+
+    glTexCoord2f(1.0 / 8.0 * (float)(sx + 0), 1.0 / 8.0 * (float)(sy + 0));
+    glVertex2f(x, y);
+
+    glTexCoord2f(1.0 / 8.0 * (float)(sx + 0), 1.0 / 8.0 * (float)(sy + 1));
+    glVertex2f(x, y+h);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glEnd();
+}
+
 void DrawHealth(Game* game, int w, int h)
 {
     float o = h / 140;

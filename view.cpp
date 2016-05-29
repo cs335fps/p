@@ -19,6 +19,7 @@ View::View(Game *g, int w, int h)
     Win = lbmp.getBMP("Win.bmp");
     Lose = lbmp.getBMP("Lose.bmp");
     keys = lbmp.getBMP("keys.bmp");
+    sheet = lbmp.getBMP("sheet.bmp");
 
     for (unsigned int i = 0; i < game->mobs.size(); i++) {
         game->mobs[i]->setTex(mobTex);
@@ -223,6 +224,8 @@ void View::Render()
     glXSwapBuffers(dpy, win);
 }
 
+
+
 void View::HUD()
 {
     SwitchTo2D();
@@ -275,6 +278,20 @@ void View::HUD()
             game->renderGameOver(width, height, Win);
         }
     }
+    char buf[16];
+    sprintf(buf,"%d",game->nkills);
+    string s = "KILLS:" + string(buf);
+    PrintText(s,height * .05,height * .05,height * 0.075,sheet);
+    if (game->guntype == 0)
+        s = "9MM";
+    else if (game->guntype == 1)
+        s = "SNIPER";
+    else
+        s = "SHOTGUN";
+    PrintText(s,width / 2,height * .05,height * 0.075,sheet,1);
+    s = string(game->name);
+    PrintText(s,width - height * .05,height * .05,height * 0.075,sheet,2);
+
 }
 
 void View::Lighting()

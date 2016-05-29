@@ -16,6 +16,9 @@ int hash(int *, int);
 int RaySphere(Vec rayOrigin, Vec rayDirection, 
         Vec sphereOrigin, float sphereRadius, float *closest);
 class Game;
+void PrintChar(float x, float y,float w,float h,char c,unsigned int img);
+void PrintText(string s, float x, float y, 
+    float h, unsigned int img, int align = 0);
 void DrawCrosshairs(Game *game, int w, int h);
 void DrawHealth(Game* game, int w, int h);
 void DrawAmmo(Game* game, int w, int h);
