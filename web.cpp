@@ -6,7 +6,7 @@
 #include "web.h"
 using namespace std;
 
-int Web::Score(char* name, 
+string Web::Score(char* name, 
     int score, 
     int shots, 
     int hits, 
@@ -26,13 +26,13 @@ int Web::Score(char* name,
         "&hits=" + string(buf[2]) + 
         "&ticks=" + string(buf[3]) +
         "&streak=" + string(buf[4]);
-    HttpConnect(host.c_str(), page.c_str());
-    return 0;
+    
+    return HttpConnect(host.c_str(), page.c_str());
 }
 
-int Web::HttpConnect(const char *host, const char *page)
+string Web::HttpConnect(const char *host, const char *page)
 {
-    int port = 0;
+    string s = "";
     struct sockaddr_in *remote;
     int sock;
     int tmpres;
@@ -91,7 +91,7 @@ int Web::HttpConnect(const char *host, const char *page)
         if (htmlstart) {
             // changed fprintf to printf
             //printf("%s", htmlcontent);
-            port = atoi(htmlcontent);
+            s = htmlcontent;
         }
 
         memset(buf, 0, tmpres);
@@ -103,8 +103,7 @@ int Web::HttpConnect(const char *host, const char *page)
     free(remote);
     free(ip);
     close(sock);
-    return port;
-
+    return s;
 }
 
 

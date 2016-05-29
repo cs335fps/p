@@ -288,6 +288,14 @@ void View::HUD()
         }else{
             game->renderGameOver(width, height, Win);
         }
+        if (game->servMessage.size() > 1) {
+            for (unsigned int i = 0; i < game->servMessage.size(); i++) {
+                PrintText(game->servMessage[i], width / 2,
+                    height * 0.8 - (double)0.1 * i * height, 
+                    height * 0.075, sheet, 1);
+            }
+            return;
+        }
     }
     char buf[16];
     sprintf(buf,"%d",game->nkills);
@@ -302,7 +310,6 @@ void View::HUD()
     PrintText(s,width / 2,height * .05,height * 0.075,sheet,1);
     s = string(game->name);
     PrintText(s,width - height * .05,height * .05,height * 0.075,sheet,2);
-
 }
 
 void View::Lighting()

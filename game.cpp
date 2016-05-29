@@ -60,6 +60,7 @@ void Game::Init()
     shots = 0;
     hits = 0;
     currscore =0;
+    servMessage.clear();
     playerHP = 60;
     maxHP = 60;
     setReloadDelay =0;
@@ -211,7 +212,7 @@ void Game::Move()
                 // set displayGameOverOrWon only once
                 if (togGamOverDisplay == false) {
                     togGamOverDisplay = true;
-                    displayGameOverOrWon = 10;
+                    displayGameOverOrWon = 30;
                     
                 }
                 
@@ -219,16 +220,20 @@ void Game::Move()
                 // wone or lost the game
                 if(displayGameOverOrWon == 0) {
                     Init();
-                } else if (displayGameOverOrWon == 9 && !noScoreReport) {
+                } else if (displayGameOverOrWon == 29 && !noScoreReport) {
                     // Make sure the game over screen comes up before
                     // we block with this web request.
                     Web w;
-                    w.Score(name, 
+                    string s = w.Score(name, 
                         nkills, 
                         shots, 
                         hits, 
                         gameCounter, 
                         maxKillStreak);
+                    vector<string> svec = Split(s,",");
+                    if (svec.size() > 1) {
+                        servMessage = svec;
+                    }                        
                 }
                 displayGameOverOrWon -= 1;
             }

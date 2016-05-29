@@ -62,6 +62,7 @@ public:
     double temperature;
     int noScoreReport;
     int killStreak, maxKillStreak;
+    vector<string> servMessage;
 
     int partyMode;
     unsigned int skyTex;
