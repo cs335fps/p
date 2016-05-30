@@ -288,14 +288,21 @@ void View::HUD()
         }else{
             game->renderGameOver(width, height, Win);
         }
+        glColor4f(0,0,0,.5);
+        glBegin(GL_QUADS);
+        glVertex2f(0,0);
+        glVertex2f(0,height);
+        glVertex2f(width,height);
+        glVertex2f(width,0);
+        glEnd();
+        PrintText("GAME OVER!", width / 2,
+                height * 0.8, height * 0.15, sheet, 1);
         if (game->servMessage.size() > 1) {
-            GLfloat col[] = {0,0,0,.75};
+            
             for (unsigned int i = 0; i < game->servMessage.size(); i++) {
-                PrintText("GAME OVER!", width / 2,
-                    height * 0.8, height * 0.15, sheet, 1, col);
                 PrintText(game->servMessage[i], width / 2,
-                    height * 0.8 - (double)0.1 * (i+1) * height, 
-                    height * 0.075, sheet, 1, col);
+                        height * 0.8 - (double)0.1 * (i+1) * height, 
+                        height * 0.075, sheet, 1);
             }
             return;
         }
@@ -408,6 +415,3 @@ void View::SwitchTo2D()
     is3D = 0;
 
 }
-
-
-
