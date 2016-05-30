@@ -63,7 +63,7 @@ class Wall
         Wall();
         Wall(Vec, Vec, float, float, Vec col = Vec(1,1,1));
         void Set(Vec, Vec, float, float, Vec);
-        void render(unsigned int);
+        void render(unsigned int*);
         int Collide(Vec *);
         int Collide(Vec *, float, Vec*);
         void death();

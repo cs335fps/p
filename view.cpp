@@ -20,7 +20,8 @@ View::View(Game *g, int w, int h)
     Lose = lbmp.getBMP("Lose.bmp");
     keys = lbmp.getBMP("keys.bmp");
     sheet = lbmp.getBMP("sheet.bmp");
-    wallTex = lbmp.getBMP("wall1.bmp");
+    wallTex[0] = lbmp.getBMP("wall1.bmp");
+    wallTex[1] = lbmp.getBMP("wall2.bmp");
     floorTex = lbmp.getBMP("floor1.bmp");
 
     for (unsigned int i = 0; i < game->mobs.size(); i++) {

@@ -12,7 +12,7 @@ Vec Reflect(Vec dir, Vec norm)
 }
 
 void PrintText(string s, float x, float y,
-    float h, unsigned int img, int align, GLfloat *col)
+        float h, unsigned int img, int align, GLfloat *col)
 {
     float w = h * 0.8;
     int len = s.length();
@@ -22,9 +22,9 @@ void PrintText(string s, float x, float y,
         offs = tWidth / 2.0;
     else if (align == 2)
         offs = tWidth;
-    
+
     if (col != NULL) {
-    glBindTexture(GL_TEXTURE_2D, 0);
+        glBindTexture(GL_TEXTURE_2D, 0);
         glBegin(GL_QUADS);
         glColor4fv(col);
         glVertex2f(x - offs,y);
@@ -67,9 +67,15 @@ void PrintChar(float x, float y,float w,float h,char c,unsigned int img)
 
 void DrawHealth(Game* game, int w, int h)
 {
+    static float shownPct = 1.0;
     float o = h / 140;
     float pct = (float)game->playerHP / (float)game->maxHP;
-    pct *= w / 3;
+    if (pct < shownPct - 0.01 || pct > shownPct + 0.01) {
+        shownPct = (shownPct + pct) / 2.0;;
+    } else {
+        shownPct = pct;
+    }
+    pct = shownPct * w / 3;
     glColor4f(0,0,0,1);
     glBegin(GL_POLYGON);
     glVertex2f(w / 3, h - h / 20);
@@ -461,8 +467,9 @@ void Wall::SetHeight(float h)
 
 }
 
-void Wall::render(unsigned int wallTex)
+void Wall::render(unsigned int* wallTex)
 {
+    
     static float t[4][2] = {
         {1.0,1.0},
         {1.0,0.0},
@@ -498,9 +505,15 @@ void Wall::render(unsigned int wallTex)
         }
         glEnd();
     }
-   glBindTexture(GL_TEXTURE_2D, wallTex);
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    unsigned int tex;
+    Vec cen = (v[0] + v[1]) / 2.0;
+    if (cen.z < 0.0)
+        tex = wallTex[0];
+    else
+        tex = wallTex[1];
+    glBindTexture(GL_TEXTURE_2D, tex);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     for (int i = 4; i < 6; i++) {
         glBegin(GL_POLYGON);
         for (int j = 0; j < 4; j++) {
@@ -775,6 +788,7 @@ Vec Cross(Vec a, Vec b)
     c.z = a.x * b.y - a.y * b.x;
     return c;
 }
+
 
 
 
