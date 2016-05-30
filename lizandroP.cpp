@@ -34,6 +34,9 @@ zoom according to weapon selected.
 unsigned int reload=0;
 loadBMP rload;
 
+unsigned int scope=0;
+loadBMP scoe;
+
 int nsound =2;
 
 //sounds buffers
@@ -77,15 +80,15 @@ int Openal::initopenal()
 	alBuffer1 = alutCreateBufferFromFile("./sounds/50.wav");
 	alBuffer2 = alutCreateBufferFromFile("./sounds/gunshot.wav");
 	alBuffer3 = alutCreateBufferFromFile("./sounds/test.wav");
-    alBuffer4 = alutCreateBufferFromFile("./sounds/raptor.wav");
-    alBuffer5 = alutCreateBufferFromFile("./sounds/bite.wav");
+	alBuffer4 = alutCreateBufferFromFile("./sounds/raptor.wav");
+	alBuffer5 = alutCreateBufferFromFile("./sounds/bite.wav");
 
 	alGenSources(1, &alSource[0]);
 	alGenSources(1, &alSource[1]);
 	alGenSources(1, &alSource[2]);
 	alGenSources(1, &alSource[3]);
-    alGenSources(1, &alSource[4]);
-    alGenSources(1, &alSource[5]);
+	alGenSources(1, &alSource[4]);
+	alGenSources(1, &alSource[5]);
 	
 	//setting for first sound 
 	alSourcei(alSource[0], AL_BUFFER, alBuffer0);
@@ -111,17 +114,17 @@ int Openal::initopenal()
 	alSourcef(alSource[3], AL_PITCH, 1.0f);
 	alSourcei(alSource[3], AL_LOOPING, AL_FALSE);
 
-    //setting for fourth sound
-    alSourcei(alSource[4], AL_BUFFER, alBuffer4);
-    alSourcef(alSource[4], AL_GAIN, 1.0f);
-    alSourcef(alSource[4], AL_PITCH, 1.0f);
-    alSourcei(alSource[4], AL_LOOPING, AL_FALSE);
+	//setting for fourth sound
+	alSourcei(alSource[4], AL_BUFFER, alBuffer4);
+	alSourcef(alSource[4], AL_GAIN, 1.0f);
+	alSourcef(alSource[4], AL_PITCH, 1.0f);
+	alSourcei(alSource[4], AL_LOOPING, AL_FALSE);
 
-     //setting for fourth sound
-    alSourcei(alSource[5], AL_BUFFER, alBuffer5);
-    alSourcef(alSource[5], AL_GAIN, 1.0f);
-    alSourcef(alSource[5], AL_PITCH, 1.0f);
-    alSourcei(alSource[5], AL_LOOPING, AL_FALSE);
+	//setting for fourth sound
+	alSourcei(alSource[5], AL_BUFFER, alBuffer5);
+	alSourcef(alSource[5], AL_GAIN, 1.0f);
+	alSourcef(alSource[5], AL_PITCH, 1.0f);
+	alSourcei(alSource[5], AL_LOOPING, AL_FALSE);
 
 	if (alGetError() != AL_NO_ERROR) {
 		printf("ERROR: setting source\n");
@@ -144,18 +147,18 @@ void Openal::clean_al()
 	alDeleteSources(1, &alSource[0]);
 	alDeleteSources(1, &alSource[1]);
 	alDeleteSources(1, &alSource[2]);
-    alDeleteSources(1, &alSource[3]);
-    alDeleteSources(1, &alSource[4]);
-    alDeleteSources(1, &alSource[5]);
+	alDeleteSources(1, &alSource[3]);
+	alDeleteSources(1, &alSource[4]);
+	alDeleteSources(1, &alSource[5]);
 
 
 	//clear buffer
 	alDeleteBuffers(1, &alBuffer0);
 	alDeleteBuffers(1, &alBuffer1);
 	alDeleteBuffers(1, &alBuffer2);
-    alDeleteBuffers(1, &alBuffer3);
-    alDeleteBuffers(1, &alBuffer4);
-    alDeleteBuffers(1, &alBuffer5);
+	alDeleteBuffers(1, &alBuffer3);
+	alDeleteBuffers(1, &alBuffer4);
+	alDeleteBuffers(1, &alBuffer5);
 
 	ALCcontext *Context = alcGetCurrentContext();
 	ALCdevice *Device = alcGetContextsDevice(Context);
@@ -163,6 +166,7 @@ void Openal::clean_al()
 	alcDestroyContext(Context);
 	alcCloseDevice(Device);
 }
+
 void setGun(Game *game, int n)
 {
 
@@ -291,15 +295,15 @@ Openal::~Openal()
 //mykey
 void Lizandrokey(Game *game, int w, int h)
 {
-    int l = h / 1;
+    int l = h / 1*5;
 
     glPushMatrix();
     glTranslatef(w/2,h/2,0);
-    glColor4f(0,0,0,((float)30 / 20.0));
+    glColor4f(0,0,0,0.9);
     glBegin(GL_LINE);
     GLUquadric* qobj = gluNewQuadric();
     gluQuadricOrientation(qobj,GLU_INSIDE);
-    gluDisk(qobj, (float)l/5.0*.9, l/5, 62, 1);
+    gluDisk(qobj, (float)l/5.0*.5, l/5, 62, 1);
     glEnd(); 
     glPopMatrix();
     
@@ -344,18 +348,21 @@ void Lizandrokey(Game *game, int w, int h)
     glVertex2d(w / 2+1, h / 2 - l / 20);
     glVertex2d(w / 2+1, h / 2 + l / 20);
     glEnd();
+    
     }
     
     glBegin(GL_LINES);
     Rect r;
-    r.bot = (h / 2)-100;
+    r.bot = h-100;
     r.left = w/2;
     r.center = 0;
-    ggprint8b(&r, 16, 0, "");
-    ggprint8b(&r, 16, 0, "target mob: %i", game->mobNum);
-    ggprint8b(&r, 16, 0, "Distance to target: %f", game->mobDist);
+    glColor3f(1.0f,0.0f,0.0f);
+    ggprint13(&r, 16, 0, "");
+    ggprint13(&r, 16, 0, "Mob: %i", game->mobNum);
+    ggprint13(&r, 16, 0, "Distance: %f", game->mobDist);
     glEnd();
-    
+     
+
 }
 
 #include <fstream>
@@ -377,7 +384,7 @@ int leaderboard(Game *game)
       scoretxt >> content[i];
     }
       stringstream n;
-      cout << "your kills: " << game->currscore <<"   " << strtod(content[1].c_str(), NULL)  << endl;
+      cout << "your kills: " << game->currscore <<"   "<< endl;
       if(game->currscore >= atoi(content[1].c_str())){
           cout<<"congrats you are ranked #1 in the leaderboard!\n";
           content[0] = game->name;
