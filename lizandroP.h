@@ -27,6 +27,7 @@ void reloadAmmo(Game *game);
 void reloadMessage(Game *game, int w, int h);
 void GameMenu(Game *game, int w, int h);
 void openal_sound();
+void dino_sound();
 void setGun(Game *game, int n);
 void Lizandrokey(Game *game, int w, int h);
 void kills(Game *game);

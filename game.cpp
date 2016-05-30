@@ -188,6 +188,7 @@ void Game::Move()
         }
         if (wallHit == 0) {
             Bullet b;
+            dino_sound();
             float mobErr = 0.2;
             Vec err = Vec((2.0 * RAND - 0.1) * mobErr,
                     (2.0 * RAND - 0.1) * mobErr,

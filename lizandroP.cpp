@@ -47,6 +47,9 @@ ALuint alBuffer3;
 ALuint alBuffer4;
 ALuint alBuffer5;
 
+ALuint dinoBuff[5];
+ALuint dinoSour[5];
+
 //sound source 
 ALuint alSource[5];
 extern "C" {
@@ -89,6 +92,15 @@ int Openal::initopenal()
 	alGenSources(1, &alSource[3]);
 	alGenSources(1, &alSource[4]);
 	alGenSources(1, &alSource[5]);
+	
+	for (int i = 0; i < 5; i++) {
+		dinoBuff[i] = alutCreateBufferFromFile("./sounds/gunshot.wav");
+		alGenSources(1, &dinoSour[i]);
+		alSourcei(dinoSour[i], AL_BUFFER, dinoBuff[i]);
+		alSourcef(dinoSour[i], AL_GAIN, 0.75f);
+		alSourcef(dinoSour[i], AL_PITCH, 1.0f);
+		alSourcei(dinoSour[i], AL_LOOPING, AL_FALSE);
+	}
 	
 	//setting for first sound 
 	alSourcei(alSource[0], AL_BUFFER, alBuffer0);
@@ -140,6 +152,14 @@ void openal_sound()
 	alSourcePlay(alSource[nsound]);
 }
 
+void dino_sound()
+{
+	static int n = -1;
+	n = (n + 1) % 5;
+	alSourcePlay(dinoSour[n]);
+}
+
+
 //Function to clean and delete sound files
 void Openal::clean_al()
 {
@@ -159,6 +179,11 @@ void Openal::clean_al()
 	alDeleteBuffers(1, &alBuffer3);
 	alDeleteBuffers(1, &alBuffer4);
 	alDeleteBuffers(1, &alBuffer5);
+	
+	for (int i = 0; i < 5; i++) {
+		alDeleteSources(1, &dinoSour[i]);
+		alDeleteBuffers(1, &dinoBuff[i]);
+	}
 
 	ALCcontext *Context = alcGetCurrentContext();
 	ALCdevice *Device = alcGetContextsDevice(Context);
