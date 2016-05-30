@@ -288,15 +288,9 @@ void Game::SpawnNewMob()
     while (prox == 1 && counter-- > 0) {
         prox = 0;
         rnd = RAND * ((float)spawnPts.size() + .9999);
-        if ((spawnPts[rnd] - position).Magnitude() < thresh) {
+        if ((spawnPts[rnd] - position).Magnitude() < thresh*2.5) {
             prox = 1;
             continue;
-        }
-        for (unsigned int i = 0; i < mobs.size(); i++) {
-            if ((spawnPts[rnd] - *mobs[i]->getLoc()).Magnitude() < thresh) {
-                prox = 1;
-                break;
-            }
         }
     }
 
