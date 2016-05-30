@@ -32,6 +32,9 @@ int Input::CheckKeys(XEvent *e)
             game->gameRunning = 1;
         }
 
+        if (game->displayGameOverOrWon == 1)
+            game->displayGameOverOrWon = 0;
+
         if (key == XK_Escape) {
             openal->clean_al();
             leaderboard(game);
@@ -90,7 +93,9 @@ int Input::CheckKeys(XEvent *e)
                 setGun(game,2);
                 game->maxZoom = .25f;
             }
-            if (key == XK_space) {
+            if (key == XK_space 
+                && game->setReloadDelay == 0
+                && game->nbullets != game->maxbullets) {
                 reloadAmmo(game);
             }
         }
@@ -116,44 +121,50 @@ int Input::CheckKeys(XEvent *e)
 void Input::CheckMouse(XEvent *e)
 {
 
-    if (game->playerHP >0){
-        if (e->type == ButtonRelease) {
-            if (e->xbutton.button==3) {
-                //Right button was released
-                game->zoom = 0;
-                game->aiming = 0;
-                return;
-            }
+
+    if (e->type == ButtonRelease) {
+        if (e->xbutton.button==3 && game->playerHP > 0) {
+            //Right button was released
+            game->zoom = 0;
+            game->aiming = 0;
             return;
         }
-        if (e->type == ButtonPress && game->setReloadDelay == 0) {
-            if (game->gameRunning == 0) {
-                game->gameRunning = 1;
-                return;
-            }
-            if (e->xbutton.button==1) {
-                //Left button was pressed
-                if (game->nbullets <1) {
-                    emptysound(game);
-                    return;
-                }
-                openal_sound();
-                game->Shoot();
-                game->nbullets -= 1;
-                return;
-            }
-            if (e->xbutton.button==3) {
-                //Right button was pressed
-                if (game->guntype==1)
-                    game->zoom =1.5;
-                else
-                    game->zoom = 1;
-
-                game->aiming = 1;
-                return;
-            }
+        return;
+    }
+    if (e->type == ButtonPress) {
+        if (game->gameRunning == 0) {
+            game->gameRunning = 1;
+            return;
         }
+        if (game->displayGameOverOrWon == 1) {
+            game->displayGameOverOrWon = 0;
+            return;
+        }
+        if (e->xbutton.button==1 
+                && game->playerHP > 0  
+                && game->setReloadDelay == 0) {
+            //Left button was pressed
+            if (game->nbullets <1) {
+                emptysound(game);
+                return;
+            }
+            openal_sound();
+            game->Shoot();
+            game->nbullets -= 1;
+            return;
+        }
+        if (e->xbutton.button==3 && game->playerHP > 0) {
+            //Right button was pressed
+            if (game->guntype==1)
+                game->zoom =1.5;
+            else
+                game->zoom = 1;
 
+            game->aiming = 1;
+            return;
+        }
+    }
+    if (game->playerHP > 0){
         // Ignore first 5 move inputs
         // First few are garbage.
         static int start = 0;
@@ -178,6 +189,7 @@ void Input::CheckMouse(XEvent *e)
             view->CenterCursor();
     }
 }
+
 
 
 

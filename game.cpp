@@ -220,7 +220,8 @@ void Game::Move()
                 // set displayGameOverOrWon only once
                 if (togGamOverDisplay == false) {
                     togGamOverDisplay = true;
-                    displayGameOverOrWon = 30;
+                    displayGameOverOrWon = 3;
+                    setReloadDelay = 0;
                     
                 }
                 
@@ -228,7 +229,7 @@ void Game::Move()
                 // wone or lost the game
                 if(displayGameOverOrWon == 0) {
                     Init();
-                } else if (displayGameOverOrWon == 29 && !noScoreReport) {
+                } else if (displayGameOverOrWon == 2 && !noScoreReport) {
                     // Make sure the game over screen comes up before
                     // we block with this web request.
                     Web w;
@@ -243,7 +244,8 @@ void Game::Move()
                         servMessage = svec;
                     }                        
                 }
-                displayGameOverOrWon -= 1;
+                if (displayGameOverOrWon > 1)
+                    displayGameOverOrWon -= 1;
             }
         }
     }

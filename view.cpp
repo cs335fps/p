@@ -250,21 +250,13 @@ void View::HUD()
         glVertex2f(width, 0);
         glEnd( );
     }
-    DrawHealth(game, width, height);
-    DrawAmmo(game, width, height);
 
-    if (game->lkey == 1)
-        Lizandrokey(game,width, height);
-    else
-        DrawCrosshairs(game,width,height);
-    GameMenu(game,width,height);
-    reloadMessage(game,width,height);
-
-    float imgw = width * 0.8;
-    float imgh = width * 0.4;
-    float iox = (width - imgw) / 2.0;
-    float ioy = (height - imgh) / 2.0;
     if (game->gameRunning == 0) {
+        float imgw = width * 0.8;
+        float imgh = width * 0.4;
+        float iox = (width - imgw) / 2.0;
+        float ioy = (height - imgh) / 2.0;
+        glColor3f(1.0f,1.0f,1.0f);
         glBindTexture(GL_TEXTURE_2D, keys);
         glBegin(GL_QUADS);
         glTexCoord2f(1.0f, 1.0f);
@@ -297,30 +289,52 @@ void View::HUD()
         glVertex2f(width,0);
         glEnd();
         PrintText("GAME OVER!", width / 2,
-                height * 0.8, height * 0.15, sheet, 1);
+                height * 0.8, height * 0.1, sheet, 1);
         if (game->servMessage.size() > 1) {
-            
+
             for (unsigned int i = 0; i < game->servMessage.size(); i++) {
-                PrintText(game->servMessage[i], width / 2,
-                        height * 0.8 - (double)0.1 * (i+1) * height, 
-                        height * 0.075, sheet, 1);
+                vector<string> v = Split(game->servMessage[i],"~");
+                if (v.size() == 2) {
+                    PrintText(v[0], width / 2,
+                            height * 0.7 - (double)0.075 * (i) * height, 
+                            height * 0.05, sheet, 2);
+                    PrintText(v[1], width / 2,
+                            height * 0.7 - (double)0.075 * (i) * height, 
+                            height * 0.05, sheet, 0);
+                } else {
+                    PrintText(v[0], width / 2,
+                            height * 0.7 - (double)0.075 * (i) * height, 
+                            height * 0.05, sheet, 1);
+                }
             }
             return;
         }
+    } else {
+        DrawHealth(game, width, height);
+        DrawAmmo(game, width, height);
+
+        if (game->lkey == 1)
+            Lizandrokey(game,width, height);
+        else
+            DrawCrosshairs(game,width,height);
+        GameMenu(game,width,height);
+        reloadMessage(game,width,height);
+
+
     }
     char buf[16];
     sprintf(buf,"%d",game->nkills);
     string s = "KILLS:" + string(buf);
-    PrintText(s,height * .05,height * .05,height * 0.075,sheet);
+    PrintText(s,height * .05,height * .05,height * 0.05,sheet);
     if (game->guntype == 0)
         s = "9MM";
     else if (game->guntype == 1)
         s = "SNIPER";
     else
         s = "SHOTGUN";
-    PrintText(s,width / 2,height * .05,height * 0.075,sheet,1);
+    PrintText(s,width / 2,height * .05,height * 0.05,sheet,1);
     s = string(game->name);
-    PrintText(s,width - height * .05,height * .05,height * 0.075,sheet,2);
+    PrintText(s,width - height * .05,height * .05,height * 0.05,sheet,2);
 }
 
 void View::Lighting()
@@ -416,3 +430,6 @@ void View::SwitchTo2D()
     is3D = 0;
 
 }
+
+
+
