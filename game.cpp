@@ -66,6 +66,7 @@ void Game::Init()
     setReloadDelay =0;
     position = Vec(0,2,0);
     direction = Vec(0.0,0.0,0.0);
+    setGun(this,0);
     respawn_mobs(this, 10);
     for (unsigned int i = 0; i < mobs.size(); i++) {
         Vec* spt = &spawnPts[i % spawnPts.size()];
