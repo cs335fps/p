@@ -189,7 +189,13 @@ void Game::Move()
         if (wallHit == 0) {
             Bullet b;
             dino_sound();
-            float mobErr = 0.2;
+            
+            // 0 to 20-->easy, 20-59 -->harder, 60+ impossible
+            float difficulty = ((float)nkills - 20.0);
+            if (difficulty < 0.0)
+                difficulty = 0.0;
+            
+            float mobErr = 0.2 - (difficulty / 20.0 * 0.1);
             Vec err = Vec((2.0 * RAND - 0.1) * mobErr,
                     (2.0 * RAND - 0.1) * mobErr,
                     (2.0 * RAND - 0.1) * mobErr);
