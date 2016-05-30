@@ -28,7 +28,7 @@ string Web::Score(char* name,
         "&streak=" + string(buf[4]);
     string ret = HttpConnect(host.c_str(), page.c_str());
     
-    if (ret.compare("na") == 0) {
+    if (ret.compare("na") == 0 || ret.find("404 Not Found") != ret.npos) {
         ret = "Leaderboards not available.,Kills: " + string(buf[0]); 
     }
     return ret;
