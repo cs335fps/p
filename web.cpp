@@ -26,34 +26,46 @@ string Web::Score(char* name,
         "&hits=" + string(buf[2]) + 
         "&ticks=" + string(buf[3]) +
         "&streak=" + string(buf[4]);
+    string ret = HttpConnect(host.c_str(), page.c_str());
     
-    return HttpConnect(host.c_str(), page.c_str());
+    if (ret.compare("na") == 0) {
+        ret = "Leaderboards not available.,Kills: " + string(buf[0]); 
+    }
+    return ret;
 }
 
 string Web::HttpConnect(const char *host, const char *page)
 {
     string s = "";
+    string na = "na";
     struct sockaddr_in *remote;
     int sock;
     int tmpres;
     char *ip;
     char *get;
     char buf[BUFSIZ+1];
+    
     sock = create_tcp_socket();
     ip = get_ip(host);
+    if (ip == NULL)
+        return na;
     remote = (struct sockaddr_in *)malloc(sizeof(struct sockaddr_in *));
     remote->sin_family = AF_INET;
     tmpres = inet_pton(AF_INET, ip, (void *)(&(remote->sin_addr.s_addr)));
+    
     if ( tmpres < 0) {
+        return na;
         //perror("Can't set remote->sin_addr.s_addr");
         //exit(1);
     } else if (tmpres == 0) {
+        return na;
         //fprintf(stderr, "%s is not a valid IP address\n", ip);
         //exit(1);
     }
     remote->sin_port = htons(PORT);
 
     if (connect(sock, (struct sockaddr *)remote, sizeof(struct sockaddr)) < 0) {
+        return na;
         //perror("Could not connect");
         //exit(1);
     }
@@ -65,12 +77,14 @@ string Web::HttpConnect(const char *host, const char *page)
     while (sent < strlen(get)) {
         tmpres = send(sock, get+sent, strlen(get)-sent, 0);
         if (tmpres == -1) {
+            return na;
             //perror("Can't send query");
             //exit(1);
         }
         sent += tmpres;
     }
     //now it is time to receive the page
+    
     memset(buf, 0, sizeof(buf));
     int htmlstart = 0;
     char * htmlcontent;
@@ -97,6 +111,7 @@ string Web::HttpConnect(const char *host, const char *page)
         memset(buf, 0, tmpres);
     }
     if (tmpres < 0) {
+        return na;
         //perror("Error receiving data");
     }
     free(get);
@@ -127,10 +142,12 @@ char *Web::get_ip(const char *host)
     if ((hent = gethostbyname(host)) == NULL) {
         //herror("Can't get IP");
         //exit(1);
+        return NULL;
     }
     if (inet_ntop(AF_INET, (void *)hent->h_addr_list[0], ip, iplen) == NULL) {
         //perror("Can't resolve host!");
         //exit(1);
+        return NULL;
     }
     return ip;
 }
