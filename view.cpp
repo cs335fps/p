@@ -16,6 +16,10 @@ View::View(Game *g, int w, int h)
     skyTex = lbmp.getBMP("sky.bmp");
     game->defaultPortl.assignTexA(lbmp.getBMP("portalA_tex.bmp"));
     game->defaultPortl.assignTexB(lbmp.getBMP("portalB_tex.bmp"));
+    game->stPor1.assignTexA(lbmp.getBMP("STATION2portalA_tex.bmp"));
+    game->stPor1.assignTexB(lbmp.getBMP("STATION2portalB_tex.bmp"));
+    game->stPor2.assignTexA(lbmp.getBMP("STATIONportalA_tex.bmp"));
+    game->stPor2.assignTexB(lbmp.getBMP("STATIONportalB_tex.bmp"));
     Win = lbmp.getBMP("Win.bmp");
     Lose = lbmp.getBMP("Lose.bmp");
     keys = lbmp.getBMP("keys.bmp");
@@ -174,13 +178,17 @@ void View::Render()
     //    }
 
     glPushMatrix();
-    if (game->togPortal == 1) {
-        game->defaultPortl.draw();
-    }
+    
 
     glDisable(GL_LIGHTING);
     glBindTexture(GL_TEXTURE_2D, skyTex);
     game->sky.draw(ox,oy,oz);
+    
+    if (game->togPortal == 1) {
+        game->defaultPortl.draw();
+        game->stPor1.draw();
+        game->stPor2.draw();
+    }
     glBindTexture(GL_TEXTURE_2D, 0);
     glEnable(GL_LIGHTING);
 

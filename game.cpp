@@ -261,8 +261,12 @@ void Game::Move()
         }
     }
 
+
     // handle portals and portal placement
     if (togPortal == 1) {
+        float rotx = direction.x;
+        float roty = direction.y - PI / 2.0;
+        // player defined portals
         defaultPortl.reLocateOBJ(position.x,
                 position.y,
                 position.z,
@@ -270,11 +274,37 @@ void Game::Move()
                 position.x,
                 position.y,
                 position.z);
-        if (setPortal == 1){
+        if (setPortal == 1) {
             setPortal ^= 1;
             defaultPortl.loc(position.x, position.y, position.z,
-                    ox, 2, oz);
+                    //ox, 2, oz
+                    position.x+sin(rotx) * sin(roty),
+                    2,
+                    position.z+cos(rotx) * sin(roty));
         }
+        // game defined portals player and mob can use it
+        stPor1.locA(30,2,20);
+        stPor1.locB(-10,2,-30);
+        stPor1.reLocateOBJ(position.x,
+                position.y,
+                position.z,
+
+                position.x,
+                position.y,
+                position.z);
+        
+        stPor2.locA(40,2,-30);
+        stPor2.locB(-50,2,40);
+        stPor2.reLocateOBJ(position.x,
+                position.y,
+                position.z,
+
+                position.x,
+                position.y,
+                position.z);
+                
+        if (position.y != 2)
+            position.y = 2;
     }
     if (dmgAnim > 0)
         dmgAnim--;

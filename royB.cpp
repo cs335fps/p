@@ -895,56 +895,57 @@ void portal::reLocateOBJ(float *point, float *newLoc)
 {
         float playerDir[3];
         float angle, dot, mag;
-        
-        // if the point is touching or within the first sphere
-        // then relocate the point to the other sphere 
-        if (portA.isTouching(point) == true) {
-                // calculate entrence angle using refrence vector <1,0,0>
-                playerDir[0] = point[0] - portB.getx();
-                playerDir[1] = point[1] - portB.gety();
-                playerDir[2] = point[2] - portB.getz();
+        if (placed > 1) {
+             // if the point is touching or within the first sphere
+             // then relocate the point to the other sphere 
+             if (portA.isTouching(point) == true) {
+                     // calculate entrence angle using refrence vector <1,0,0>
+                     playerDir[0] = point[0] - portB.getx();
+                     playerDir[1] = point[1] - portB.gety();
+                     playerDir[2] = point[2] - portB.getz();
 
-                mag = sqrt( playerDir[0] * playerDir[0] +
-                            playerDir[1] * playerDir[1] +
-                            playerDir[2] * playerDir[2] );
-                dot = 1 * playerDir[0];
-                
-                // calculate angel and flip to oposite size
-                angle = acos(dot/mag);
-                angle *= -1;
+                     mag = sqrt( playerDir[0] * playerDir[0] +
+                                 playerDir[1] * playerDir[1] +
+                                 playerDir[2] * playerDir[2] );
+                     dot = 1 * playerDir[0];
+                     
+                     // calculate angel and flip to oposite size
+                     angle = acos(dot/mag);
+                     angle *= -1;
 
-                // calculate offset so new location wont triger portal
-                newLoc[0] = (sin(angle)*(portB.getRad() + .3)) + 
-                             portB.getx();
-                newLoc[1] = portB.gety();
-                newLoc[2] = (cos(angle)*(portB.getRad() + .3)) + 
-                             portB.getz();
-                entered ^= 1;
-        }
+                     // calculate offset so new location wont triger portal
+                     newLoc[0] = (sin(angle)*(portB.getRad() + .3)) + 
+                                  portB.getx();
+                     newLoc[1] = portB.gety();
+                     newLoc[2] = (cos(angle)*(portB.getRad() + .3)) + 
+                                  portB.getz();
+                     entered ^= 1;
+             }
 
-        // same as above but for oposite sphere
-        if (portB.isTouching(point) == true) {
-                // calculate entrence angle
-                playerDir[0] = point[0] - portB.getx();
-                playerDir[1] = point[1] - portB.gety();
-                playerDir[2] = point[2] - portB.getz();
+             // same as above but for oposite sphere
+             if (portB.isTouching(point) == true) {
+                     // calculate entrence angle
+                     playerDir[0] = point[0] - portB.getx();
+                     playerDir[1] = point[1] - portB.gety();
+                     playerDir[2] = point[2] - portB.getz();
 
-                mag = sqrt( playerDir[0] * playerDir[0] +
-                            playerDir[1] * playerDir[1] +
-                            playerDir[2] * playerDir[2] );
-                dot = 1 * playerDir[0];
+                     mag = sqrt( playerDir[0] * playerDir[0] +
+                                 playerDir[1] * playerDir[1] +
+                                 playerDir[2] * playerDir[2] );
+                     dot = 1 * playerDir[0];
 
-                // calculate angel and flip to oposite size
-                angle = acos(dot/mag);
-                angle *= -1;
+                     // calculate angel and flip to oposite size
+                     angle = acos(dot/mag);
+                     angle *= -1;
 
-                // calculate offset so new location wont triger portal
-                newLoc[0] = (sin(angle + M_PI)*(portA.getRad() + .3)) + 
-                             portA.getx();
-                newLoc[1] = portA.gety();
-                newLoc[2] = (cos(angle + M_PI)*(portA.getRad() + .3)) + 
-                             portA.getz();
-                entered ^= 1;
+                     // calculate offset so new location wont triger portal
+                     newLoc[0] = (sin(angle + M_PI)*(portA.getRad() + .3)) + 
+                                  portA.getx();
+                     newLoc[1] = portA.gety();
+                     newLoc[2] = (cos(angle + M_PI)*(portA.getRad() + .3)) + 
+                                  portA.getz();
+                     entered ^= 1;
+             }
         }
 }
 // ////////////////////////////////////////////////////////////////////////////
@@ -985,9 +986,9 @@ void portal::loc(float px, float py, float pz,
         vz = ((vz - pz) / mag) * 5;
 
         // add distance to player center
-        px -= vx;
-        py -= vy;
-        pz -= vz;
+        px += vx;
+        py += vy;
+        pz += vz;
 
         // choose which portal to place
         switch (placed % 2) {
@@ -995,12 +996,31 @@ void portal::loc(float px, float py, float pz,
                         portLocA[0] = px;
                         portLocA[1] = 2;
                         portLocA[2] = pz;
+                        break;
                 case 1:
                         portLocB[0] = px;
                         portLocB[1] = 2;
                         portLocB[2] = pz;
+                        break;
+
         }
         placed +=1;
+}
+// ////////////////////////////////////////////////////////////////////////////
+void portal::locA(float px, float py, float pz)
+{
+     portLocA[0] = px;
+     portLocA[1] = py;
+     portLocA[2] = pz;
+     placed +=1;
+}
+// ////////////////////////////////////////////////////////////////////////////
+void portal::locB(float px, float py, float pz)
+{
+     portLocB[0] = px;
+     portLocB[1] = py;
+     portLocB[2] = pz;
+     placed +=1;
 }
 // ////////////////////////////////////////////////////////////////////////////
 // /////       /////       /////       /////       /////       /////       ///

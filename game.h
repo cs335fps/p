@@ -75,7 +75,7 @@ public:
     void SpawnNewMob();
     vector<Mob*> mobs;
     vector<Wall> walls;
-    portal defaultPortl;
+    portal defaultPortl, stPor1, stPor2;
     worldEngine floor;
     solidSphere sky;
     
