@@ -128,18 +128,20 @@ void Mob::move(Game* g)
     //if (this->Collide(tmp) == 1) {
     //}
     //4) Map new route to player and start traversing route.
-    if (hasMap)
+    if (hasMap) {
         tmp = this->map2d->aStar(this->location, g->position);
+    }
     else {
         tmp->x = g->position.x - this->location.x; 
         tmp->z =  g->position.z - this->location.z;
         this->location.y = 2.0;
         this->velocity.y = 0.0;
         this->velocity.x = 5*tmp->x;
-    this->velocity.z = 5*tmp->z;
+        this->velocity.z = 5*tmp->z;
     }
     //check if no solution; if so, jump and teleport.
-    if (hasMap && (tmp == NULL || ( tmp->x == 0 && tmp->z == 0))) { // we are stuck, teleport
+    if (hasMap && (tmp == NULL || ( tmp->x == 0 && tmp->z == 0))) { 
+	// we are stuck, teleport
 	//Don't teleport, spawn points should take care of this.
         //this->location.x += (g->position.x - this->location.x)/3;
         //this->location.z += (g->position.x - this->location.z)/3;
@@ -304,7 +306,7 @@ void cWall::Draw()
                     this->corners[ sides[i][1] ], 
                     this->corners[ sides[i][1] ])[0] 
                 );
-        for(int j = 0; j < 4; j++){
+        for (int j = 0; j < 4; j++) {
             glVertex3fv(&corners[sides[i][j]][0]);
         }
         glEnd();
@@ -389,7 +391,7 @@ void startAstar(Game* g)
 {
     static int toggle = 0;
     //static float wallHeight = 0.5;
-    if(toggle == 0) {
+    if (toggle == 0) {
         toggle = 1;
         //respawn_mobs(g, 10);
         //Set all mobs to color red and float straight up.
@@ -397,20 +399,20 @@ void startAstar(Game* g)
                 vmi m = g->mobs.begin(); 
                 m != g->mobs.end(); 
                 m++
-            ){
-            if(!(*m)->hasMap){    
+            ) {
+            if (!(*m)->hasMap) {    
                 (*m)->map2d = new Map(g);
                 (*m)->hasMap = true;
             }
         }
         g->mobs[0]->hasMap = true;
-        for(int i = 0; i < 10; i++){
-        g->mobs[0]->map2d->aStar(
+        for (int i = 0; i < 10; i++) {
+            g->mobs[0]->map2d->aStar(
                 *(g->mobs[0]->getLoc()), g->position
             );
             g->mobs[0]->map2d->displayMap();
-        cout << endl;
-    }
+            cout << endl;
+        }
     }
     else {
         toggle = 0;
@@ -437,17 +439,17 @@ void chadKey(Game* g, View* v)
          ) {
               (*m)->setVelY(6.055);
               (*m)->dino = 0;
-          if(!(*m)->hasMap){    
+          if (!(*m)->hasMap) {    
               //(*m)->map2d = new Map(g);
               //(*m)->hasMap = true;
-              }
+           }
             //cout <<"now in chadkey";
         }
         for (
-                vwi w = g->walls.begin(); 
-                w != g->walls.end(); 
-                w++ 
-           ){
+            vwi w = g->walls.begin(); 
+            w != g->walls.end(); 
+            w++ 
+        ) {
             w->SetHeight(0.5);
         }
         g->temperature = celsiusToFahrenheit(g->temperature);
@@ -480,7 +482,11 @@ void respawn_mobs(Game* g, int num = 10)
 
 Game::~Game()
 {
-    /*for(Mob* i = this->mobs.back(); !this->mobs.empty(); i = this->mobs.back()){
+    /*for(
+     * Mob* i = this->mobs.back(); 
+     * !this->mobs.empty(); 
+     * i = this->mobs.back()
+     * ) {
         // cout << "Killing mob " << endl;
         i->death(this);
     }*/
@@ -526,7 +532,8 @@ Node::Node()
     c = '\0';
     obstacle = false;
 }
-void Map::cleanNodes(){
+void Map::cleanNodes()
+{
     for (int i = 0; i < 100; i++)
         for (int j = 0; j < 100; j++) {
             squares[i][j]->visited = false;
@@ -558,7 +565,8 @@ Map::Map(Game* g)
             vvi++
         ) {
             squares[(int) (vvi->x/2) + 50][(int) (vvi->z/2) + 50]->cost = 99;
-            squares[(int) (vvi->x/2) + 50][(int) (vvi->z/2) + 50]->obstacle = true;
+            squares[(int) 
+		(vvi->x/2) + 50][(int) (vvi->z/2) + 50]->obstacle = true;
             //cout << "Obstacle: " 
             //     << (int) vvi->x << " " << (int) vvi->z << endl;
         }
@@ -683,9 +691,9 @@ Vec* Map::aStar(Vec start, Vec end)
                 squares[x][y]->peeked = true;
 
                 //if diagonal, cost is root 2; else cost = 1;
-                if(offset[i][0] == offset[i][1]
+                if (offset[i][0] == offset[i][1]
                    || offset[i][0] == -1 * offset[i][1]
-                  ){
+                ) {
                     cost = squares[current.x][current.z]->cost + root2;
                 } 
                 else {
@@ -704,12 +712,12 @@ Vec* Map::aStar(Vec start, Vec end)
                     squares[x][y]->parent[0] = current.x;
                     squares[x][y]->parent[1] = current.z;
                     //squares[x][y]->c = '*';
-            cout << "Visit node " << x << "; " << y << endl;
+                    cout << "Visit node " << x << "; " << y << endl;
                 } 
             }
-        else {
+            else {
                 cout << "_";
-        }
+            }
         }
         squares[current.x][current.z]->visited = true;
         usleep(1);
@@ -719,18 +727,22 @@ Vec* Map::aStar(Vec start, Vec end)
     static int toggle = 1;
     while (this->current.parent[0] != 0 && this->current.parent[1] != 0) {
         squares[(int)current.x][(int)current.z]->c = '+';
-    if ((int)current.x == (int) end.x &&
-       (int)current.z == (int) end.z) {
-            squares[(int)current.x][(int)current.z]->c = '@';
+    if (
+        (int)current.x == (int) end.x &&
+        (int)current.z == (int) end.z
+    ) {
+        squares[(int)current.x][(int)current.z]->c = '@';
     }    
     else if (current.parent[0] == start.x && current.parent[1] == start.z) {
         squares[(int)current.x][(int)current.z]->c = '9';
-            nextPath = new Vec(2*(start.x - current.x), 0, 2*(start.z - current.z));
-            cout << "Output is " << nextPath->x << ", " << nextPath->z << endl;
+        nextPath = new Vec(
+	    2*(start.x - current.x), 0, 2*(start.z - current.z)
+	);
+	cout << "Output is " << nextPath->x << ", " << nextPath->z << endl;
         return nextPath;
     }
     else {
-            squares[current.x][current.z]->c = '*';
+        squares[current.x][current.z]->c = '*';
     }
         current = *squares[current.parent[0]][current.parent[1]];
     }
