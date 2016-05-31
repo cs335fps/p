@@ -74,7 +74,6 @@ void Game::Init()
         mobs[i]->setTick();
     }
 
-
 }
 
 void Game::Move()
@@ -87,7 +86,6 @@ void Game::Move()
     if(setReloadDelay > 0)
         setReloadDelay -= 1;
 
-    float ox, oz;
     if (zoom == 1 && depth < maxZoom) {
         depth += (maxZoom - minZoom) / 15;
     }else if (zoom == 0 && depth > minZoom) {
@@ -283,8 +281,7 @@ void Game::Move()
                     position.z+cos(rotx) * sin(roty));
         }
         // game defined portals player and mob can use it
-        stPor1.locA(30,2,20);
-        stPor1.locB(-10,2,-30);
+        
         stPor1.reLocateOBJ(position.x,
                 position.y,
                 position.z,
@@ -293,8 +290,7 @@ void Game::Move()
                 position.y,
                 position.z);
         
-        stPor2.locA(40,2,-30);
-        stPor2.locB(-50,2,40);
+        
         stPor2.reLocateOBJ(position.x,
                 position.y,
                 position.z,

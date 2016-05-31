@@ -27,6 +27,13 @@ View::View(Game *g, int w, int h)
     wallTex[0] = lbmp.getBMP("wall1.bmp");
     wallTex[1] = lbmp.getBMP("wall2.bmp");
     floorTex = lbmp.getBMP("floor1.bmp");
+    
+    game->defaultPortl.locA(-20,-20,20);
+    game->defaultPortl.locA(20,-20,20);
+    game->stPor2.locA(40,2,-30);
+    game->stPor2.locB(-50,2,40);
+    game->stPor1.locA(30,2,20);
+    game->stPor1.locB(-10,2,-30);
 
     for (unsigned int i = 0; i < game->mobs.size(); i++) {
         game->mobs[i]->setTex(mobTex);
