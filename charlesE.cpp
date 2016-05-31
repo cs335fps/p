@@ -530,11 +530,11 @@ void Map::cleanNodes(){
     for (int i = 0; i < 100; i++)
         for (int j = 0; j < 100; j++) {
             squares[i][j]->visited = false;
-        squares[i][j]->cost = 9e5;
-        squares[i][j]->peeked = false;
-        squares[i][j]->parent[0] = 0;
-        squares[i][j]->parent[1] = 1;
-        squares[i][j]->c = '\0';
+            squares[i][j]->cost = 9e5;
+            squares[i][j]->peeked = false;
+            squares[i][j]->parent[0] = 0;
+            squares[i][j]->parent[1] = 1;
+            squares[i][j]->c = '\0';
             squares[i][j]->x = i;
             squares[i][j]->z = j;
         //Don't reset obstacles; map doesn't change.
