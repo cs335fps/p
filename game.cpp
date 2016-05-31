@@ -73,7 +73,7 @@ void Game::Init()
         mobs[i]->spawn(spt);
         mobs[i]->setTick();
     }
-
+    //startAstar(this);
 }
 
 void Game::Move()

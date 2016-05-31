@@ -125,15 +125,16 @@ void Mob::move(Game* g)
     else {
         tmp->x = g->position.x - this->location.x; 
         tmp->z =  g->position.z - this->location.z;
-    this->location.y = 2.0;
+        this->location.y = 2.0;
         this->velocity.y = 0.0;
         this->velocity.x = 5*tmp->x;
     this->velocity.z = 5*tmp->z;
     }
     //check if no solution; if so, jump and teleport.
     if (hasMap && (tmp == NULL || ( tmp->x == 0 && tmp->z == 0))) { // we are stuck, teleport
-        this->location.x += (g->position.x - this->location.x)/3;
-        this->location.z += (g->position.x - this->location.z)/3;
+	//Don't teleport, spawn points should take care of this.
+        //this->location.x += (g->position.x - this->location.x)/3;
+        //this->location.z += (g->position.x - this->location.z)/3;
     }
     else if (hasMap) { // have a vector to follow
         this->velocity.x = 3 * (tmp->x);//should be about 3-5.
@@ -468,9 +469,7 @@ void chadKey(Game* g, View* v)
         }
         g->temperature = fahrToCels(g->temperature);    
     }
-
-
-   }
+}
 
 void respawn_mobs(Game* g, int num = 10)
 {
