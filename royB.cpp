@@ -911,7 +911,10 @@ void portal::reLocateOBJ(float *point, float *newLoc)
                      
                      // calculate angel and flip to oposite size
                      angle = acos(dot/mag);
-                     angle *= -1;
+                     if (angle == 0)
+						angle = 1;
+				     else
+						angle *= -1;
 
                      // calculate offset so new location wont triger portal
                      newLoc[0] = (sin(angle)*(portB.getRad() + .3)) + 
@@ -936,7 +939,10 @@ void portal::reLocateOBJ(float *point, float *newLoc)
 
                      // calculate angel and flip to oposite size
                      angle = acos(dot/mag);
-                     angle *= -1;
+                     if (angle == 0)
+						angle = 1;
+				     else
+						angle *= -1;
 
                      // calculate offset so new location wont triger portal
                      newLoc[0] = (sin(angle + M_PI)*(portA.getRad() + .3)) + 
