@@ -94,6 +94,14 @@ void Mob::move(Game* g)
     location.y += velocity.y / 240.0;
     location.x += velocity.x / 240.0;
 
+    if (location.y > 2) // gravity.
+        velocity.y -= 6.6102;
+    else if (location.y < 2) {
+        velocity.y = 0;
+        location.y = 1.5;
+    }
+    else
+        velocity.y = 0;
 
     if (this->moved > 120) { 
         this->moved = 0;
@@ -155,14 +163,6 @@ void Mob::move(Game* g)
     else if (velocity.y < -26.075)
         velocity.y = -26.075;
     else if (velocity.y < 2.1)
-    velocity.y = 0;
-    if (location.y > 2) // gravity.
-        velocity.y -= 6.6102;
-    else if (location.y < 2){
-        velocity.y = 2;
-        location.y = 1.5;
-    }
-    else
         velocity.y = 0;
     if (location.y < 1.5) {
         velocity.y = 2;
