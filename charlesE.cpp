@@ -1,7 +1,8 @@
 // Charles Enright
 // CS 335 Software Engineering
 // File includes AI and elements of game mechanics for first person shooter.
-
+// Gordon says we don't need to worry about memory leaks 
+// at the end of the program.
 #include "solidSphere.h"
 #include "charlesE.h"
 #include "lizandroP.h"
@@ -12,7 +13,8 @@ class Map;
 Mob::~Mob()
 {
     if (hasMap)
-        delete this->map2d;
+       /// delete this->map2d;
+       return;
 }
 Mob::Mob()
 {
@@ -490,12 +492,12 @@ Game::~Game()
      * ) {
         // cout << "Killing mob " << endl;
         i->death(this);
-    }*/
+    }
     int m = this->mobs.size();
     for (int i = 0; i < m; i++) {
         this->mobs[i]->death(this);
     }
-    /*for(int i = 0; !this->walls.empty();this->walls.pop_back()){
+    for(int i = 0; !this->walls.empty();this->walls.pop_back()){
         i++;
         // cout << "Razing wall " << i << endl;
         if(i > 999) break;
@@ -517,7 +519,7 @@ Game::~Game()
 
 View::~View()
 {
-    delete this->game; // pointer to game object.
+    //delete this->game; // pointer to game object.
     // delete this->dpy; Says it won't delete. How do we free this memory?
 
 }
