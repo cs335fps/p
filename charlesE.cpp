@@ -11,7 +11,8 @@ class Wall;
 class Map;
 Mob::~Mob()
 {
-    //delete this->map2d;
+    if (hasMap)
+        delete this->map2d;
 }
 Mob::Mob()
 {
