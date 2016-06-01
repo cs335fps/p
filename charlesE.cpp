@@ -727,18 +727,18 @@ Vec* Map::aStar(Vec start, Vec end)
     static int toggle = 1;
     while (this->current.parent[0] != 0 && this->current.parent[1] != 0) {
         squares[(int)current.x][(int)current.z]->c = '+';
-    if (
-        (int)current.x == (int) end.x &&
-        (int)current.z == (int) end.z
-    ) {
-        squares[(int)current.x][(int)current.z]->c = '@';
-    }    
-    else if (current.parent[0] == start.x && current.parent[1] == start.z) {
-        squares[(int)current.x][(int)current.z]->c = '9';
-        nextPath = new Vec(
-	    2*(start.x - current.x), 0, 2*(start.z - current.z)
-	);
-	cout << "Output is " << nextPath->x << ", " << nextPath->z << endl;
+        if (
+            (int)current.x == (int) end.x &&
+            (int)current.z == (int) end.z
+        ) {
+            squares[(int)current.x][(int)current.z]->c = '@';
+        }    
+        else if (current.parent[0] == start.x && current.parent[1] == start.z) {
+            squares[(int)current.x][(int)current.z]->c = '9';
+            nextPath = new Vec(
+	        2*(start.x - current.x), 0, 2*(start.z - current.z)
+	    );
+	    cout << "Output is " << nextPath->x << ", " << nextPath->z << endl;
         return nextPath;
     }
     else {
