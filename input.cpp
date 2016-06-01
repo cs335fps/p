@@ -30,6 +30,7 @@ int Input::CheckKeys(XEvent *e)
         int key = XLookupKeysym(&e->xkey, 0);
         if (game->gameRunning == 0) {
             game->gameRunning = 1;
+            raptorsound();
         }
 
         if (game->displayGameOverOrWon == 1)

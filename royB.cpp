@@ -649,6 +649,8 @@ void worldEngine::rot(float inX, float inY, float inZ)
 worldEngine::~worldEngine()
 {
     destroyTree(root);
+    for(unsigned int i=0; i<collideFaces.size(); i++)
+		delete collideFaces[i];
 }
 ////////////////////////////////////////////////////////////////////////////////
 //         ////////         //////////          //////////          ///////////
