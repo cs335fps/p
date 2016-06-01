@@ -1,6 +1,15 @@
 // Nicholas Gardner
 // April 2016 - May 2016
-
+//
+// General functions
+// Wall class
+// Vector class
+// Bullet class
+// Bullethole class
+// Seconds class
+//
+//
+//
 #include "nickG.h"
 
 // ################ General Functions ##############

@@ -28,13 +28,7 @@ int Input::CheckKeys(XEvent *e)
 {
     if (e->type == KeyPress) {
         int key = XLookupKeysym(&e->xkey, 0);
-        if (game->gameRunning == 0) {
-            game->gameRunning = 1;
-            raptorsound();
-        }
-
-        if (game->displayGameOverOrWon == 1)
-            game->displayGameOverOrWon = 0;
+        game->Continue();
 
         if (key == XK_Escape) {
             openal->clean_al();
@@ -133,14 +127,10 @@ void Input::CheckMouse(XEvent *e)
         return;
     }
     if (e->type == ButtonPress) {
-        if (game->gameRunning == 0) {
-            game->gameRunning = 1;
+    
+        if (game->Continue())
             return;
-        }
-        if (game->displayGameOverOrWon == 1) {
-            game->displayGameOverOrWon = 0;
-            return;
-        }
+            
         if (e->xbutton.button==1 
                 && game->playerHP > 0  
                 && game->setReloadDelay == 0) {

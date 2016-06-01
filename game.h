@@ -20,6 +20,7 @@ class Mob;
 class Wall;
 class BulletHole;
 class Bullet;
+class Seconds;
 
 class Game
 {
@@ -63,6 +64,9 @@ public:
     int noScoreReport;
     int killStreak, maxKillStreak;
     vector<string> servMessage;
+    
+    Seconds *timer;
+    double lastTime;
 
     int partyMode;
     unsigned int skyTex;
@@ -79,9 +83,9 @@ public:
     worldEngine floor;
     solidSphere sky;
     
-    Game();
+    Game(Seconds* s);
     void Move();
-    
+    int Continue();
     void Shoot();
     void renderGameOver(float xres, float yres, unsigned int Tex);
     ~Game();    

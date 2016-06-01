@@ -1,15 +1,16 @@
 #include "game.h"
 #include "lizandroP.h"
 
-Game::Game()
+Game::Game(Seconds* s)
 {
-   
+    timer = s;
+    lastTime = s->Get();
     noScoreReport = 0;
     ParseLevel("lev1.svg", this, 3.0);
     for (unsigned int i = 0; i < walls.size(); i++) {
         walls[i].game = this;
     }
-    
+
     Init();
 
     //level1.load("Level1.obj");
@@ -74,6 +75,23 @@ void Game::Init()
         mobs[i]->setTick();
     }
     //startAstar(this);
+}
+
+int Game::Continue()
+{
+   
+    if (gameRunning == 0) {
+        gameRunning = 1;
+        raptorsound();
+        return 1;
+    }
+
+    if (displayGameOverOrWon == 1 && timer->Get() > lastTime + 5.0) {
+        displayGameOverOrWon = 0;
+        return 1;
+    }
+        
+    return 0;
 }
 
 void Game::Move()
@@ -188,12 +206,12 @@ void Game::Move()
         if (wallHit == 0) {
             Bullet b;
             dino_sound();
-            
+
             // 0 to 20-->easy, 20-59 -->harder, 60+ impossible
             float difficulty = ((float)nkills - 20.0);
             if (difficulty < 0.0)
                 difficulty = 0.0;
-            
+
             float mobErr = 0.2 - (difficulty / 20.0 * 0.1);
             Vec err = Vec((2.0 * RAND - 0.1) * mobErr,
                     (2.0 * RAND - 0.1) * mobErr,
@@ -214,15 +232,15 @@ void Game::Move()
             }
             if (playerHP <= 0) {
                 playerHP = 0;
-                
+
                 // set displayGameOverOrWon only once
                 if (togGamOverDisplay == false) {
                     togGamOverDisplay = true;
                     displayGameOverOrWon = 3;
                     setReloadDelay = 0;
-                    
+                    lastTime = timer->Get();
                 }
-                
+
                 // use to display the mesage on screen that the player 
                 // wone or lost the game
                 if(displayGameOverOrWon == 0) {
@@ -232,11 +250,11 @@ void Game::Move()
                     // we block with this web request.
                     Web w;
                     string s = w.Score(name, 
-                        nkills, 
-                        shots, 
-                        hits, 
-                        gameCounter, 
-                        maxKillStreak);
+                            nkills, 
+                            shots, 
+                            hits, 
+                            gameCounter, 
+                            maxKillStreak);
                     vector<string> svec = Split(s,",");
                     if (svec.size() > 1) {
                         servMessage = svec;
@@ -281,7 +299,7 @@ void Game::Move()
                     position.z+cos(rotx) * sin(roty));
         }
         // game defined portals player and mob can use it
-        
+
         stPor1.reLocateOBJ(position.x,
                 position.y,
                 position.z,
@@ -289,8 +307,8 @@ void Game::Move()
                 position.x,
                 position.y,
                 position.z);
-        
-        
+
+
         stPor2.reLocateOBJ(position.x,
                 position.y,
                 position.z,
@@ -298,7 +316,7 @@ void Game::Move()
                 position.x,
                 position.y,
                 position.z);
-                
+
         if (position.y != 2)
             position.y = 2;
     }
@@ -423,6 +441,7 @@ void Game::renderGameOver(float xres, float yres, unsigned int Tex)
     glBindTexture(GL_TEXTURE_2D, 0);
     glEnd();
 }
+
 
 
 

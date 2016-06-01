@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
     }
 
     Seconds sec; // Start timer
-    Game game;
+    Game game(&sec);
     Openal openal;
     entername(&game);
     View view(&game, overrideWidth, overrideHeight);
