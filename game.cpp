@@ -8,7 +8,7 @@ Game::Game(Seconds* s)
     noScoreReport = 0;
     ParseLevel("lev1.svg", this, 3.0);
     for (unsigned int i = 0; i < walls.size(); i++) {
-        walls[i].game = this;
+	walls[i].game = this;
     }
 
     Init();
@@ -22,7 +22,7 @@ void Game::Init()
     // RESET
     int m = this->mobs.size();
     for (int i = 0; i < m; i++) {
-        this->mobs[i]->death(this);
+	this->mobs[i]->death(this);
     }
     bullets.clear();
     bulletHoles.clear();
@@ -71,55 +71,55 @@ void Game::Init()
     setGun(this,0);
     respawn_mobs(this, 10);
     for (unsigned int i = 0; i < mobs.size(); i++) {
-        Vec* spt = &spawnPts[i % spawnPts.size()];
-        mobs[i]->spawn(spt);
-        mobs[i]->setTick();
+	Vec* spt = &spawnPts[i % spawnPts.size()];
+	mobs[i]->spawn(spt);
+	mobs[i]->setTick();
     }
     //startAstar(this);
 }
 
 int Game::Continue()
 {
-   
+
     if (gameRunning == 0) {
-        gameRunning = 1;
-        raptorsound();
-        return 1;
+	gameRunning = 1;
+	raptorsound();
+	return 1;
     }
 
     if (displayGameOverOrWon == 1 && timer->Get() > lastTime + 3.0) {
-        displayGameOverOrWon = 0;
-        return 1;
+	displayGameOverOrWon = 0;
+	return 1;
     }
-        
+
     return 0;
 }
 
 void Game::Move()
 {
     if (gameRunning == 0)
-        return;
+	return;
 
     if (hitAnim > 0)
-        hitAnim--;
+	hitAnim--;
     if(setReloadDelay > 0)
-        setReloadDelay -= 1;
+	setReloadDelay -= 1;
 
     if (zoom == 1 && depth < maxZoom) {
-        depth += (maxZoom - minZoom) / 15;
+	depth += (maxZoom - minZoom) / 15;
     }else if (zoom == 0 && depth > minZoom) {
-        depth -= (maxZoom - minZoom) / 15;
+	depth -= (maxZoom - minZoom) / 15;
     }
 
 
     if (moveY == 0 || moveX == 0) {
-        // moving orthogonally
-        velocityX = (float) moveX;
-        velocityY = (float) moveY;
+	// moving orthogonally
+	velocityX = (float) moveX;
+	velocityY = (float) moveY;
     } else {
-        // moving diagonally
-        velocityX = (float) moveX / 1.414;
-        velocityY = (float) moveY / 1.414;
+	// moving diagonally
+	velocityX = (float) moveX / 1.414;
+	velocityY = (float) moveY / 1.414;
     }
 
     // slow down when aiming
@@ -127,202 +127,202 @@ void Game::Move()
 
     // do not change ox and oz if the player is not moving
     if (nx != position.x || nz != position.z) {
-        oz = position.z;
-        ox = position.x;
+	oz = position.z;
+	ox = position.x;
     }
 
     // assign new position and save that position in nx and nz
     position.z -= (velocityX * cos(direction.x)
-            + velocityY * -sin(direction.x)) * speed;
+	    + velocityY * -sin(direction.x)) * speed;
     position.x -= (velocityY * cos(direction.x)
-            + velocityX * sin(direction.x)) * speed;
+	    + velocityX * sin(direction.x)) * speed;
     nz =position.z;
     nx =position.x;
     int nMobs = mobs.size();
     while (nMobs < 5) {
-        SpawnNewMob();
-        nMobs = mobs.size();
+	SpawnNewMob();
+	nMobs = mobs.size();
     }
     for (int i = 0; i < nMobs; i++) {
-        for (unsigned int j = 0; j < walls.size(); j++) {
-            Vec temp;
-            Vec* velocity = mobs[i]->getVel();
-            walls[j].Collide(mobs[i]->getLoc(), 2.0, &temp);
-            *velocity = Reflect(*velocity, temp);
-        }
-        if (mobs[i]->Collide(&position) == 1) {
-            this->playerHP -= 5;
-            mobs[i]->damage(10, this);
-            this->dmgAnim = 20;
-            killStreak = 0;
-            cout << "Raptor " << i << " damaged player 5 points. " << endl;
-            cout << "Player has " << playerHP << " health remaining." << endl;
-        }	   
-        //for (unsigned int j = 0; j < mobs.size(); j++) {
-        //    mobs[j]->Collide(mobs[i]->getLoc());
-        //}
-        //Actually happens in view->render, because it needs the map.
-        mobs[i]->move(this);
+	for (unsigned int j = 0; j < walls.size(); j++) {
+	    Vec temp;
+	    Vec* velocity = mobs[i]->getVel();
+	    walls[j].Collide(mobs[i]->getLoc(), 2.0, &temp);
+	    *velocity = Reflect(*velocity, temp);
+	}
+	if (mobs[i]->Collide(&position) == 1) {
+	    this->playerHP -= 5;
+	    mobs[i]->damage(10, this);
+	    this->dmgAnim = 20;
+	    killStreak = 0;
+	    cout << "Raptor " << i << " damaged player 5 points. " << endl;
+	    cout << "Player has " << playerHP << " health remaining." << endl;
+	}	   
+	//for (unsigned int j = 0; j < mobs.size(); j++) {
+	//    mobs[j]->Collide(mobs[i]->getLoc());
+	//}
+	//Actually happens in view->render, because it needs the map.
+	mobs[i]->move(this);
 
-        float ang = atan2(mobs[i]->getVel()->x,
-                mobs[i]->getVel()->z);
-        ang = ang / 3.14159 * 180.0 + 90.0;
-        float lastAng = mobs[i]->lastFace.x;
-        float diff = ang - lastAng;
-        if (diff > 180.0 || diff < -180.0)
-            diff *= -1.0;
-        float delta = 5.0;
-        if (diff > 0.1) {
-            if (diff < delta)
-                lastAng = ang;
-            else
-                lastAng += delta;
-        } else if (diff < -0.1) {
-            if (diff > delta)
-                lastAng = ang;
-            else
-                lastAng -= delta;
-        } else {
-            lastAng = ang;
-        }
-        lastAng = fmod(lastAng,360.0);
-        if (lastAng < 0.0)
-            lastAng+=360.0;
+	float ang = atan2(mobs[i]->getVel()->x,
+		mobs[i]->getVel()->z);
+	ang = ang / 3.14159 * 180.0 + 90.0;
+	float lastAng = mobs[i]->lastFace.x;
+	float diff = ang - lastAng;
+	if (diff > 180.0 || diff < -180.0)
+	    diff *= -1.0;
+	float delta = 5.0;
+	if (diff > 0.1) {
+	    if (diff < delta)
+		lastAng = ang;
+	    else
+		lastAng += delta;
+	} else if (diff < -0.1) {
+	    if (diff > delta)
+		lastAng = ang;
+	    else
+		lastAng -= delta;
+	} else {
+	    lastAng = ang;
+	}
+	lastAng = fmod(lastAng,360.0);
+	if (lastAng < 0.0)
+	    lastAng+=360.0;
 
-        mobs[i]->body.rot(0,0,lastAng,0);
-        mobs[i]->lastFace.x = lastAng;
-        if (mobs[i]->getTick() > gameCounter || mobs[i]->dino == 0)
-            continue;
+	mobs[i]->body.rot(0,0,lastAng,0);
+	mobs[i]->lastFace.x = lastAng;
+	if (mobs[i]->getTick() > gameCounter || mobs[i]->dino == 0)
+	    continue;
 
-        mobs[i]->setTick(gameCounter + (15 * RAND) + 30);
+	mobs[i]->setTick(gameCounter + (15 * RAND) + 30);
 
-        Vec sightDir = -1.0 * (*mobs[i]->getLoc() - position);
-        float closestSight = sightDir.Magnitude();
-        int wallHit = 0;
-        int wallCount = walls.size();
-        for (int j = 0; j < wallCount; j++) {
-            if (walls[j].Ray(*mobs[i]->getLoc(), sightDir, &closestSight) == 1)
-                wallHit = 1;
-        }
-        if (wallHit == 0) {
-            Bullet b;
-            dino_sound();
+	Vec sightDir = -1.0 * (*mobs[i]->getLoc() - position);
+	float closestSight = sightDir.Magnitude();
+	int wallHit = 0;
+	int wallCount = walls.size();
+	for (int j = 0; j < wallCount; j++) {
+	    if (walls[j].Ray(*mobs[i]->getLoc(), sightDir, &closestSight) == 1)
+		wallHit = 1;
+	}
+	if (wallHit == 0) {
+	    Bullet b;
+	    dino_sound();
 
-            // 0 to 20-->easy, 20-59 -->harder, 60+ impossible
-            float difficulty = ((float)nkills - 20.0);
-            if (difficulty < 0.0)
-                difficulty = 0.0;
+	    // 0 to 20-->easy, 20-59 -->harder, 60+ impossible
+	    float difficulty = ((float)nkills - 20.0);
+	    if (difficulty < 0.0)
+		difficulty = 0.0;
 
-            float mobErr = 0.2 - (difficulty / 20.0 * 0.1);
-            Vec err = Vec((2.0 * RAND - 0.1) * mobErr,
-                    (2.0 * RAND - 0.1) * mobErr,
-                    (2.0 * RAND - 0.1) * mobErr);
-            sightDir.Normalize();
-            sightDir = sightDir + err;
-            sightDir = sightDir * closestSight;
-            b.origin = *mobs[i]->getLoc() + Vec(0,-1,0);
-            b.direction = sightDir;
-            b.end = b.origin + b.direction;
-            b.age = 30;
-            bullets.push_back(b);
-            float tmp = 9e9;
-            if (RaySphere(b.origin, b.direction, position, 1, &tmp)) {
-                playerHP -= 5;
-                dmgAnim = 20;
-                killStreak = 0;
-            }
-            if (playerHP <= 0) {
-                playerHP = 0;
+	    float mobErr = 0.2 - (difficulty / 20.0 * 0.1);
+	    Vec err = Vec((2.0 * RAND - 0.1) * mobErr,
+		    (2.0 * RAND - 0.1) * mobErr,
+		    (2.0 * RAND - 0.1) * mobErr);
+	    sightDir.Normalize();
+	    sightDir = sightDir + err;
+	    sightDir = sightDir * closestSight;
+	    b.origin = *mobs[i]->getLoc() + Vec(0,-1,0);
+	    b.direction = sightDir;
+	    b.end = b.origin + b.direction;
+	    b.age = 30;
+	    bullets.push_back(b);
+	    float tmp = 9e9;
+	    if (RaySphere(b.origin, b.direction, position, 1, &tmp)) {
+		playerHP -= 5;
+		dmgAnim = 20;
+		killStreak = 0;
+	    }
+	    if (playerHP <= 0) {
+		playerHP = 0;
 
-                // set displayGameOverOrWon only once
-                if (togGamOverDisplay == false) {
-                    togGamOverDisplay = true;
-                    displayGameOverOrWon = 3;
-                    setReloadDelay = 0;
-                    lastTime = timer->Get();
-                }
+		// set displayGameOverOrWon only once
+		if (togGamOverDisplay == false) {
+		    togGamOverDisplay = true;
+		    displayGameOverOrWon = 3;
+		    setReloadDelay = 0;
+		    lastTime = timer->Get();
+		}
 
-                // use to display the mesage on screen that the player 
-                // wone or lost the game
-                if(displayGameOverOrWon == 0) {
-                    Init();
-                } else if (displayGameOverOrWon == 2 && !noScoreReport) {
-                    // Make sure the game over screen comes up before
-                    // we block with this web request.
-                    Web w;
-                    string s = w.Score(name, 
-                            nkills, 
-                            shots, 
-                            hits, 
-                            gameCounter, 
-                            maxKillStreak);
-                    vector<string> svec = Split(s,",");
-                    if (svec.size() > 1) {
-                        servMessage = svec;
-                    }                        
-                }
-                if (displayGameOverOrWon > 1)
-                    displayGameOverOrWon -= 1;
-            }
-        }
+		// use to display the mesage on screen that the player 
+		// wone or lost the game
+		if(displayGameOverOrWon == 0) {
+		    Init();
+		} else if (displayGameOverOrWon == 2 && !noScoreReport) {
+		    // Make sure the game over screen comes up before
+		    // we block with this web request.
+		    Web w;
+		    string s = w.Score(name, 
+			    nkills, 
+			    shots, 
+			    hits, 
+			    gameCounter, 
+			    maxKillStreak);
+		    vector<string> svec = Split(s,",");
+		    if (svec.size() > 1) {
+			servMessage = svec;
+		    }                        
+		}
+		if (displayGameOverOrWon > 1)
+		    displayGameOverOrWon -= 1;
+	    }
+	}
     }
     for (unsigned int i = 0; i < walls.size(); i++) {
-        walls[i].Collide(&position);
+	walls[i].Collide(&position);
     }
 
     for (unsigned int i = 0; i < bullets.size(); i++) {
-        if (bullets[i].age-- < 1) {
-            bullets[i] = bullets.back();
-            bullets.pop_back();
-            i--;
-        }
+	if (bullets[i].age-- < 1) {
+	    bullets[i] = bullets.back();
+	    bullets.pop_back();
+	    i--;
+	}
     }
 
 
     // handle portals and portal placement
     if (togPortal == 1) {
-        float rotx = direction.x;
-        float roty = direction.y - PI / 2.0;
-        // player defined portals
-        defaultPortl.reLocateOBJ(position.x,
-                position.y,
-                position.z,
+	float rotx = direction.x;
+	float roty = direction.y - PI / 2.0;
+	// player defined portals
+	defaultPortl.reLocateOBJ(position.x,
+		position.y,
+		position.z,
 
-                position.x,
-                position.y,
-                position.z);
-        if (setPortal == 1) {
-            setPortal ^= 1;
-            defaultPortl.loc(position.x, position.y, position.z,
-                    //ox, 2, oz
-                    position.x+sin(rotx) * sin(roty),
-                    2,
-                    position.z+cos(rotx) * sin(roty));
-        }
-        // game defined portals player and mob can use it
+		position.x,
+		position.y,
+		position.z);
+	if (setPortal == 1) {
+	    setPortal ^= 1;
+	    defaultPortl.loc(position.x, position.y, position.z,
+		    //ox, 2, oz
+		    position.x+sin(rotx) * sin(roty),
+		    2,
+		    position.z+cos(rotx) * sin(roty));
+	}
+	// game defined portals player and mob can use it
 
-        stPor1.reLocateOBJ(position.x,
-                position.y,
-                position.z,
+	stPor1.reLocateOBJ(position.x,
+		position.y,
+		position.z,
 
-                position.x,
-                position.y,
-                position.z);
+		position.x,
+		position.y,
+		position.z);
 
 
-        stPor2.reLocateOBJ(position.x,
-                position.y,
-                position.z,
+	stPor2.reLocateOBJ(position.x,
+		position.y,
+		position.z,
 
-                position.x,
-                position.y,
-                position.z);
+		position.x,
+		position.y,
+		position.z);
 
-        if (position.y != 2)
-            position.y = 2;
+	if (position.y != 2)
+	    position.y = 2;
     }
     if (dmgAnim > 0)
-        dmgAnim--;
+	dmgAnim--;
     gameCounter++;
 }
 
@@ -334,12 +334,12 @@ void Game::SpawnNewMob()
     int prox = 1;
     double thresh = 20.0;
     while (prox == 1 && counter-- > 0) {
-        prox = 0;
-        rnd = RAND * ((float)spawnPts.size() + .9999);
-        if ((spawnPts[rnd] - position).Magnitude() < thresh*2.5) {
-            prox = 1;
-            continue;
-        }
+	prox = 0;
+	rnd = RAND * ((float)spawnPts.size() + .9999);
+	if ((spawnPts[rnd] - position).Magnitude() < thresh*2.5) {
+	    prox = 1;
+	    continue;
+	}
     }
 
     respawn_mobs(this, 1);
@@ -353,73 +353,77 @@ void Game::Shoot()
     float roty = direction.y - PI / 2.0;
     float trailLen = 5.0;
     Vec hitNormal;
+    int numBullets = 1;
+   //if (this->guntype == 2)
+	//numBullets = 6;
+    for (int i = 0 ; i < numBullets; i++) {
+	Bullet b;
+	Vec origin = position - Vec(0,.1,0);
+	Vec direction = Vec(sin(rotx) * sin(roty) * trailLen,
+		cos(roty) * trailLen,
+		cos(rotx) * sin(roty) * trailLen);
 
-    Bullet b;
-    Vec origin = position - Vec(0,.1,0);
-    Vec direction = Vec(sin(rotx) * sin(roty) * trailLen,
-            cos(roty) * trailLen,
-            cos(rotx) * sin(roty) * trailLen);
+	// -----------Check collision----------------
+	float closest = 9e9;
+	int wallHit = 0;
+	int wallCount = walls.size();
+	for (int i = 0; i < wallCount; i++) {
+	    if (walls[i].Ray(origin, direction, &closest, &hitNormal) == 1)
+		wallHit = 1;
+	}
+	/*
+	// &hitNormal is optional, I'm using it for bulletholes
+	// Here's how'd you use this.
+	// You may not even need "hit" if you are just comparing wall dist to
+	// some mob's dist unless that mob was > 9e9 away for some reason.
+	if (hit == 1) {
+	cout << "hit distant: " << closest << endl;
+	} else {
+	cout << "no hit" << endl;
+	}
+	//cout << wallHit << endl;
+	if (wallHit != 0)
+	return;
+	*/
+	int mobHit = -1; // Using 'hit' to pick which mob we shot now
+	int mobCount = mobs.size();
+	for (int i = 0; i < mobCount; i++) {
+	    if (RaySphere(origin, direction,
+			*(mobs[i]->getLoc()), 1.0, &closest) == 1
+	       )
+		mobHit = i;
+	}
+	if (mobHit >= 0) {
+	    wallHit = 0;
+	    mobNum = mobHit;
+	    mobDist= closest;
+	    float distMult = 15.0 / closest;
+	    if (distMult < 0.0)
+		distMult = 0.0;
+	    if (distMult > 1.0)
+		distMult = 1.0;
+	    // !--- This cout can get removed after actual Mob damage works
+	    int totDam = (int)((float)gundamage * distMult);
+	    hits++;
+	    mobs[mobHit]->damage(totDam, this);
+	    if (totDam > 0)
+		hitAnim = 20;
+	}
 
-    // -----------Check collision----------------
-    float closest = 9e9;
-    int wallHit = 0;
-    int wallCount = walls.size();
-    for (int i = 0; i < wallCount; i++) {
-        if (walls[i].Ray(origin, direction, &closest, &hitNormal) == 1)
-            wallHit = 1;
-    }
-    /*
-    // &hitNormal is optional, I'm using it for bulletholes
-    // Here's how'd you use this.
-    // You may not even need "hit" if you are just comparing wall dist to
-    // some mob's dist unless that mob was > 9e9 away for some reason.
-    if (hit == 1) {
-    cout << "hit distant: " << closest << endl;
-    } else {
-    cout << "no hit" << endl;
-    }
-    //cout << wallHit << endl;
-    if (wallHit != 0)
-    return;
-     */
-    int mobHit = -1; // Using 'hit' to pick which mob we shot now
-    int mobCount = mobs.size();
-    for (int i = 0; i < mobCount; i++) {
-        if (RaySphere(origin, direction,
-                    *(mobs[i]->getLoc()), 1.0, &closest) == 1
-           )
-            mobHit = i;
-    }
-    if (mobHit >= 0) {
-        wallHit = 0;
-        mobNum = mobHit;
-        mobDist= closest;
-        float distMult = 15.0 / closest;
-        if (distMult < 0.0)
-            distMult = 0.0;
-        if (distMult > 1.0)
-            distMult = 1.0;
-        // !--- This cout can get removed after actual Mob damage works
-        int totDam = (int)((float)gundamage * distMult);
-        hits++;
-        mobs[mobHit]->damage(totDam, this);
-        if (totDam > 0)
-            hitAnim = 20;
-    }
+	if (wallHit == 1) {
+	    Vec loc = origin + direction.Norm() * (closest - 0.01);
+	    bulletHoles.push_back(BulletHole(loc,hitNormal));
+	    while (bulletHoles.size() > MAX_BULLET_HOLES)
+		bulletHoles.pop_front();
+	}
 
-    if (wallHit == 1) {
-        Vec loc = origin + direction.Norm() * (closest - 0.01);
-        bulletHoles.push_back(BulletHole(loc,hitNormal));
-        while (bulletHoles.size() > MAX_BULLET_HOLES)
-            bulletHoles.pop_front();
+	b.origin = origin;
+	b.direction = direction;
+	b.end = b.origin + b.direction;
+
+	b.age = 30;
+	bullets.push_back(b);
     }
-
-    b.origin = origin;
-    b.direction = direction;
-    b.end = b.origin + b.direction;
-
-    b.age = 30;
-    bullets.push_back(b);
 
 }
 void Game::renderGameOver(float xres, float yres, unsigned int Tex)
