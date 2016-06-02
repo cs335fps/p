@@ -755,7 +755,7 @@ Vec* Map::aStar(Vec start, Vec end)
         else if (current.parent[0] == start.x && current.parent[1] == start.z) {
             squares[(int)current.x][(int)current.z]->c = '9';
             nextPath = new Vec(
-                    2*(start.x - current.x), 0, 2*(start.z - current.z)
+                    -2*(start.x - current.x), 0, -2*(start.z - current.z)
                     );
             cout << "Output is " << nextPath->x << ", " << nextPath->z << endl;
             return nextPath;
