@@ -474,11 +474,13 @@ void entername(Game* game)
 {
   char name[32];
   cout <<"Enter your name\n";
-  cin >> name;
+  //cin >> name;
+  cin.getline(name,sizeof(name));
  
   if (name==NULL) {
     cout <<"Invalid input, Please enter name again.\n";
-    cin >> name;
+    //cin >> name;
+    cin.getline(name,sizeof(name));
   }
   strcpy(game->name, name);
 }

@@ -13,6 +13,12 @@ string Web::Score(char* name,
     int ticks, 
     int streak)
 {
+    char nameSend[32];
+    strcpy(nameSend, name);
+    for (unsigned int i = 0; i < strlen(name); i++) {
+        if (nameSend[i] == 32)
+            nameSend[i] = 43;
+    }
     char buf[5][16];
     sprintf(buf[0],"%d",score);
     sprintf(buf[1],"%d",shots);
@@ -20,7 +26,7 @@ string Web::Score(char* name,
     sprintf(buf[3],"%d",ticks);
     sprintf(buf[4],"%d",streak);
     string host = "www.cs.csubak.edu";
-    string page = "~ngardner/fps/score.php?name=" + string(name) + 
+    string page = "~ngardner/fps/score.php?name=" + string(nameSend) + 
         "&kills=" + string(buf[0]) + 
         "&shots=" + string(buf[1]) + 
         "&hits=" + string(buf[2]) + 
