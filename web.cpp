@@ -95,7 +95,7 @@ string Web::HttpConnect(const char *host, const char *page)
              * it will fail to detect the beginning of HTML content
              */
             htmlcontent = strstr(buf, "\r\n\r\n");
-            if(htmlcontent != NULL){
+            if (htmlcontent != NULL) {
                 htmlstart = 1;
                 htmlcontent += 4;
             }
@@ -161,10 +161,10 @@ char *Web::build_get_query(const char *host, const char *page)
     const char *tpl = "GET /%s HTTP/1.0\r\nHost: %s\r\nUser-Agent: %s\r\n\r\n";
     if (getpage[0] == '/') {
         getpage = getpage + 1;
-        //fprintf(stderr,"Removing leading \"/\", converting %s to %s\n", page, getpage);
     }
     // -5 is to consider the %s %s %s in tpl and the ending \0
-    query = (char *)malloc(strlen(host)+strlen(getpage)+strlen(USERAGENT)+strlen(tpl)-5);
+    query = (char *)malloc(strlen(host)+strlen(getpage)
+        +strlen(USERAGENT)+strlen(tpl)-5);
     sprintf(query, tpl, getpage, host, USERAGENT);
     return query;
 }

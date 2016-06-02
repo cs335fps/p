@@ -23,11 +23,12 @@ View::View(Game *g, int w, int h)
     Win = lbmp.getBMP("Win.bmp");
     Lose = lbmp.getBMP("Lose.bmp");
     keys = lbmp.getBMP("keys.bmp");
+    logo = lbmp.getBMP("logo.bmp");
     sheet = lbmp.getBMP("sheet.bmp");
     wallTex[0] = lbmp.getBMP("wall1.bmp");
     wallTex[1] = lbmp.getBMP("wall2.bmp");
     floorTex = lbmp.getBMP("floor1.bmp");
-    
+
     game->defaultPortl.locA(-20,-20,20);
     game->defaultPortl.locA(20,-20,20);
     game->stPor2.locA(40,2,-30);
@@ -185,12 +186,12 @@ void View::Render()
     //    }
 
     glPushMatrix();
-    
+
 
     glDisable(GL_LIGHTING);
     glBindTexture(GL_TEXTURE_2D, skyTex);
     game->sky.draw(ox,oy,oz);
-    
+
     if (game->togPortal == 1) {
         game->defaultPortl.draw();
         game->stPor1.draw();
@@ -271,24 +272,36 @@ void View::HUD()
         float imgh = width * 0.4;
         float iox = (width - imgw) / 2.0;
         float ioy = (height - imgh) / 2.0;
-        glColor3f(1.0f,1.0f,1.0f);
-        glBindTexture(GL_TEXTURE_2D, keys);
-        glBegin(GL_QUADS);
-        glTexCoord2f(1.0f, 1.0f);
-        glVertex2f(imgw + iox, imgh + ioy);
+        for (int i = 0; i < 2; i++) {
+            float tr = (game->timer->Get() - game->lastTime - 5.0) / 2.0;
+            if (tr < 0.0) tr = 0.0;
+            if (tr > 1.0) tr = 1.0;
+            if (i == 0) {
+                if (tr == 0.0)
+                    continue;
+                glBindTexture(GL_TEXTURE_2D, keys);
+                glColor4f(1.0f,1.0f,1.0f,1.0f);
+            } else { 
+                glBindTexture(GL_TEXTURE_2D, logo);
+                glColor4f(1.0f,1.0f,1.0f,1.0f-tr);
+            }
+            
+            glBegin(GL_QUADS);
+            glTexCoord2f(1.0f, 1.0f);
+            glVertex2f(imgw + iox, imgh + ioy);
 
-        glTexCoord2f(1.0f, 0.0f);
-        glVertex2f( imgw + iox, ioy);
+            glTexCoord2f(1.0f, 0.0f);
+            glVertex2f( imgw + iox, ioy);
 
-        glTexCoord2f(0.0f, 0.0f);
-        glVertex2f( iox, ioy);
+            glTexCoord2f(0.0f, 0.0f);
+            glVertex2f( iox, ioy);
 
-        glTexCoord2f(0.0f, 1.0f);
-        glVertex2f( iox, imgh + ioy);
+            glTexCoord2f(0.0f, 1.0f);
+            glVertex2f( iox, imgh + ioy);
 
-        glBindTexture(GL_TEXTURE_2D, 0);
-        glEnd();
-
+            glBindTexture(GL_TEXTURE_2D, 0);
+            glEnd();
+        }
         // display that the user won or lost
     } else if (game->mobs.size() == 0 || game->playerHP == 0) {
         if (game->playerHP == 0) {
@@ -445,6 +458,7 @@ void View::SwitchTo2D()
     is3D = 0;
 
 }
+
 
 
 

@@ -38,7 +38,8 @@ private:
     Game *game;
     float ox,oy,oz;
     int wOverride, hOverride;    
-    unsigned int mobTex, skyTex, Win, Lose, keys, sheet, wallTex[2], floorTex;
+    unsigned int mobTex, skyTex, Win, Lose, 
+        keys, sheet, wallTex[2], floorTex, logo;
 
 public:
     View(Game *g, int w = 0, int h = 0);

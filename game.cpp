@@ -31,6 +31,7 @@ void Game::Init()
 
     //SET
     temperature = 25.0; // temperature in celsius
+    lastTime = timer->Get();
     displayGameOverOrWon = -5;
     togGamOverDisplay = false;
     gameCounter = 0;
@@ -86,7 +87,7 @@ int Game::Continue()
         return 1;
     }
 
-    if (displayGameOverOrWon == 1 && timer->Get() > lastTime + 5.0) {
+    if (displayGameOverOrWon == 1 && timer->Get() > lastTime + 3.0) {
         displayGameOverOrWon = 0;
         return 1;
     }
