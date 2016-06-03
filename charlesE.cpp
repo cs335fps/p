@@ -124,7 +124,8 @@ void Mob::move(Game* g)
 
     if (this->moved > 120) { 
         this->moved = 0;
-        if (!this->hasMap && mapToggle() == 1) { //We don't have a map, but we need one.
+        if (!this->hasMap && mapToggle() == 1) { 
+	    //We don't have a map, but we need one.
             this->map2d = new Map(g);
             this->hasMap = true;
         }
@@ -250,8 +251,8 @@ float r(float min, float max)
 {
     static float r_m = static_cast<float> (RAND_MAX);
     return (
-            static_cast<float> (rand()) / (r_m / (max-min)) + min
-           );
+        static_cast<float> (rand()) / (r_m / (max-min)) + min
+    );
 }
 /*
    void Enemy::move()
@@ -320,11 +321,12 @@ void cWall::Draw()
     glColor3f(color.x, color.y, color.z);
     for (int i = 0; i < 6; i++) {
         glBegin(GL_POLYGON);
-        glNormal3fv(&Normal(
-                    this->corners[ sides[i][2] ], 
-                    this->corners[ sides[i][1] ], 
-                    this->corners[ sides[i][1] ])[0] 
-                );
+        glNormal3fv(
+            &Normal(
+            this->corners[ sides[i][2] ], 
+            this->corners[ sides[i][1] ], 
+            this->corners[ sides[i][1] ])[0] 
+        );
         for (int j = 0; j < 4; j++) {
             glVertex3fv(&corners[sides[i][j]][0]);
         }
@@ -478,6 +480,7 @@ void chadKey(Game* g, View* v)
         for (vmi m = g->mobs.begin(); m != g->mobs.end(); m++) {
             (*m)->setVelY(-4.055);
             (*m)->dino = 1;
+
             (*m)->setLocY((*m)->getLoc()->y - 0.05);
             //(*m)->hasMap = false;
         }
@@ -501,17 +504,18 @@ void respawn_mobs(Game* g, int num = 10)
 
 Game::~Game()
 {
-    /*for(
-     * Mob* i = this->mobs.back(); 
-     * !this->mobs.empty(); 
-     * i = this->mobs.back()
-     * ) {
+    for(
+        Mob* i = this->mobs.back(); 
+        !this->mobs.empty(); 
+        i = this->mobs.back()
+    ) {
     // cout << "Killing mob " << endl;
-    i->death(this);
+        i->death(this);
+	mobs.pop_back();
     }
-    int m = this->mobs.size();
+    /*int m = this->mobs.size();
     for (int i = 0; i < m; i++) {
-    this->mobs[i]->death(this);
+        this->mobs[i]->death(this);
     }
     for(int i = 0; !this->walls.empty();this->walls.pop_back()){
     i++;
